@@ -1,0 +1,33 @@
+$black-color: #000;
+$black-color-dark: #05060e;
+$black-color-light: #3a3b42;
+$black-color-middle: #212229;
+$danger-color: #d73a49;
+$gray-color-f3: #f3f3f3;
+$gray-color-e7: #e7e7ec;
+$gray-color-db: #dbdbdb;
+$gray-color-c3: #c3c3c3;
+$gray-color-98: #98989a;
+$gray-color-75: #757575;
+$primary-color-dark: #133099;
+$primary-color-light: #3050c1;
+$primary-color-middle: #1d3ba8;
+$white-color: #fff;
+
+:export {
+	blackColor: $black-color;
+	blackColorDark: $black-color-dark;
+	blackColorLight: $black-color-light;
+	blackColorMiddle: $black-color-middle;
+	dangerColor: $danger-color;
+	grayColorF3: $gray-color-f3;
+	grayColorE7: $gray-color-e7;
+	grayColorDb: $gray-color-db;
+	grayColorC3: $gray-color-c3;
+	grayColor98: $gray-color-98;
+	grayColor75: $gray-color-75;
+	primaryColorDark: $primary-color-dark;
+	primaryColorLight: $primary-color-light;
+	primaryColorMiddle: $primary-color-middle;
+	whiteColor: $white-color;
+}
