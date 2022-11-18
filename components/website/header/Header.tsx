@@ -120,7 +120,7 @@ export default function Header() {
       >
         <Popover.Panel
           focus
-          className="absolute inset-x-0 top-0 origin-top-right  h-[100vh] left-auto max-w-sm transform transition lg:hidden"
+          className="absolute inset-x-0 top-0 origin-top-right z-10 h-[100vh] left-auto max-w-sm transform transition lg:hidden"
         >
           <div className="divide-gray-50 bg-whiteColor shadow-lg ring-black ring-opacity-5 h-full flex flex-col justify-between">
             <div className="px-5 pt-5 pb-6">
