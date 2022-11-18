@@ -6,13 +6,11 @@
 
 html,
 body {
-	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
-		Helvetica Neue, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+    Helvetica Neue, sans-serif;
 }
 html,
 body,
-div,
-span,
 object,
 iframe,
 img,
@@ -28,75 +26,61 @@ td,
 th,
 tr form,
 label,
-legend,
-header,
-footer,
-article,
-section,
-aside {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	vertical-align: baseline;
-	background: transparent;
+legend {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  background: transparent;
 }
 input:focus,
 select:focus,
 textarea:focus {
-	outline: none;
+  outline: none;
 }
 * {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 table,
 td,
 th,
 tr {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 html,
 body {
-	width: 100%;
-	height: 100%;
-}
-input,
-select,
-textarea,
-button {
-	font-family: 'Open Sans', Arial, 'Helvetica Neue', Helvetica, sans-serif;
-	font-weight: 400;
-	box-sizing: border-box;
-	color: #000;
+  width: 100%;
+  height: 100%;
 }
 a,
 button,
 input[type='button'] {
-	cursor: pointer;
+  cursor: pointer;
 }
 button {
-	border: none;
-	box-shadow: none;
-	background: transparent;
+  border: none;
+  box-shadow: none;
+  background: transparent;
 }
 a {
-	text-decoration: none;
-	color: inherit;
-	outline: none;
+  text-decoration: none;
+  color: inherit;
+  outline: none;
 }
 *:hover,
 *:focus {
-	outline: none;
+  outline: none;
 }
 ul,
 li {
-	list-style: none;
-	padding: 0;
-	margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 * {
-	outline: none;
-	-webkit-font-smoothing: antialiased;
+  outline: none;
+  -webkit-font-smoothing: antialiased;
 }
 h1,
 h2,
@@ -105,13 +89,13 @@ h4,
 h5,
 h6,
 p {
-	margin: 0;
-	font-size: inherit;
+  margin: 0;
+  font-size: inherit;
 }
 
 body {
-	font-size: 16px;
-	font-family: 'Roboto', sans-serif;
-	line-height: 24px;
-	color: $black-color;
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+  line-height: 24px;
+  color: $black-color;
 }
