@@ -22,22 +22,22 @@ export default function Header() {
   return (
     <Popover className="relative border-b border-grayColorDb">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="flex items-center justify-between border-gray-100 py-6 md:justify-start md:space-x-10">
+        <div className="flex items-center justify-between border-gray-100 py-6 lg:justify-start lg:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
             <a href="#" className="h-8 w-auto sm:h-10">
               <span className="sr-only">Your Company</span>
               <LogoIcon />
             </a>
           </div>
-          <div className="-my-2 -mr-2 md:hidden">
+          <div className="lg:hidden flex items-center">
             <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
               <span className="sr-only">Open menu</span>
-              <div className="h-6 w-6">
+              <div>
                 <BarsIcon />
               </div>
             </Popover.Button>
           </div>
-          <Popover.Group as="nav" className="hidden space-x-10 md:flex">
+          <Popover.Group as="nav" className="hidden space-x-10 lg:flex">
             <Popover className="relative">
               {({ open }) => (
                 <>
@@ -93,7 +93,7 @@ export default function Header() {
               </a>
             </Popover>
           </Popover.Group>
-          <div className="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
+          <div className="hidden items-center justify-end lg:flex lg:flex-1 lg:w-0">
             <a
               href="#"
               className="whitespace-nowrap rounded-lg border-2 px-5 py-1.5 font-medium text-primaryColorLight hover:bg-primaryColorLight hover:text-whiteColor"
@@ -118,8 +118,11 @@ export default function Header() {
         leaveFrom="opacity-100 scale-100"
         leaveTo="opacity-0 scale-95"
       >
-        <Popover.Panel focus className="absolute inset-x-0 top-0 origin-top-right transform transition md:hidden">
-          <div className="divide-gray-50 rounded-lg bg-whiteColor shadow-lg ring-1 ring-black ring-opacity-5">
+        <Popover.Panel
+          focus
+          className="absolute inset-x-0 top-0 origin-top-right  h-[100vh] left-auto max-w-sm transform transition lg:hidden"
+        >
+          <div className="divide-gray-50 bg-whiteColor shadow-lg ring-black ring-opacity-5 h-full flex flex-col justify-between">
             <div className="px-5 pt-5 pb-6">
               <div className="flex items-center justify-between">
                 <div className="h-8 w-auto sm:h-10">
@@ -137,28 +140,24 @@ export default function Header() {
               <div className="mt-6">
                 <nav className="grid gap-y-8">
                   {courses.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50"
-                    >
-                      <span className="ml-3 text-base font-medium text-gray-900">{item.name}</span>
+                    <a key={item.name} href={item.href} className="flex items-center rounded-md hover:bg-gray-50">
+                      <span className="text-base font-medium text-gray-900">{item.name}</span>
                     </a>
                   ))}
                 </nav>
               </div>
             </div>
             <div className="space-y-6 py-6 px-5">
-              <div>
+              <div className="flex flex-col justify-end">
                 <a
                   href="#"
-                  className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                  className="mb-3 flex w-full items-center justify-center whitespace-nowrap rounded-lg border-2 px-5 py-1.5 font-medium text-primaryColorLight hover:bg-primaryColorLight hover:text-whiteColor"
                 >
                   <Trans>signIn</Trans>
                 </a>
                 <a
                   href="#"
-                  className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                  className="flex w-full items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight px-5 py-1.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
                 >
                   <Trans>start</Trans>
                 </a>

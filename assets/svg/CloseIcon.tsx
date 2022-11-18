@@ -4,7 +4,7 @@ import React from 'react';
 /* Local dependencies */
 import { IconProps } from './types';
 
-export default function LogoIcon({ fill, width, height }: IconProps) {
+export default function LogoIcon({ fill, width = 22, height = 17 }: IconProps) {
   return (
     <svg width={width} height={height} fill={fill} xmlns="http://www.w3.org/2000/svg">
       <path
