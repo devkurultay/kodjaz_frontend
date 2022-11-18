@@ -6,13 +6,14 @@ module.exports = {
 			sm: '480px',
 			md: '768px',
 			lg: '992px',
-			xl: '1440px',
+			xl: '1110px',
 		},
 		colors: {
 			blackColor: '#000',
 			blackColorDark: '#05060e',
 			blackColorLight: '#3a3b42',
 			blackColorMiddle: '#212229',
+			blueColorLight: '#F2FAFF',
 			dangerColor: '#d73a49',
 			grayColorF3: '#f3f3f3',
 			grayColorE7: '#e7e7ec',
@@ -23,6 +24,7 @@ module.exports = {
 			primaryColorDark: '#133099',
 			primaryColorLight: '#3050c1',
 			primaryColorMiddle: '#1d3ba8',
+			transparent: 'transparent',
 			whiteColor: '#fff',
 		},
 		container: {

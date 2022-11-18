@@ -1,8 +1,10 @@
+/* External dependencies */
 import Head from 'next/head';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 
-import Promo from '../components/website/promo/Promo';
+/* Local dependencies */
+import MainPromo from '../components/website/promo/MainPromo';
 import nextI18NextConfig from '../next-i18next.config.js';
 
 export const getStaticProps = async ({ locale }: any) => ({
@@ -19,7 +21,7 @@ export default function Home() {
 				<meta name='viewport' content='initial-scale=1.0, width=device-width' />
 				<meta property='og:title' content='Kodjaz - программалоо негиздер боюнча акысыз курстар' key='title' />
 			</Head>
-			<Promo></Promo>
+			<MainPromo />
 		</>
 	);
 }
