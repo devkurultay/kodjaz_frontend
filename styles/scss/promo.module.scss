@@ -2,7 +2,25 @@
 @import 'variables.scss';
 
 .promo {
-	p {
-		color: $gray-color-75;
+	padding: 60px 0;
+
+	@include minWidthMedia(992px) {
+		padding: 100px 0 130px;
+	}
+
+	.aboutImg {
+		@include minWidthMedia(1380px) {
+			position: absolute;
+			top: 0;
+			right: -10%;
+		}
+	}
+
+	.mainImg {
+		@include minWidthMedia(1380px) {
+			position: absolute;
+			top: -20%;
+			right: -10%;
+		}
 	}
 }

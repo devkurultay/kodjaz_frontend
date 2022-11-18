@@ -7,7 +7,9 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint"
+		"lint": "next lint",
+		"clean": "npm run clean:soft && rm -rf node_modules package-lock.json",
+		"clean:soft": "rm -rf .cache"
 	},
 	"dependencies": {
 		"@next/font": "13.0.2",

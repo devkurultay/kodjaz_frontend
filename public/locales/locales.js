@@ -5,7 +5,7 @@ const Locale = {
 };
 
 const Locales = {
-	DEFAULT_LOCALE: Locale.RU,
+	DEFAULT_LOCALE: Locale.KY,
 	Locale,
 	SUPPORTED_LOCALES: [Locale.EN, Locale.KY, Locale.RU],
 };
