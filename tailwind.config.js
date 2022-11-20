@@ -3,7 +3,8 @@ module.exports = {
 	content: ['./app/**/*.{js,ts,jsx,tsx}', './pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
 	theme: {
 		screens: {
-			sm: '480px',
+			xs: '420px',
+			sm: '640px',
 			md: '768px',
 			lg: '992px',
 			xl: '1110px',
@@ -28,11 +29,7 @@ module.exports = {
 			whiteColor: '#fff',
 		},
 		container: {
-			center: true,
-			DEFAULT: '1rem',
-			sm: '2rem',
-			lg: '4rem',
-			xl: '5rem',
+			padding: { center: true, DEFAULT: '2rem', sm: '4rem' },
 		},
 		fontFamily: {
 			sans: ['Graphik', 'sans-serif'],
@@ -42,6 +39,7 @@ module.exports = {
 			xs: ['12px', '15px'],
 			sm: ['14px', '18px'],
 			base: ['16px', '18px'],
+			sm2: ['20px', '24px'],
 			md: ['24px', '32px'],
 			lg: ['32px', '40px'],
 			xl: ['40px', '48px'],

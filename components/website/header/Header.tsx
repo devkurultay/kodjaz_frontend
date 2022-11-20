@@ -21,7 +21,7 @@ function classNames(...classes) {
 export default function Header() {
   return (
     <Popover className="relative border-b border-grayColorDb">
-      <div className="container mx-auto max-w-7xl px-4 sm:px-6">
+      <div className="container mx-auto">
         <div className="flex items-center justify-between border-gray-100 py-6 lg:justify-start lg:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
             <a href="#" className="h-8 w-auto sm:h-10">
@@ -30,7 +30,7 @@ export default function Header() {
             </a>
           </div>
           <div className="lg:hidden flex items-center">
-            <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+            <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none">
               <span className="sr-only">Open menu</span>
               <div>
                 <BarsIcon />
@@ -44,7 +44,7 @@ export default function Header() {
                   <Popover.Button
                     className={classNames(
                       open ? 'text-gray-900' : 'text-gray-500',
-                      'group inline-flex items-center rounded-md bg-white text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2',
+                      'group inline-flex items-center rounded-md bg-white text-base font-medium hover:text-gray-900 focus:outline-none',
                     )}
                   >
                     <span>
@@ -129,7 +129,7 @@ export default function Header() {
                   <LogoIcon />
                 </div>
                 <div className="-mr-2">
-                  <Popover.Button className="inline-flex items-center justify-center rounded-md bg-whiteColor p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                  <Popover.Button className="inline-flex items-center justify-center rounded-md bg-whiteColor p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none">
                     <span className="sr-only">Close menu</span>
                     <div className="h-6 w-6">
                       <CloseIcon />

@@ -1,12 +1,15 @@
 /* External dependencies */
 import Head from 'next/head';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { Trans } from 'next-i18next';
 import React from 'react';
 
 /* Local dependencies */
-import MainPromo from '../components/website/promo/MainPromo';
-import nextI18NextConfig from '../next-i18next.config.js';
 import Header from '../components/website/header/Header';
+import InfoMain from '../components/website/info/InfoMain';
+import MainPromo from '../components/website/promo/MainPromo';
+import TextSection from '../components/website/text-section/TextSection';
+import nextI18NextConfig from '../next-i18next.config.js';
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {
@@ -24,6 +27,18 @@ export default function Home() {
       </Head>
       <Header />
       <MainPromo />
+      <TextSection text="whatCodeText">
+        <Trans
+          i18nKey="whatCodeTitle"
+          components={{
+            kodjaz: <span className="text-primaryColorLight"></span>,
+          }}
+        />
+      </TextSection>
+      <InfoMain />
+      <TextSection text="sponsorPartnersText" logos={true}>
+        <Trans>sponsorsPartnersTitle</Trans>
+      </TextSection>
     </>
   );
 }

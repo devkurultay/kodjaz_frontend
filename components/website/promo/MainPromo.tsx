@@ -11,7 +11,7 @@ export default function MainPromo() {
 		<Promo imgSrc='/assets/main-promo-img.svg' bgColor='bg-blueColorLight' imgClassName={styles.mainImg}>
 			<div className='py-10'>
 				<h1 className='text-blackColorDark font-bold text-base sm:text-md lg:text-lg mb-8'>
-					<Trans>MainPromoTitle</Trans>
+					<Trans>mainPromoTitle</Trans>
 				</h1>
 				<a
 					href='#'
