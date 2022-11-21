@@ -6,6 +6,7 @@ import React from 'react';
 
 /* Local dependencies */
 import Feedbacks from '../components/website/feedbacks/Feedbacks';
+import Founder from '../components/website/founder/Founder';
 import Header from '../components/website/header/Header';
 import InfoMain from '../components/website/info/InfoMain';
 import MainPromo from '../components/website/promo/MainPromo';
@@ -40,6 +41,7 @@ export default function Home() {
       <TextSection text="sponsorPartnersText" logos={true}>
         <Trans>sponsorsPartnersTitle</Trans>
       </TextSection>
+      <Founder />
       <Feedbacks />
     </>
   );
