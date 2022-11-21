@@ -12,6 +12,8 @@ import InfoMain from '../components/website/info/InfoMain';
 import MainPromo from '../components/website/promo/MainPromo';
 import TextSection from '../components/website/text-section/TextSection';
 import nextI18NextConfig from '../next-i18next.config.js';
+import Header from '../components/website/header/Header';
+import Footer from '../components/website/footer/Footer';
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {
@@ -43,6 +45,7 @@ export default function Home() {
       </TextSection>
       <Founder />
       <Feedbacks />
+      <Footer />
     </>
   );
 }

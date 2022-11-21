@@ -1,7 +1,9 @@
+// External dependencies
 import { Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { Trans } from 'next-i18next';
 
+// Local dependencies
 import LogoIcon from '../../../assets/svg/Logo';
 import BarsIcon from '../../../assets/svg/BarsIcon';
 import CloseIcon from '../../../assets/svg/CloseIcon';
