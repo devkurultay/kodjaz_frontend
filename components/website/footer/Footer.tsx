@@ -11,39 +11,52 @@ import TelegramIcon from '../../../assets/svg/TelegramIcon';
 
 export default function Footer() {
   return (
-    <Popover className="bg-blackColorDark">
-      <div className="container mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="flex items-center justify-between border-gray-100 py-6 lg:justify-start lg:space-x-10">
-          <div className="flex justify-start lg:w-0 lg:flex-1">
-            <a href="#" className="h-8 w-auto sm:h-10">
-              <span className="sr-only">Your Company</span>
-              <LogoWhiteIcon />
-            </a>
-          </div>
-          <div className="flex items-center justify-between lg:flex lg:flex-1 lg:w-0">
-            <a href="#">
-              <Trans>courses</Trans>
-            </a>
-            <a href="#">
-              <Trans>aboutUs</Trans>
-            </a>
-            <a href="#">
-              <Trans>resources</Trans>
-            </a>
-          </div>
-          <div className="flex items-center justify-between lg:flex lg:flex-1 lg:w-0">
-            <a href="#">
-              <InstagramIcon />
-            </a>
-            <a href="#">
-              <FacebookIcon />
-            </a>
-            <a href="#">
-              <TelegramIcon />
-            </a>
+    <>
+      <div className="bg-blackColorDark">
+        <div className="container mx-auto">
+          <div className="flex md:items-center py-12 flex-col md:flex-row">
+            <div className="flex md:justify-start basis-full mb-14 md:mb-0 md:basis-1/4">
+              <a href="#">
+                <span className="sr-only">Your Company</span>
+                <LogoWhiteIcon width={92} height={24} />
+              </a>
+            </div>
+            <div className="flex md:basis-1/2 md:justify-center text-whiteColor flex-col md:flex-row">
+              <a href="#" className="mb-4 md:basis-1/3 md:mb-0">
+                <Trans>courses</Trans>
+              </a>
+              <a href="#" className="mb-4 md:basis-1/3 md:mb-0">
+                <Trans>aboutUs</Trans>
+              </a>
+              <a href="#" className="mb-14 md:basis-1/3 md:mb-0">
+                <Trans>resources</Trans>
+              </a>
+            </div>
+            <div className="flex md:basis-1/4 md:justify-end">
+              <a href="#" className="flex pr-8 md:pl-8 md:pr-0">
+                <InstagramIcon />
+              </a>
+              <a href="#" className="flex pr-8 md:pl-8 md:pr-0">
+                <FacebookIcon />
+              </a>
+              <a href="#" className="flex pr-8 md:pl-8 md:pr-0">
+                <TelegramIcon />
+              </a>
+            </div>
           </div>
         </div>
       </div>
-    </Popover>
+      <div className="bg-blackColorMiddle text-grayColor98">
+        <div className="container mx-auto">
+          <div className="flex flex-col sm:flex-row justify-between py-3.5">
+            <div className="flex sm:flex-none md:basis-1/2 justify-start">© 2022 Kodjaz</div>
+            <div className="flex sm:grow md:basis-1/3 sm:justify-end">
+              <span className="flex sm:justify-end mr-5">Купуялык саясат</span>
+              <span className="flex sm:justify-end">Куки саясаты</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
