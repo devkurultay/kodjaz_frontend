@@ -31,6 +31,7 @@ module.exports = {
     },
     container: {
       padding: { center: true, DEFAULT: '2rem', xl: '4rem' },
+      center: true,
     },
     fontFamily: {
       sans: ['Graphik', 'sans-serif'],
