@@ -23,7 +23,7 @@ export default function Feedbacks() {
 
   return (
     <section className="py-[80px]">
-      <div className="container mx-auto">
+      <div className="container ">
         <div className="flex lg:justify-end">
           <div className="basis-full lg:basis-10/12">
             <h2 className="text-center md:text-left text-blackColorDark text-xl mb-12 font-bold">

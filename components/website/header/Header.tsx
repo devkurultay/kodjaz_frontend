@@ -7,6 +7,7 @@ import { Trans } from 'next-i18next';
 import LogoIcon from '../../../assets/svg/Logo';
 import BarsIcon from '../../../assets/svg/BarsIcon';
 import CloseIcon from '../../../assets/svg/CloseIcon';
+import Link from 'next/link';
 
 const courses = [
   {
@@ -23,13 +24,13 @@ function classNames(...classes: string[]) {
 export default function Header() {
   return (
     <Popover className="relative border-b border-grayColorDb">
-      <div className="container mx-auto">
+      <div className="container ">
         <div className="flex items-center justify-between border-gray-100 py-6 lg:justify-start lg:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
-            <a href="#" className="h-8 w-auto sm:h-10">
+            <Link href="#" className="w-auto">
               <span className="sr-only">Your Company</span>
               <LogoIcon width={152} height={40} />
-            </a>
+            </Link>
           </div>
           <div className="lg:hidden flex items-center">
             <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none">
@@ -65,9 +66,9 @@ export default function Header() {
                     <Popover.Panel className="absolute z-10 -ml-4 mt-3 w-screen max-w-md transform px-2 sm:px-0 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2">
                       <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                         <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
-                          {courses.map((item) => (
-                            <a
-                              key={item.name}
+                          {courses.map((item, index) => (
+                            <Link
+                              key={index}
                               href={item.href}
                               className="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50"
                             >
@@ -75,7 +76,7 @@ export default function Header() {
                                 <p className="text-base font-medium text-gray-900">{item.name}</p>
                                 <p className="mt-1 text-sm text-gray-500">{item.description}</p>
                               </div>
-                            </a>
+                            </Link>
                           ))}
                         </div>
                       </div>
@@ -85,29 +86,29 @@ export default function Header() {
               )}
             </Popover>
             <Popover className="relative">
-              <a href="#">
+              <Link href="/about">
                 <Trans>aboutUs</Trans>
-              </a>
+              </Link>
             </Popover>
             <Popover className="relative">
-              <a href="#">
+              <Link href="#">
                 <Trans>resources</Trans>
-              </a>
+              </Link>
             </Popover>
           </Popover.Group>
           <div className="hidden items-center justify-end lg:flex lg:flex-1 lg:w-0">
-            <a
+            <Link
               href="#"
               className="whitespace-nowrap rounded-lg border-2 px-5 py-1.5 font-medium text-primaryColorLight hover:bg-primaryColorLight hover:text-whiteColor"
             >
               <Trans>signIn</Trans>
-            </a>
-            <a
+            </Link>
+            <Link
               href="#"
               className="ml-8 inline-flex items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight px-5 py-1.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
             >
               <Trans>start</Trans>
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -124,11 +125,11 @@ export default function Header() {
           focus
           className="absolute inset-x-0 top-0 origin-top-right z-10 h-[100vh] left-auto max-w-sm transform transition lg:hidden"
         >
-          <div className="divide-gray-50 bg-whiteColor shadow-lg ring-black ring-opacity-5 h-full flex flex-col justify-between">
+          <div className="divide-gray-50 bg-whiteColor shadow-lg ring-black ring-opacity-5 h-full flex flex-col justify-between w-[90%] min-w-[300px] max-h-[640px]">
             <div className="px-5 pt-5 pb-6">
               <div className="flex items-center justify-between">
-                <div className="h-8 w-auto sm:h-10">
-                  <LogoIcon />
+                <div className="w-auto">
+                  <LogoIcon width={152} height={40} />
                 </div>
                 <div className="-mr-2">
                   <Popover.Button className="inline-flex items-center justify-center rounded-md bg-whiteColor p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none">
@@ -142,27 +143,27 @@ export default function Header() {
               <div className="mt-6">
                 <nav className="grid gap-y-8">
                   {courses.map((item) => (
-                    <a key={item.name} href={item.href} className="flex items-center rounded-md hover:bg-gray-50">
+                    <Link key={item.name} href={item.href} className="flex items-center rounded-md hover:bg-gray-50">
                       <span className="text-base font-medium text-gray-900">{item.name}</span>
-                    </a>
+                    </Link>
                   ))}
                 </nav>
               </div>
             </div>
-            <div className="space-y-6 py-6 px-5">
+            <div className="space-y-6 py-8 px-5">
               <div className="flex flex-col justify-end">
-                <a
+                <Link
                   href="#"
                   className="mb-3 flex w-full items-center justify-center whitespace-nowrap rounded-lg border-2 px-5 py-1.5 font-medium text-primaryColorLight hover:bg-primaryColorLight hover:text-whiteColor"
                 >
                   <Trans>signIn</Trans>
-                </a>
-                <a
+                </Link>
+                <Link
                   href="#"
                   className="flex w-full items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight px-5 py-1.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
                 >
                   <Trans>start</Trans>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
