@@ -1,7 +1,9 @@
+// External dependencies
 import { Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { Trans } from 'next-i18next';
 
+// Local dependencies
 import LogoIcon from '../../../assets/svg/Logo';
 import BarsIcon from '../../../assets/svg/BarsIcon';
 import CloseIcon from '../../../assets/svg/CloseIcon';
@@ -26,7 +28,7 @@ export default function Header() {
           <div className="flex justify-start lg:w-0 lg:flex-1">
             <a href="#" className="h-8 w-auto sm:h-10">
               <span className="sr-only">Your Company</span>
-              <LogoIcon />
+              <LogoIcon width={152} height={40} />
             </a>
           </div>
           <div className="lg:hidden flex items-center">
