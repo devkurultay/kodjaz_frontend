@@ -5,10 +5,10 @@ import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
 /* Local dependencies */
-import CloseIcon from '../../assets/svg/CloseIcon';
-import GoogleIcon from '../../assets/svg/GoogleIcon';
-import AppleIcon from '../../assets/svg/AppleIcon';
-import FacebookIcon from '../../assets/svg/FacebookIcon';
+import CloseIcon from '../../public/assets/svg/CloseIcon';
+import GoogleIcon from '../../public/assets/svg/GoogleIcon';
+import AppleIcon from '../../public/assets/svg/AppleIcon';
+import FacebookIcon from '../../public/assets/svg/FacebookIcon';
 import { changeHandler, closeConfirmationPopup, login } from '../../store/slices/userSlice';
 import styles from '../../styles/scss/popup.module.scss';
 import { Login } from '../../types/userTypes';
