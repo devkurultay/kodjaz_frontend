@@ -1,7 +1,10 @@
+/* External dependencies */
 import type { AppProps } from 'next/app';
 import { appWithTranslation } from 'next-i18next';
 import { Roboto } from '@next/font/google';
 
+/* Local dependencies */
+import { wrapper } from '../store';
 import '../styles/globals.scss';
 
 const roboto = Roboto({
@@ -21,4 +24,4 @@ const App = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-export default appWithTranslation(App);
+export default wrapper.withRedux(appWithTranslation(App));

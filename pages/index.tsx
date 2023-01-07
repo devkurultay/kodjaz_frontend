@@ -1,18 +1,19 @@
 /* External dependencies */
 import Head from 'next/head';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Trans } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 
 /* Local dependencies */
+import LoginUser from '../components/login/LoginUser';
 import Feedbacks from '../components/website/feedbacks/Feedbacks';
 import Founder from '../components/website/founder/Founder';
 import Footer from '../components/website/footer/Footer';
+import Header from '../components/website/header/Header';
 import InfoMain from '../components/website/info/InfoMain';
 import MainPromo from '../components/website/promo/MainPromo';
 import TextSection from '../components/website/text-section/TextSection';
 import nextI18NextConfig from '../next-i18next.config.js';
-import Header from '../components/website/header/Header';
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {
@@ -45,6 +46,7 @@ export default function Home() {
       <Founder />
       <Feedbacks />
       <Footer />
+      <LoginUser />
     </>
   );
 }

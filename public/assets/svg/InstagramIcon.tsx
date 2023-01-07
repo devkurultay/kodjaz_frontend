@@ -4,9 +4,9 @@ import React from 'react';
 /* Local dependencies */
 import { IconProps } from './types';
 
-export default function InstagramIcon({ fill, width, height }: IconProps) {
+export default function InstagramIcon({ fill }: IconProps) {
   return (
-    <svg width={14} height={14} fill={fill} xmlns="http://www.w3.org/2000/svg">
+    <svg width={14} height={14} viewBox="0 0 14 14" fill={fill} xmlns="http://www.w3.org/2000/svg">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
