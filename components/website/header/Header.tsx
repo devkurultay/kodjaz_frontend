@@ -1,15 +1,35 @@
-/* External dependencies */
-import { Fragment } from 'react';
+// External dependencies
 import { Popover, Transition } from '@headlessui/react';
-import { Trans } from 'next-i18next';
 import Link from 'next/link';
+import { Trans } from 'next-i18next';
+import { Fragment } from 'react';
+import { useDispatch } from 'react-redux';
 
 /* Local dependencies */
 import LogoIcon from '../../../public/assets/svg/Logo';
 import BarsIcon from '../../../public/assets/svg/BarsIcon';
 import CloseIcon from '../../../public/assets/svg/CloseIcon';
+import { openConfirmationPopup } from '../../../store/slices/userSlice';
+
+const courses = [
+  {
+    name: 'Python',
+    description: 'Get a better understanding of where your traffic is coming from.',
+    href: '#',
+  },
+];
+
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(' ');
+}
 
 export default function Header() {
+  const dispatch = useDispatch();
+
+  function openPopup() {
+    dispatch(openConfirmationPopup());
+  }
+
   return (
     <Popover className="relative border-b border-grayColorDb">
       <div className="container ">
@@ -46,12 +66,12 @@ export default function Header() {
             </Popover>
           </Popover.Group>
           <div className="hidden items-center justify-end lg:flex lg:flex-1 lg:w-0">
-            <Link
-              href="#"
+            <button
+              onClick={openPopup}
               className="whitespace-nowrap rounded-lg border-2 px-5 py-1.5 font-medium text-primaryColorLight hover:bg-primaryColorLight hover:text-whiteColor"
             >
               <Trans>signIn</Trans>
-            </Link>
+            </button>
             <Link
               href="#"
               className="ml-8 inline-flex items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight px-5 py-1.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
@@ -92,12 +112,12 @@ export default function Header() {
             </div>
             <div className="space-y-6 py-8 px-5">
               <div className="flex flex-col justify-end">
-                <Link
-                  href="#"
+                <button
+                  onClick={openPopup}
                   className="mb-3 flex w-full items-center justify-center whitespace-nowrap rounded-lg border-2 px-5 py-1.5 font-medium text-primaryColorLight hover:bg-primaryColorLight hover:text-whiteColor"
                 >
                   <Trans>signIn</Trans>
-                </Link>
+                </button>
                 <Link
                   href="#"
                   className="flex w-full items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight px-5 py-1.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
