@@ -3,7 +3,6 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 /* Local dependencies */
 import authService from '../../api/axois-api';
-import { getFromLocalStorage } from '../../components/common/helper';
 import { Login } from '../../types/userTypes';
 import { RootState } from '../';
 import { setMessage } from './messagesSlice';
@@ -20,12 +19,10 @@ export const login: any = createAsyncThunk('/', async (user: Login, thunkAPI) =>
   }
 });
 
-const user = getFromLocalStorage('user') ? getFromLocalStorage('user') : null;
-
 const userSlice = createSlice({
   name: 'user',
   initialState: {
-    user,
+    user: null,
     loading: false,
     isLoggedIn: false,
     shouldConfirmationPopup: false,
@@ -35,6 +32,10 @@ const userSlice = createSlice({
       const { email, password } = action.payload;
 
       Object.assign(state, { email, password });
+    },
+
+    checkLogin(state, action: PayloadAction<Login>) {
+      state.user = action.payload;
     },
 
     openConfirmationPopup(state) {
@@ -57,7 +58,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { changeHandler, openConfirmationPopup, closeConfirmationPopup } = userSlice.actions;
+export const { changeHandler, openConfirmationPopup, closeConfirmationPopup, checkLogin } = userSlice.actions;
 export const userState = (state: RootState) => state.userSlice;
 
 export default userSlice.reducer;

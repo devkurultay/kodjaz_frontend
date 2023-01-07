@@ -1,8 +1,8 @@
 /* External dependencies */
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 /* Local dependencies */
-import { getFromLocalStorage } from '../components/common/helper';
 import { Login } from '../types/userTypes';
 
 export const API_URL = 'https://backend.kodjaz.com/api/';
@@ -16,30 +16,36 @@ const $apiCredential = axios.create({
   withCredentials: true,
 });
 
-export function authHeader() {
-  const userStorage = getFromLocalStorage('user');
-  const user = JSON.parse(userStorage);
+const getHeaders = () => ({
+  'Content-Type': 'application/json; charset=utf-8',
+  Authorization: `Bearer ${Cookies.get('token') ? Cookies.get('token') : ''}`,
+});
 
-  if (user && user.accessToken) {
-    return { Authorization: 'Bearer ' + user.accessToken };
-  } else {
-    return {};
-  }
+async function getTokens() {
+  const refreshToken = await Cookies.get('refresh_token');
+  const accessToken = await Cookies.get('access_token');
+  return { refreshToken, accessToken };
+}
+
+function setTokens(accessToken: string, refreshToken: string) {
+  Cookies.set('access_token', accessToken);
+  Cookies.set('refresh_token', refreshToken);
 }
 
 const register = (data: any) => {
   return $api.post('', data);
 };
 
-const login = (data: Login) => {
-  return $apiCredential.post('/token/obtain/', data).then((response) => {
-    if (response.data.accessToken) {
-      localStorage.setItem('user', JSON.stringify(response.data));
-    }
+export async function login(data: Login) {
+  const response = await $apiCredential.post('token/obtain/', data);
+  const newAccessToken = response?.data?.access;
+  const newRefreshToken = response?.data?.refresh;
 
-    return response.data;
-  });
-};
+  setTokens(newAccessToken, newRefreshToken);
+  $apiCredential.defaults.headers.Authorization = 'JWT ' + newAccessToken;
+
+  return response;
+}
 
 const logout = () => {
   localStorage.removeItem('user');

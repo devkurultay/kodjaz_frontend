@@ -10,7 +10,7 @@ import GoogleIcon from '../../public/assets/svg/GoogleIcon';
 import AppleIcon from '../../public/assets/svg/AppleIcon';
 import FacebookIcon from '../../public/assets/svg/FacebookIcon';
 import { useAppSelector } from '../../store/hooks';
-import { changeHandler, closeConfirmationPopup, login, userState } from '../../store/slices/userSlice';
+import { closeConfirmationPopup, login, userState } from '../../store/slices/userSlice';
 import styles from '../../styles/scss/popup.module.scss';
 import { Login } from '../../types/userTypes';
 
@@ -35,7 +35,6 @@ export default function LoginUser() {
   });
 
   function submitHandler({ email, password }: Login) {
-    dispatch(changeHandler({ email, password }));
     dispatch(login({ email, password }));
 
     dispatch(closeConfirmationPopup());
