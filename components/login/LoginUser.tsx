@@ -9,11 +9,10 @@ import CloseIcon from '../../public/assets/svg/CloseIcon';
 import GoogleIcon from '../../public/assets/svg/GoogleIcon';
 import AppleIcon from '../../public/assets/svg/AppleIcon';
 import FacebookIcon from '../../public/assets/svg/FacebookIcon';
-import { changeHandler, closeConfirmationPopup, login } from '../../store/slices/userSlice';
+import { useAppSelector } from '../../store/hooks';
+import { changeHandler, closeConfirmationPopup, login, userState } from '../../store/slices/userSlice';
 import styles from '../../styles/scss/popup.module.scss';
 import { Login } from '../../types/userTypes';
-import { useAppSelector } from '../../store/hooks';
-import { userState } from '../../store/slices/userSlice';
 
 export default function LoginUser() {
   const dispatch = useDispatch();
