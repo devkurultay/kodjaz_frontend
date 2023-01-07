@@ -8,6 +8,7 @@ import Command from '../../components/website/command/Command';
 import Header from '../../components/website/header/Header';
 import AboutPromo from '../../components/website/promo/AboutPromo';
 import InfoAbout from '../../components/website/info/InfoAbout';
+import Footer from '../../components/website/footer/Footer';
 import nextI18NextConfig from '../../next-i18next.config.js';
 
 export const getStaticProps = async ({ locale }: any) => ({
@@ -28,6 +29,7 @@ export default function About() {
       <AboutPromo />
       <InfoAbout />
       <Command />
+      <Footer />
     </>
   );
 }

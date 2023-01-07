@@ -1,9 +1,10 @@
-// External dependencies
+/* External dependencies */
 import { Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { Trans } from 'next-i18next';
 import Link from 'next/link';
 
+/* Local dependencies */
 import LogoIcon from '../../../public/assets/svg/Logo';
 import BarsIcon from '../../../public/assets/svg/BarsIcon';
 import CloseIcon from '../../../public/assets/svg/CloseIcon';
@@ -14,7 +15,7 @@ export default function Header() {
       <div className="container ">
         <div className="flex items-center justify-between border-gray-100 py-6 lg:justify-start lg:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
-            <Link href="#" className="w-auto">
+            <Link href="/" className="w-auto">
               <span className="sr-only">Your Company</span>
               <LogoIcon width={152} height={40} />
             </Link>
@@ -39,7 +40,7 @@ export default function Header() {
               </Link>
             </Popover>
             <Popover className="relative">
-              <Link href="#">
+              <Link href="/resources">
                 <Trans>resources</Trans>
               </Link>
             </Popover>

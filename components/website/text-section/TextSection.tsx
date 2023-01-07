@@ -6,7 +6,7 @@ import React from 'react';
 interface TextSectionProps {
   children: any;
   logos?: Boolean;
-  text: string;
+  text?: string;
 }
 
 export default function TextSection({ children, logos, text }: TextSectionProps) {

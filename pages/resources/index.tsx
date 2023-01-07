@@ -6,7 +6,6 @@ import React from 'react';
 
 /* Local dependencies */
 import Header from '../../components/website/header/Header';
-import Courses from '../../components/website/courses/Courses';
 import TextSection from '../../components/website/text-section/TextSection';
 import Footer from '../../components/website/footer/Footer';
 import nextI18NextConfig from '../../next-i18next.config.js';
@@ -17,7 +16,7 @@ export const getStaticProps = async ({ locale }: any) => ({
   },
 });
 
-export default function CoursesPage() {
+export default function ResourcesPage() {
   return (
     <>
       <Head>
@@ -26,10 +25,11 @@ export default function CoursesPage() {
         <meta property="og:title" content="Kodjaz - Курстар" key="title" />
       </Head>
       <Header />
-      <TextSection>
-        <Trans i18nKey="coursesDescription" />
-      </TextSection>
-      <Courses />
+      <div className="min-h-[80vh]">
+        <TextSection>
+          <Trans i18nKey="resoursesDescription" />
+        </TextSection>
+      </div>
       <Footer />
     </>
   );

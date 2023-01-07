@@ -2,28 +2,30 @@
 import { Trans } from 'next-i18next';
 import Image from 'next/image';
 import React from 'react';
+
+/* Local dependencies */
 import LessonIcon from '../../../public/assets/svg/LessonIcon';
 import LevelEasyIcon from '../../../public/assets/svg/LevelEasyIcon';
 
 export default function Courses() {
   const coursesArray = [
     {
-      alt: 'Phyton',
-      icon: '/assets/phytonIcon.svg',
-      title: 'Phyton',
-      description: 'Phyton description',
+      alt: 'Python',
+      icon: '/assets/pythonIcon.svg',
+      title: 'Python',
+      description: 'Python description',
       lessonAmount: (
         <>
-          <LessonIcon />{' '}
-          <span>
-            <Trans>lesson</Trans>
+          <LessonIcon width={18} height={18} />{' '}
+          <span className="pl-3.5">
+            40 <Trans>lesson</Trans>
           </span>
         </>
       ),
       level: (
         <>
-          <LevelEasyIcon />{' '}
-          <span>
+          <LevelEasyIcon width={18} height={18} />{' '}
+          <span className="pl-3.5">
             <Trans>easy</Trans>
           </span>
         </>
@@ -43,68 +45,48 @@ export default function Courses() {
       description: 'Typescript description',
       label: <Trans>soon</Trans>,
     },
-    {
-      alt: 'HTML',
-      icon: '/assets/htmlIcon.svg',
-      title: 'HTML',
-      description: 'HTML description',
-      label: <Trans>soon</Trans>,
-    },
-    {
-      alt: 'React JS',
-      icon: '/assets/reactjsIcon.svg',
-      title: 'React JS',
-      description: 'React JS description',
-      label: <Trans>soon</Trans>,
-    },
-    {
-      alt: 'Java',
-      icon: '/assets/javaIcon.svg',
-      title: 'Java',
-      description: 'Java description',
-      label: <Trans>soon</Trans>,
-    },
   ];
 
   return (
-    <section className="py-[80px] bg-grayColorF3 mt-14 mb-24">
+    <section className="py-[80px] bg-grayColorF3 mt-14 min-h-[80vh]">
       <div className="container mx-auto">
         <h2 className="text-center text-blackColorDark text-xl mb-12 font-bold">
           <Trans>courses</Trans>
         </h2>
-        <div className="flex">
-          <div className="flex flex-wrap gap-y-[30px] relative mx-[-15px]">
-            {coursesArray.map((item: any, index: number) => (
-              <div key={index} className="basis-full sm:basis-1/2 lg:basis-1/3 px-[15px]">
-                <div className="p-8 bg-whiteColor rounded-[30px] h-full">
-                  <div className="mb-5">
-                    <div className="mb-5">
-                      <Image src={item.icon} alt={item.alt} width={80} height={80} />
-                    </div>
-                    <div className="mb-5">
-                      <p className="font-medium text-blackColorDark text-sm2 mb-5">
-                        <Trans>{item.title}</Trans>
-                      </p>
-                      <p className="mb-5">
-                        <Trans>{item.description}</Trans>
-                      </p>
-                    </div>
+        <div className="flex flex-wrap gap-y-[30px] mx-[-15px]">
+          {coursesArray.map((item: any, index: number) => (
+            <div
+              key={index}
+              className="flex basis-full md:justify-between bg-whiteColor rounded-[30px] p-10 flex-col-reverse md:flex-row"
+            >
+              <div className="flex flex-col basis-1/3">
+                <div className="mb-5">
+                  <div className="grow mb-5">
+                    <p className="text-blackColorDark mb-5 text-lg font-bold">
+                      <Trans>{item.title}</Trans>
+                    </p>
+                    <p className="mb-5">
+                      <Trans>{item.description}</Trans>
+                    </p>
                   </div>
-                  {item.label && (
-                    <div>
-                      <p>{item.label}</p>
-                    </div>
-                  )}
-                  {item.level && item.lessonAmount && (
-                    <div className="flex basis-1/2">
-                      <div>{item.lessonAmount}</div>
-                      <div>{item.level}</div>
-                    </div>
-                  )}
                 </div>
+                {item.label && (
+                  <div className="bg-dangerColor rounded-full text-whiteColor uppercase px-[10px] max-w-[100px]">
+                    <p>{item.label}</p>
+                  </div>
+                )}
+                {item.level && item.lessonAmount && (
+                  <div className="flex basis-1/2 items-center">
+                    <div className="flex basis-auto items-center mr-10">{item.lessonAmount}</div>
+                    <div className="flex basis-auto items-center">{item.level}</div>
+                  </div>
+                )}
               </div>
-            ))}
-          </div>
+              <div className="flex justify-start pb-6 md:justify-end md:pb-0 md:basis-1/4">
+                <Image src={item.icon} alt={item.alt} width={160} height={160} />
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
