@@ -9,25 +9,23 @@ import { useDispatch } from 'react-redux';
 import LogoIcon from '../../../public/assets/svg/Logo';
 import BarsIcon from '../../../public/assets/svg/BarsIcon';
 import CloseIcon from '../../../public/assets/svg/CloseIcon';
-import { openConfirmationPopup } from '../../../store/slices/userSlice';
-
-const courses = [
-  {
-    name: 'Python',
-    description: 'Get a better understanding of where your traffic is coming from.',
-    href: '#',
-  },
-];
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
+import { useAppSelector } from '../../../store/hooks';
+import {
+  openConfirmationPopupLogin,
+  openConfirmationPopupSignin,
+  userState,
+} from '../../../store/slices/userSlice';
 
 export default function Header() {
   const dispatch = useDispatch();
+  const { user } = useAppSelector(userState);
 
-  function openPopup() {
-    dispatch(openConfirmationPopup());
+  function openPopupLogin() {
+    dispatch(openConfirmationPopupLogin());
+  }
+
+  function openPopupSignin() {
+    dispatch(openConfirmationPopupSignin());
   }
 
   return (
@@ -66,18 +64,28 @@ export default function Header() {
             </Popover>
           </Popover.Group>
           <div className="hidden items-center justify-end lg:flex lg:flex-1 lg:w-0">
-            <button
-              onClick={openPopup}
-              className="whitespace-nowrap rounded-lg border-2 px-5 py-1.5 font-medium text-primaryColorLight hover:bg-primaryColorLight hover:text-whiteColor"
-            >
-              <Trans>signIn</Trans>
-            </button>
-            <Link
-              href="#"
-              className="ml-8 inline-flex items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight px-5 py-1.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
-            >
-              <Trans>start</Trans>
-            </Link>
+            {user ? (
+              <div>
+                <p>{user.email}</p>
+              </div>
+            ) : (
+              <>
+                <button
+                  onClick={openPopupLogin}
+                  className="whitespace-nowrap rounded-lg border-2 px-5 py-1.5 font-medium text-primaryColorLight hover:bg-primaryColorLight hover:text-whiteColor"
+                  type="button"
+                >
+                  <Trans>logIn</Trans>
+                </button>
+                <button
+                  onClick={openPopupSignin}
+                  className="ml-8 inline-flex items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight px-5 py-1.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
+                  type="button"
+                >
+                  <Trans>start</Trans>
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -112,18 +120,26 @@ export default function Header() {
             </div>
             <div className="space-y-6 py-8 px-5">
               <div className="flex flex-col justify-end">
-                <button
-                  onClick={openPopup}
-                  className="mb-3 flex w-full items-center justify-center whitespace-nowrap rounded-lg border-2 px-5 py-1.5 font-medium text-primaryColorLight hover:bg-primaryColorLight hover:text-whiteColor"
-                >
-                  <Trans>signIn</Trans>
-                </button>
-                <Link
-                  href="#"
-                  className="flex w-full items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight px-5 py-1.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
-                >
-                  <Trans>start</Trans>
-                </Link>
+                {user ? (
+                  <div>
+                    <p>{user.username}</p>
+                  </div>
+                ) : (
+                  <>
+                    <button
+                      onClick={openPopupLogin}
+                      className="mb-3 flex w-full items-center justify-center whitespace-nowrap rounded-lg border-2 px-5 py-1.5 font-medium text-primaryColorLight hover:bg-primaryColorLight hover:text-whiteColor"
+                    >
+                      <Trans>logIn</Trans>
+                    </button>
+                    <Link
+                      href="#"
+                      className="flex w-full items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight px-5 py-1.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
+                    >
+                      <Trans>start</Trans>
+                    </Link>{' '}
+                  </>
+                )}
               </div>
             </div>
           </div>

@@ -11,25 +11,25 @@ import AppleIcon from '../../public/assets/svg/AppleIcon';
 import FacebookIcon from '../../public/assets/svg/FacebookIcon';
 import { useAppSelector } from '../../store/hooks';
 import {
-  closeConfirmationPopupLogin,
+  closeConfirmationPopupSignin,
   login,
-  openConfirmationPopupLogin,
+  signIn,
   userState,
 } from '../../store/slices/userSlice';
 import styles from '../../styles/scss/popup.module.scss';
-import { Login } from '../../types/userTypes';
+import { Register } from '../../types/userTypes';
 
-export default function LoginUser() {
+export default function SignInUser() {
   const dispatch = useDispatch();
   const ref = useRef<HTMLDivElement>(null);
   const { register, handleSubmit, reset } = useForm();
-  const { shouldConfirmationPopupLogin, isSignIn } = useAppSelector(userState);
+  const { shouldConfirmationPopupSignin } = useAppSelector(userState);
 
   function checkIfClickedOutside(e: any) {
     if (ref.current && !ref?.current?.contains(e.target)) {
-      dispatch(closeConfirmationPopupLogin());
+      dispatch(closeConfirmationPopupSignin());
 
-      reset({ email: '', password: '' });
+      reset({ email: '', password: '', password2: '' });
     }
   }
 
@@ -43,29 +43,23 @@ export default function LoginUser() {
     };
   });
 
-  useEffect(() => {
-    if (isSignIn) {
-      openConfirmationPopupLogin();
-    }
-  }, [isSignIn]);
-
-  function submitHandler({ email, password }: Login) {
-    dispatch(login({ email, password }));
-    dispatch(closeConfirmationPopupLogin());
+  function submitHandler({ email, password, password2 }: Register) {
+    dispatch(signIn({ email, password, password2 }));
+    dispatch(closeConfirmationPopupSignin());
 
     reset({ email: '', password: '' });
   }
 
   function closePopup() {
-    dispatch(closeConfirmationPopupLogin());
+    dispatch(closeConfirmationPopupSignin());
 
-    reset({ email: '', password: '' });
+    reset({ email: '', password: '', password2: '' });
   }
 
   return (
     <div
       className={`flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8 fixed top-0 left-0 w-full z-50 bg-blackColor/50 overflow-hidden ${
-        shouldConfirmationPopupLogin ? 'block' : 'hidden'
+        shouldConfirmationPopupSignin ? 'block' : 'hidden'
       }`}
     >
       <div
@@ -109,18 +103,38 @@ export default function LoginUser() {
                 placeholder="Password"
                 {...register('password')}
               />
-              <button className="text-sm text-primaryColorLight">
-                <Trans>forgotPassword</Trans>
-              </button>
+            </div>
+            <div className="mb-[30px]">
+              <label htmlFor="password" className="mb-[5px] block text-sm">
+                <Trans>password</Trans>
+              </label>
+              <input
+                id="password"
+                type="password"
+                required
+                className="relative block w-full rounded-md border bg-whiteColor border-grayColorDb px-3 py-2 text-blackColorDark placeholder:text-grayColor98 focus:z-10 focus:border-primaryColorLight focus:outline-none text-base mb-1"
+                placeholder="Password"
+                {...register('password2')}
+              />
             </div>
           </div>
-          <div className="mb-[30px]">
+          <div className="mb-[20px]">
             <button
               type="submit"
               className="group relative flex w-full justify-center rounded-md border border-transparent bg-primaryColorLight py-2 px-4 text-sm font-medium text-whiteColor hover:bg-primaryColorMiddle focus:outline-none focus:bg-primaryColorDark"
             >
-              <Trans>logIn</Trans>
+              <Trans>signIn</Trans>
             </button>
+          </div>
+          <div className="mb-[40px]">
+            <p>
+              <Trans
+                i18nKey="agreePrivacy"
+                components={{
+                  textLink: <a href="#" className="text-primaryColorLight"></a>,
+                }}
+              />
+            </p>
           </div>
           <p className="text-center mb-5">
             <Trans>withSocialMedias</Trans>

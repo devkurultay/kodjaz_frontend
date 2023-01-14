@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "clean": "npm run clean:soft && rm -rf node_modules package-lock.json",
-    "clean:soft": "rm -rf .cache"
+    "clean:soft": "rm -rf .next"
   },
   "dependencies": {
     "@headlessui/react": "1.7.4",
@@ -23,6 +23,7 @@
     "eslint-config-next": "13.0.2",
     "i18next": "22.0.5",
     "js-cookie": "3.0.1",
+    "jwt-decode": "3.1.2",
     "next": "13.0.2",
     "next-i18next": "12.1.0",
     "next-redux-wrapper": "8.0.0",
