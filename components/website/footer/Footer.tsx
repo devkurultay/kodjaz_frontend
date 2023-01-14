@@ -16,10 +16,10 @@ export default function Footer() {
         <div className="container mx-auto">
           <div className="flex md:items-center py-12 flex-col md:flex-row">
             <div className="flex md:justify-start basis-full mb-14 md:mb-0 md:basis-1/4">
-              <a href="/">
+              <Link href="/">
                 <span className="sr-only">Your Company</span>
                 <LogoWhiteIcon width={92} height={24} />
-              </a>
+              </Link>
             </div>
             <div className="flex md:basis-1/2 md:justify-center text-whiteColor flex-col md:flex-row">
               <div className="mb-4 md:basis-1/3 md:mb-0">
@@ -38,16 +38,16 @@ export default function Footer() {
                 </Link>
               </div>
             </div>
-            <div className="flex md:basis-1/4 md:justify-end">
-              <a href="#" className="flex pr-8 md:pl-8 md:pr-0">
+            <div className="flex md:basis-1/4 md:justify-end items-center">
+              <Link href="#" className="flex pr-8 md:pl-8 md:pr-0">
                 <InstagramIcon />
-              </a>
-              <a href="#" className="flex pr-8 md:pl-8 md:pr-0">
+              </Link>
+              <Link href="#" className="flex pr-8 md:pl-8 md:pr-0">
                 <FacebookIcon />
-              </a>
-              <a href="#" className="flex pr-8 md:pl-8 md:pr-0">
+              </Link>
+              <Link href="#" className="flex pr-8 md:pl-8 md:pr-0">
                 <TelegramIcon />
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -57,8 +57,12 @@ export default function Footer() {
           <div className="flex flex-col sm:flex-row justify-between py-3.5">
             <div className="flex sm:flex-none md:basis-1/2 justify-start">© 2022 Kodjaz</div>
             <div className="flex sm:grow md:basis-1/3 sm:justify-end">
-              <span className="flex sm:justify-end mr-5">Купуялык саясат</span>
-              <span className="flex sm:justify-end">Куки саясаты</span>
+              <span className="flex sm:justify-end mr-5">
+                <Trans>privacyPolicy</Trans>
+              </span>
+              <span className="flex sm:justify-end">
+                <Trans>cookiePolicy</Trans>
+              </span>
             </div>
           </div>
         </div>
