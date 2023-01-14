@@ -76,7 +76,7 @@ export default function SignInUser() {
             <Trans>enter</Trans>
           </h2>
         </div>
-        <form onSubmit={handleSubmit(submitHandler)}>
+        <form onSubmit={handleSubmit(() => submitHandler)}>
           <div className="mb-1">
             <div className="mb-[30px]">
               <label htmlFor="email-address" className="mb-[5px] block text-sm">
