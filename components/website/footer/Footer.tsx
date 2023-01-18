@@ -4,7 +4,7 @@ import { Trans } from 'next-i18next';
 import Link from 'next/link';
 
 /* Local dependencies */
-import LogoWhiteIcon from '../../../public/assets/svg/LogoWhiteIcon';
+import Logo from '../../../public/assets/svg/Logo';
 import InstagramIcon from '../../../public/assets/svg/InstagramIcon';
 import FacebookIcon from '../../../public/assets/svg/FacebookIcon';
 import TelegramIcon from '../../../public/assets/svg/TelegramIcon';
@@ -18,7 +18,7 @@ export default function Footer() {
             <div className="flex md:justify-start basis-full mb-14 md:mb-0 md:basis-1/4">
               <Link href="/">
                 <span className="sr-only">Your Company</span>
-                <LogoWhiteIcon width={92} height={24} />
+                <Logo fill="#fff" width={92} height={24} />
               </Link>
             </div>
             <div className="flex md:basis-1/2 md:justify-center text-whiteColor flex-col md:flex-row">
@@ -55,7 +55,9 @@ export default function Footer() {
       <div className="bg-blackColorMiddle text-grayColor98">
         <div className="container mx-auto">
           <div className="flex flex-col sm:flex-row justify-between py-3.5">
-            <div className="flex sm:flex-none md:basis-1/2 justify-start">© 2022 Kodjaz</div>
+            <div className="flex sm:flex-none md:basis-1/2 justify-start">
+              © 2022 Kodjaz
+            </div>
             <div className="flex sm:grow md:basis-1/3 sm:justify-end">
               <span className="flex sm:justify-end mr-5">
                 <Trans>privacyPolicy</Trans>

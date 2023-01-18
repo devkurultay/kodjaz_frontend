@@ -22,7 +22,12 @@ import { Login } from '../../types/userTypes';
 export default function LoginUser() {
   const dispatch = useDispatch();
   const ref = useRef<HTMLDivElement>(null);
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
   const { shouldConfirmationPopupLogin, isSignIn } = useAppSelector(userState);
 
   function checkIfClickedOutside(e: any) {
@@ -82,7 +87,7 @@ export default function LoginUser() {
             <Trans>enter</Trans>
           </h2>
         </div>
-        <form onSubmit={handleSubmit(() => submitHandler)}>
+        <form onSubmit={handleSubmit(submitHandler)}>
           <div className="mb-1">
             <div className="mb-[30px]">
               <label htmlFor="email-address" className="mb-[5px] block text-sm">
