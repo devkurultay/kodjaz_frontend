@@ -3,13 +3,12 @@ import { Popover, Transition } from '@headlessui/react';
 import Link from 'next/link';
 import { Trans } from 'next-i18next';
 import { Fragment } from 'react';
-import { useDispatch } from 'react-redux';
 
 /* Local dependencies */
 import LogoIcon from '../../../public/assets/svg/Logo';
 import BarsIcon from '../../../public/assets/svg/BarsIcon';
 import CloseIcon from '../../../public/assets/svg/CloseIcon';
-import { useAppSelector } from '../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import {
   openConfirmationPopupLogin,
   openConfirmationPopupSignin,
@@ -17,7 +16,7 @@ import {
 } from '../../../store/slices/userSlice';
 
 export default function Header() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { user } = useAppSelector(userState);
 
   function openPopupLogin() {
@@ -48,17 +47,17 @@ export default function Header() {
           </div>
           <Popover.Group as="nav" className="hidden space-x-10 lg:flex">
             <Popover className="relative">
-              <Link href="/courses">
+              <Link href="/website/courses">
                 <Trans>courses</Trans>
               </Link>
             </Popover>
             <Popover className="relative">
-              <Link href="/about">
+              <Link href="/website/about">
                 <Trans>aboutUs</Trans>
               </Link>
             </Popover>
             <Popover className="relative">
-              <Link href="/resources">
+              <Link href="/website/resources">
                 <Trans>resources</Trans>
               </Link>
             </Popover>
@@ -132,12 +131,12 @@ export default function Header() {
                     >
                       <Trans>logIn</Trans>
                     </button>
-                    <Link
-                      href="#"
+                    <button
+                      onClick={openPopupSignin}
                       className="flex w-full items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight px-5 py-1.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
                     >
                       <Trans>start</Trans>
-                    </Link>{' '}
+                    </button>{' '}
                   </>
                 )}
               </div>

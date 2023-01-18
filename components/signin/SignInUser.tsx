@@ -22,7 +22,13 @@ import { Register } from '../../types/userTypes';
 export default function SignInUser() {
   const dispatch = useDispatch();
   const ref = useRef<HTMLDivElement>(null);
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+      password2: '',
+    },
+  });
   const { shouldConfirmationPopupSignin } = useAppSelector(userState);
 
   function checkIfClickedOutside(e: any) {
@@ -76,14 +82,14 @@ export default function SignInUser() {
             <Trans>enter</Trans>
           </h2>
         </div>
-        <form onSubmit={handleSubmit(() => submitHandler)}>
+        <form onSubmit={handleSubmit(submitHandler)}>
           <div className="mb-1">
             <div className="mb-[30px]">
               <label htmlFor="email-address" className="mb-[5px] block text-sm">
                 Email
               </label>
               <input
-                id="email-address"
+                id="email-address-register"
                 type="email"
                 required
                 className="relative block w-full rounded-md border bg-whiteColor border-grayColorDb px-3 py-2 text-blackColorDark placeholder:text-grayColor98 focus:z-10 focus:border-primaryColorLight focus:outline-none text-base"
@@ -96,7 +102,7 @@ export default function SignInUser() {
                 <Trans>password</Trans>
               </label>
               <input
-                id="password"
+                id="password-register"
                 type="password"
                 required
                 className="relative block w-full rounded-md border bg-whiteColor border-grayColorDb px-3 py-2 text-blackColorDark placeholder:text-grayColor98 focus:z-10 focus:border-primaryColorLight focus:outline-none text-base mb-1"
@@ -109,7 +115,7 @@ export default function SignInUser() {
                 <Trans>password</Trans>
               </label>
               <input
-                id="password"
+                id="password2"
                 type="password"
                 required
                 className="relative block w-full rounded-md border bg-whiteColor border-grayColorDb px-3 py-2 text-blackColorDark placeholder:text-grayColor98 focus:z-10 focus:border-primaryColorLight focus:outline-none text-base mb-1"

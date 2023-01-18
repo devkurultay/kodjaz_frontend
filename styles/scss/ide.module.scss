@@ -1,0 +1,7 @@
+@import 'variables.scss';
+
+.ace_editor {
+  background: $black-color-middle;
+  color: #fff;
+  min-height: calc(100vh - 160px);
+}
