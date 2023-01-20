@@ -29,7 +29,8 @@ export const signIn: any = createAsyncThunk(
 
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error);
+      const { response : { data } } = error
+      return rejectWithValue(data);
     }
   },
 );
