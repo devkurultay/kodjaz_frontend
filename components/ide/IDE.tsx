@@ -5,16 +5,63 @@ import React from 'react';
 
 /* Local dependencies */
 import RunCodeIcon from '../../public/assets/svg/RunCodeIcon';
+import TabBurgerIcon from '../../public/assets/svg/TabBurgerIcon';
+import TabChatIcon from '../../public/assets/svg/TabChatIcon';
+import styles from '../../styles/scss/ide.module.scss';
+import TabsIDE from './tabs-ide/TabsIDE';
 import Description from './description/Description';
+import MenuIDE from './menu-ide/MenuIDE';
 
 const Editor = dynamic(() => import('./editor/Editor'), { ssr: false });
+import { useState } from 'react';
+
+const arr = [
+  {
+    content: (
+      <Description>
+        When printing things in Python, we are supplying a text block that we
+        want to be printed. Text in Python is considered a specific type of data
+        called a string. A string, so named because they’re a series of letters,
+        numbers, or symbols connected in order — as if threaded together by
+        string. Strings can be defined in different ways:
+      </Description>
+    ),
+    icon: <TabBurgerIcon />,
+    text: 'Description',
+    width: 20,
+    height: 17,
+    viewbox: '0 0 14 18',
+  },
+  {
+    content: (
+      <Description>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nemo rem
+        minima consequatur.
+      </Description>
+    ),
+    icon: <TabChatIcon />,
+    text: 'Discussion',
+    width: 18,
+    height: 17,
+    viewbox: '0 0 18 17',
+  },
+];
 
 export default function IDE() {
+  const [isOpenMenu, setIsOpenMenu] = useState<Boolean>(false);
+
   return (
     <div className="max-w-[1440px] m-auto">
       <div className="flex md:min-h-[calc(100vh - 160px)]">
-        <div className="basis-1/3 h-full">
-          <Description />
+        <div className="basis-1/3 h-[inherit] relative">
+          <TabsIDE
+            burgerClassName={isOpenMenu ? styles.ide_burger_active : ''}
+            items={arr}
+            onClickedBurger={() => {
+              setIsOpenMenu(!isOpenMenu);
+            }}
+          />
+          <MenuIDE activeClass={isOpenMenu ? 'block' : 'hidden'} />
         </div>
         <div className="grow h-full relative">
           <Editor />

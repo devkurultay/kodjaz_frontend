@@ -34,11 +34,13 @@ export const getRequest = async (token: string, url: string) => {
   };
   try {
     const res = await $api.get(url, config);
+
     return res?.data ?? {};
   } catch (error: any) {
     const {
       response: { data },
     } = error;
+
     return data;
   }
 };
@@ -47,11 +49,7 @@ type Payload = {
   [key: string]: any;
 };
 
-export const postRequest = async (
-  token: string,
-  url: string,
-  data: Payload,
-) => {
+export const postRequest = async (token: string, url: string, data: any) => {
   const headers = getHeaders(token);
   const config = {
     method: 'POST',
@@ -62,16 +60,18 @@ export const postRequest = async (
 
   try {
     const res = await $api(config);
+
     return res?.data ?? {};
   } catch (error: any) {
     const {
       response: { data },
     } = error;
+
     return data;
   }
 };
 
-export const putRequest = (token: string, url: string, data: Payload) => {
+export const putRequest = async (token: string, url: string, data: Payload) => {
   const headers = getHeaders(token);
   const config = {
     method: 'PUT',
