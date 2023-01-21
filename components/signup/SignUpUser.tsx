@@ -12,6 +12,7 @@ import FacebookIcon from '../../public/assets/svg/FacebookIcon';
 import { useAppSelector } from '../../store/hooks';
 import {
   closeConfirmationPopupSignUp,
+  openEmailConfirmationPopup,
   signUp,
   userState,
 } from '../../store/slices/userSlice';
@@ -50,6 +51,11 @@ export default function SignUpUser() {
     resetForm();
   }
 
+  function closePopupAndOpenEmailConfirmationPopup() {
+    closePopup();
+    dispatch(openEmailConfirmationPopup());
+  }
+
   useEffect(() => {
     document.addEventListener('mousedown', (e) => checkIfClickedOutside(e));
 
@@ -62,7 +68,7 @@ export default function SignUpUser() {
 
   useEffect(() => {
     if (isSignedUp) {
-      closePopup();
+      closePopupAndOpenEmailConfirmationPopup();
     }
   }, [isSignedUp]);
 

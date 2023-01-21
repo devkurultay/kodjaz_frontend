@@ -49,6 +49,7 @@ interface userSliceState {
   shouldConfirmationPopupLogin: Boolean;
   shouldConfirmationPopupSignup: Boolean;
   error?: BackendError;
+  isEmailConfirmationPopupOpen: Boolean;
 }
 
 const initialState: userSliceState = {
@@ -56,6 +57,7 @@ const initialState: userSliceState = {
   isLoggedIn: false,
   shouldConfirmationPopupLogin: false,
   shouldConfirmationPopupSignup: false,
+  isEmailConfirmationPopupOpen: true,
 };
 
 const userSlice = createSlice({
@@ -76,6 +78,14 @@ const userSlice = createSlice({
 
     closeConfirmationPopupSignUp(state) {
       state.shouldConfirmationPopupSignup = false;
+    },
+
+    openEmailConfirmationPopup(state) {
+      state.isEmailConfirmationPopupOpen = true;
+    },
+
+    closeEmailConfirmationPopup(state) {
+      state.isEmailConfirmationPopupOpen = false;
     },
   },
   extraReducers: (builder) => {
@@ -121,6 +131,8 @@ export const {
   closeConfirmationPopupLogin,
   openConfirmationPopupSignup,
   closeConfirmationPopupSignUp,
+  openEmailConfirmationPopup,
+  closeEmailConfirmationPopup,
 } = userSlice.actions;
 export const userState = (state: RootState) => state.userSlice;
 
