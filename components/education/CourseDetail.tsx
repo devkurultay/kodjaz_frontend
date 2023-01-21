@@ -8,7 +8,7 @@ import React from 'react';
 import LessonIcon from '../../public/assets/svg/LessonIcon';
 import LevelEasyIcon from '../../public/assets/svg/LevelEasyIcon';
 
-export default function CoursesDetail() {
+export default function CourseDetail() {
   const coursesArray = [
     {
       alt: 'Python',

@@ -14,7 +14,7 @@ export const getStaticProps = async ({ locale }: any) => ({
   },
 });
 
-export default function CoursesPage() {
+export default function CoursePage() {
   return (
     <>
       <Head>
