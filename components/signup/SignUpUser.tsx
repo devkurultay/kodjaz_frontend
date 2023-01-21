@@ -11,8 +11,8 @@ import AppleIcon from '../../public/assets/svg/AppleIcon';
 import FacebookIcon from '../../public/assets/svg/FacebookIcon';
 import { useAppSelector } from '../../store/hooks';
 import {
-  closeConfirmationPopupSignin,
-  signIn,
+  closeConfirmationPopupSignUp,
+  signUp,
   userState,
 } from '../../store/slices/userSlice';
 import styles from '../../styles/scss/popup.module.scss';
@@ -21,7 +21,7 @@ import { Register } from '../../types/userTypes';
 const INPUT_ERRORS_CONTAINER_CLASSES =
   'relative block text-xs text-dangerColor pl-1';
 
-export default function SignInUser() {
+export default function SignUpUser() {
   const dispatch = useDispatch();
   const ref = useRef<HTMLDivElement>(null);
   const { register, handleSubmit, reset } = useForm({
@@ -31,7 +31,7 @@ export default function SignInUser() {
       password2: '',
     },
   });
-  const { error, isSignIn, shouldConfirmationPopupSignin } =
+  const { error, isSignedUp, shouldConfirmationPopupSignup } =
     useAppSelector(userState);
 
   function resetForm() {
@@ -40,13 +40,13 @@ export default function SignInUser() {
 
   function checkIfClickedOutside(e: any) {
     if (ref.current && !ref?.current?.contains(e.target)) {
-      dispatch(closeConfirmationPopupSignin());
+      dispatch(closeConfirmationPopupSignUp());
       resetForm();
     }
   }
 
   function closePopup() {
-    dispatch(closeConfirmationPopupSignin());
+    dispatch(closeConfirmationPopupSignUp());
     resetForm();
   }
 
@@ -61,19 +61,19 @@ export default function SignInUser() {
   }, []);
 
   useEffect(() => {
-    if (isSignIn) {
+    if (isSignedUp) {
       closePopup();
     }
-  }, [isSignIn]);
+  }, [isSignedUp]);
 
   function submitHandler({ email, password1, password2 }: Register) {
-    dispatch(signIn({ email, password1, password2 }));
+    dispatch(signUp({ email, password1, password2 }));
   }
 
   return (
     <div
       className={`flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8 fixed top-0 left-0 w-full z-50 bg-blackColor/50 overflow-hidden ${
-        shouldConfirmationPopupSignin ? 'block' : 'hidden'
+        shouldConfirmationPopupSignup ? 'block' : 'hidden'
       }`}
     >
       <div
@@ -164,7 +164,7 @@ export default function SignInUser() {
               type="submit"
               className="group relative flex w-full justify-center rounded-md border border-transparent bg-primaryColorLight py-2 px-4 text-sm font-medium text-whiteColor hover:bg-primaryColorMiddle focus:outline-none focus:bg-primaryColorDark"
             >
-              <Trans>signIn</Trans>
+              <Trans>signUp</Trans>
             </button>
           </div>
           <div className="mb-[40px]">

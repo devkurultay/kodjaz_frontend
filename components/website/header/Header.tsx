@@ -11,7 +11,7 @@ import CloseIcon from '../../../public/assets/svg/CloseIcon';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import {
   openConfirmationPopupLogin,
-  openConfirmationPopupSignin,
+  openConfirmationPopupSignup,
   userState,
 } from '../../../store/slices/userSlice';
 
@@ -23,8 +23,8 @@ export default function Header() {
     dispatch(openConfirmationPopupLogin());
   }
 
-  function openPopupSignin() {
-    dispatch(openConfirmationPopupSignin());
+  function openPopupSignUp() {
+    dispatch(openConfirmationPopupSignup());
   }
 
   return (
@@ -77,7 +77,7 @@ export default function Header() {
                   <Trans>logIn</Trans>
                 </button>
                 <button
-                  onClick={openPopupSignin}
+                  onClick={openPopupSignUp}
                   className="ml-8 inline-flex items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight px-5 py-1.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
                   type="button"
                 >
@@ -132,7 +132,7 @@ export default function Header() {
                       <Trans>logIn</Trans>
                     </button>
                     <button
-                      onClick={openPopupSignin}
+                      onClick={openPopupSignUp}
                       className="flex w-full items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight px-5 py-1.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
                     >
                       <Trans>start</Trans>
