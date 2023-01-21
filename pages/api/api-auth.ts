@@ -3,7 +3,7 @@ import { Login } from '../../types/userTypes';
 import { $api, setTokens } from './axois-api';
 
 export async function register(data: any) {
-  const response = await $api.post('register/', data);
+  const response = await $api.post('registration/', data);
   const newAccessToken = response?.data?.access;
   const newRefreshToken = response?.data?.refresh;
 

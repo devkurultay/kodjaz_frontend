@@ -28,7 +28,8 @@ export default function LoginUser() {
       password: '',
     },
   });
-  const { shouldConfirmationPopupLogin, isSignIn } = useAppSelector(userState);
+  const { shouldConfirmationPopupLogin, isSignedUp } =
+    useAppSelector(userState);
 
   function checkIfClickedOutside(e: any) {
     if (ref.current && !ref?.current?.contains(e.target)) {
@@ -49,10 +50,10 @@ export default function LoginUser() {
   });
 
   useEffect(() => {
-    if (isSignIn) {
+    if (isSignedUp) {
       openConfirmationPopupLogin();
     }
-  }, [isSignIn]);
+  }, [isSignedUp]);
 
   function submitHandler({ email, password }: Login) {
     dispatch(login({ email, password }));

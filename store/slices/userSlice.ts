@@ -21,7 +21,7 @@ export const login: any = createAsyncThunk(
   },
 );
 
-export const signIn: any = createAsyncThunk(
+export const signUp: any = createAsyncThunk(
   'register',
   async (user: Register, { rejectWithValue }) => {
     try {
@@ -29,26 +29,33 @@ export const signIn: any = createAsyncThunk(
 
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error);
+      const {
+        response: { data },
+      } = error;
+      return rejectWithValue(data);
     }
   },
 );
+
+interface BackendError {
+  [key: string]: Array<string>;
+}
 
 interface userSliceState {
   user?: User | any;
   loading: Boolean;
   isLoggedIn: Boolean;
-  isSignIn?: Boolean;
+  isSignedUp?: Boolean;
   shouldConfirmationPopupLogin: Boolean;
-  shouldConfirmationPopupSignin: Boolean;
-  error?: Error;
+  shouldConfirmationPopupSignup: Boolean;
+  error?: BackendError;
 }
 
 const initialState: userSliceState = {
   loading: false,
   isLoggedIn: false,
   shouldConfirmationPopupLogin: false,
-  shouldConfirmationPopupSignin: false,
+  shouldConfirmationPopupSignup: false,
 };
 
 const userSlice = createSlice({
@@ -63,12 +70,12 @@ const userSlice = createSlice({
       state.shouldConfirmationPopupLogin = false;
     },
 
-    openConfirmationPopupSignin(state) {
-      state.shouldConfirmationPopupSignin = true;
+    openConfirmationPopupSignup(state) {
+      state.shouldConfirmationPopupSignup = true;
     },
 
-    closeConfirmationPopupSignin(state) {
-      state.shouldConfirmationPopupSignin = false;
+    closeConfirmationPopupSignUp(state) {
+      state.shouldConfirmationPopupSignup = false;
     },
   },
   extraReducers: (builder) => {
@@ -93,15 +100,17 @@ const userSlice = createSlice({
         state.isLoggedIn = false;
         state.error = payload.message;
       })
-      .addCase(signIn.pending, (state) => {
+      .addCase(signUp.pending, (state) => {
         state.loading = true;
       })
-      .addCase(signIn.fulfilled, (state, { payload }) => {
-        state.isSignIn = true;
+      .addCase(signUp.fulfilled, (state, { payload }) => {
+        state.isSignedUp = true;
+        state.loading = false;
         state.user = payload;
       })
-      .addCase(signIn.rejected, (state, { payload }) => {
-        state.isSignIn = false;
+      .addCase(signUp.rejected, (state, { payload }) => {
+        state.isSignedUp = false;
+        state.loading = false;
         state.error = payload;
       });
   },
@@ -110,8 +119,8 @@ const userSlice = createSlice({
 export const {
   openConfirmationPopupLogin,
   closeConfirmationPopupLogin,
-  openConfirmationPopupSignin,
-  closeConfirmationPopupSignin,
+  openConfirmationPopupSignup,
+  closeConfirmationPopupSignUp,
 } = userSlice.actions;
 export const userState = (state: RootState) => state.userSlice;
 

@@ -11,32 +11,43 @@ import AppleIcon from '../../public/assets/svg/AppleIcon';
 import FacebookIcon from '../../public/assets/svg/FacebookIcon';
 import { useAppSelector } from '../../store/hooks';
 import {
-  closeConfirmationPopupSignin,
-  login,
-  signIn,
+  closeConfirmationPopupSignUp,
+  signUp,
   userState,
 } from '../../store/slices/userSlice';
 import styles from '../../styles/scss/popup.module.scss';
 import { Register } from '../../types/userTypes';
 
-export default function SignInUser() {
+const INPUT_ERRORS_CONTAINER_CLASSES =
+  'relative block text-xs text-dangerColor pl-1';
+
+export default function SignUpUser() {
   const dispatch = useDispatch();
   const ref = useRef<HTMLDivElement>(null);
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       email: '',
-      password: '',
+      password1: '',
       password2: '',
     },
   });
-  const { shouldConfirmationPopupSignin } = useAppSelector(userState);
+  const { error, isSignedUp, shouldConfirmationPopupSignup } =
+    useAppSelector(userState);
+
+  function resetForm() {
+    reset({ email: '', password1: '', password2: '' });
+  }
 
   function checkIfClickedOutside(e: any) {
     if (ref.current && !ref?.current?.contains(e.target)) {
-      dispatch(closeConfirmationPopupSignin());
-
-      reset({ email: '', password: '', password2: '' });
+      dispatch(closeConfirmationPopupSignUp());
+      resetForm();
     }
+  }
+
+  function closePopup() {
+    dispatch(closeConfirmationPopupSignUp());
+    resetForm();
   }
 
   useEffect(() => {
@@ -47,25 +58,22 @@ export default function SignInUser() {
         checkIfClickedOutside(e),
       );
     };
-  });
+  }, []);
 
-  function submitHandler({ email, password, password2 }: Register) {
-    dispatch(signIn({ email, password, password2 }));
-    dispatch(closeConfirmationPopupSignin());
+  useEffect(() => {
+    if (isSignedUp) {
+      closePopup();
+    }
+  }, [isSignedUp]);
 
-    reset({ email: '', password: '' });
-  }
-
-  function closePopup() {
-    dispatch(closeConfirmationPopupSignin());
-
-    reset({ email: '', password: '', password2: '' });
+  function submitHandler({ email, password1, password2 }: Register) {
+    dispatch(signUp({ email, password1, password2 }));
   }
 
   return (
     <div
       className={`flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8 fixed top-0 left-0 w-full z-50 bg-blackColor/50 overflow-hidden ${
-        shouldConfirmationPopupSignin ? 'block' : 'hidden'
+        shouldConfirmationPopupSignup ? 'block' : 'hidden'
       }`}
     >
       <div
@@ -82,7 +90,7 @@ export default function SignInUser() {
             <Trans>enter</Trans>
           </h2>
         </div>
-        <form onSubmit={handleSubmit(submitHandler)}>
+        <form onSubmit={handleSubmit(submitHandler)} autoComplete="off">
           <div className="mb-1">
             <div className="mb-[30px]">
               <label htmlFor="email-address" className="mb-[5px] block text-sm">
@@ -94,8 +102,17 @@ export default function SignInUser() {
                 required
                 className="relative block w-full rounded-md border bg-whiteColor border-grayColorDb px-3 py-2 text-blackColorDark placeholder:text-grayColor98 focus:z-10 focus:border-primaryColorLight focus:outline-none text-base"
                 placeholder="name@example.com"
+                aria-invalid={error?.email ? 'true' : 'false'}
                 {...register('email')}
               />
+              <div className={INPUT_ERRORS_CONTAINER_CLASSES}>
+                {error &&
+                  error?.email?.map((msg, idx) => (
+                    <p key={idx} role="alert">
+                      {msg}
+                    </p>
+                  ))}
+              </div>
             </div>
             <div className="mb-[30px]">
               <label htmlFor="password" className="mb-[5px] block text-sm">
@@ -107,8 +124,17 @@ export default function SignInUser() {
                 required
                 className="relative block w-full rounded-md border bg-whiteColor border-grayColorDb px-3 py-2 text-blackColorDark placeholder:text-grayColor98 focus:z-10 focus:border-primaryColorLight focus:outline-none text-base mb-1"
                 placeholder="Password"
-                {...register('password')}
+                aria-invalid={error?.password1 ? 'true' : 'false'}
+                {...register('password1')}
               />
+              <div className={INPUT_ERRORS_CONTAINER_CLASSES}>
+                {error &&
+                  error?.password1?.map((msg, idx) => (
+                    <p key={idx} role="alert">
+                      {msg}
+                    </p>
+                  ))}
+              </div>
             </div>
             <div className="mb-[30px]">
               <label htmlFor="password" className="mb-[5px] block text-sm">
@@ -120,8 +146,17 @@ export default function SignInUser() {
                 required
                 className="relative block w-full rounded-md border bg-whiteColor border-grayColorDb px-3 py-2 text-blackColorDark placeholder:text-grayColor98 focus:z-10 focus:border-primaryColorLight focus:outline-none text-base mb-1"
                 placeholder="Password"
+                aria-invalid={error?.password2 ? 'true' : 'false'}
                 {...register('password2')}
               />
+              <div className={INPUT_ERRORS_CONTAINER_CLASSES}>
+                {error &&
+                  error?.password2?.map((msg, idx) => (
+                    <p key={idx} role="alert">
+                      {msg}
+                    </p>
+                  ))}
+              </div>
             </div>
           </div>
           <div className="mb-[20px]">
@@ -129,7 +164,7 @@ export default function SignInUser() {
               type="submit"
               className="group relative flex w-full justify-center rounded-md border border-transparent bg-primaryColorLight py-2 px-4 text-sm font-medium text-whiteColor hover:bg-primaryColorMiddle focus:outline-none focus:bg-primaryColorDark"
             >
-              <Trans>signIn</Trans>
+              <Trans>signUp</Trans>
             </button>
           </div>
           <div className="mb-[40px]">
