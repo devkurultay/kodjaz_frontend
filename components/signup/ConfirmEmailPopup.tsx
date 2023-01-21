@@ -12,7 +12,8 @@ import styles from '../../styles/scss/popup.module.scss';
 
 export default function ConfirmEmailPopup() {
   const dispatch = useDispatch();
-  const { isEmailConfirmationPopupOpen } = useAppSelector(userState);
+  const { isEmailConfirmationPopupOpen, user } = useAppSelector(userState);
+  const email = user?.email || '';
   function closePopup() {
     dispatch(closeEmailConfirmationPopup());
   }
@@ -36,10 +37,10 @@ export default function ConfirmEmailPopup() {
           </h3>
         </div>
         <div>
-          <Trans>
-            Please check your mailox. You will recieve an email with a
-            verification link. Click that link to let us know that it belongs to
-            you.
+          <Trans email={email}>
+            Please check your {{ email }} mailbox. You will recieve an email
+            with a verification link. Click that link to let us know that it
+            belongs to you.
           </Trans>
         </div>
       </div>

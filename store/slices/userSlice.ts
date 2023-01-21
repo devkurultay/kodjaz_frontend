@@ -25,9 +25,9 @@ export const signUp: any = createAsyncThunk(
   'register',
   async (user: Register, { rejectWithValue }) => {
     try {
-      const response = await authService.register(user);
+      await authService.register(user);
 
-      return response.data;
+      return { email: user.email };
     } catch (error: any) {
       const {
         response: { data },
