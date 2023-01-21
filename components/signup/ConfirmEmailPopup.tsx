@@ -1,5 +1,5 @@
 import { Trans } from 'next-i18next';
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import {
@@ -31,9 +31,16 @@ export default function ConfirmEmailPopup() {
           </button>
         </div>
         <div>
-          <h2 className="text-3xl font-bold tracking-tight text-700 text-lg mb-[30px]">
+          <h3 className="text-2xl font-bold tracking-tight text-700 text-md mb-[10px]">
             <Trans>Confirm email</Trans>
-          </h2>
+          </h3>
+        </div>
+        <div>
+          <Trans>
+            Please check your mailox. You will recieve an email with a
+            verification link. Click that link to let us know that it belongs to
+            you.
+          </Trans>
         </div>
       </div>
     </div>

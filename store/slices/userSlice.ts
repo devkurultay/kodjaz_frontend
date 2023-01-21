@@ -57,7 +57,7 @@ const initialState: userSliceState = {
   isLoggedIn: false,
   shouldConfirmationPopupLogin: false,
   shouldConfirmationPopupSignup: false,
-  isEmailConfirmationPopupOpen: true,
+  isEmailConfirmationPopupOpen: false,
 };
 
 const userSlice = createSlice({
