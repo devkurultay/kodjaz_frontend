@@ -1,13 +1,11 @@
 /* External dependencies */
 import Head from 'next/head';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { Trans } from 'next-i18next';
 import React from 'react';
 
 /* Local dependencies */
-import Header from '../../../components/website/header/Header';
-import MyCourses from '../../../components/education/MyCourses';
-import Footer from '../../../components/website/footer/Footer';
+import CourseDetail from '../../../components/education/CourseDetail';
+import Layout from '../../../components/layout/Layout';
 import nextI18NextConfig from '../../../next-i18next.config.js';
 
 export const getStaticProps = async ({ locale }: any) => ({
@@ -24,9 +22,9 @@ export default function CoursesPage() {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta property="og:title" content="Kodjaz - Курстар" key="title" />
       </Head>
-      <Header />
-      <MyCourses />
-      <Footer />
+      <Layout>
+        <CourseDetail />
+      </Layout>
     </>
   );
 }

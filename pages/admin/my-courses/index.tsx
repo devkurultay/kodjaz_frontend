@@ -1,10 +1,11 @@
 /* External dependencies */
 import Head from 'next/head';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { Trans } from 'next-i18next';
 import React from 'react';
 
 /* Local dependencies */
-import Courses from '../../../components/education/Courses';
+import MyCourses from '../../../components/education/MyCourses';
 import Layout from '../../../components/layout/Layout';
 import nextI18NextConfig from '../../../next-i18next.config.js';
 
@@ -23,7 +24,7 @@ export default function CoursesPage() {
         <meta property="og:title" content="Kodjaz - Курстар" key="title" />
       </Head>
       <Layout>
-        <Courses />
+        <MyCourses />
       </Layout>
     </>
   );

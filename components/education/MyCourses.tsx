@@ -54,7 +54,7 @@ export default function MyCourses() {
               key={index}
               className="flex basis-full md:justify-between bg-whiteColor rounded-[30px] p-10 flex-col-reverse md:flex-row"
             >
-              <div className="flex flex-col basis-1/3">
+              <div className="flex flex-col basis-1/2">
                 <div className="mb-5">
                   <div className="grow mb-5">
                     <p className="text-blackColorDark mb-5 text-lg font-bold">
@@ -74,7 +74,12 @@ export default function MyCourses() {
                 </Link>
               </div>
               <div className="flex justify-start pb-6 md:justify-end md:pb-0 md:basis-1/4">
-                <Image src={item.icon} alt={item.alt} width={160} height={160} />
+                <Image
+                  src={item.icon}
+                  alt={item.alt}
+                  width={160}
+                  height={160}
+                />
               </div>
             </div>
           ))}
@@ -108,8 +113,12 @@ export default function MyCourses() {
                 )}
                 {item.level && item.lessonAmount && (
                   <div className="flex basis-1/2 items-center">
-                    <div className="flex basis-auto items-center mr-10">{item.lessonAmount}</div>
-                    <div className="flex basis-auto items-center">{item.level}</div>
+                    <div className="flex basis-auto items-center mr-10">
+                      {item.lessonAmount}
+                    </div>
+                    <div className="flex basis-auto items-center">
+                      {item.level}
+                    </div>
                   </div>
                 )}
                 {!item.label && (
@@ -122,7 +131,12 @@ export default function MyCourses() {
                 )}
               </div>
               <div className="flex justify-start pb-6 md:justify-end md:pb-0 md:basis-1/4">
-                <Image src={item.icon} alt={item.alt} width={160} height={160} />
+                <Image
+                  src={item.icon}
+                  alt={item.alt}
+                  width={160}
+                  height={160}
+                />
               </div>
             </div>
           ))}

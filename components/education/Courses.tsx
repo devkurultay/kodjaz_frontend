@@ -60,7 +60,7 @@ export default function Courses() {
               key={index}
               className="flex basis-full md:justify-between bg-whiteColor rounded-[30px] p-10 flex-col-reverse md:flex-row"
             >
-              <div className="flex flex-col basis-1/3">
+              <div className="flex flex-col basis-1/2">
                 <div className="mb-5">
                   <div className="grow mb-5">
                     <p className="text-blackColorDark mb-5 text-lg font-bold">
