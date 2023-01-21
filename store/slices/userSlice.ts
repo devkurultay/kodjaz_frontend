@@ -29,11 +29,17 @@ export const signIn: any = createAsyncThunk(
 
       return response.data;
     } catch (error: any) {
-      const { response : { data } } = error
+      const {
+        response: { data },
+      } = error;
       return rejectWithValue(data);
     }
   },
 );
+
+interface BackendError {
+  [key: string]: Array<string>;
+}
 
 interface userSliceState {
   user?: User | any;
@@ -42,7 +48,7 @@ interface userSliceState {
   isSignIn?: Boolean;
   shouldConfirmationPopupLogin: Boolean;
   shouldConfirmationPopupSignin: Boolean;
-  error?: Error;
+  error?: BackendError;
 }
 
 const initialState: userSliceState = {
@@ -99,10 +105,12 @@ const userSlice = createSlice({
       })
       .addCase(signIn.fulfilled, (state, { payload }) => {
         state.isSignIn = true;
+        state.loading = false;
         state.user = payload;
       })
       .addCase(signIn.rejected, (state, { payload }) => {
         state.isSignIn = false;
+        state.loading = false;
         state.error = payload;
       });
   },

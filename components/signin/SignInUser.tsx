@@ -12,12 +12,14 @@ import FacebookIcon from '../../public/assets/svg/FacebookIcon';
 import { useAppSelector } from '../../store/hooks';
 import {
   closeConfirmationPopupSignin,
-  login,
   signIn,
   userState,
 } from '../../store/slices/userSlice';
 import styles from '../../styles/scss/popup.module.scss';
 import { Register } from '../../types/userTypes';
+
+const INPUT_ERRORS_CONTAINER_CLASSES =
+  'relative block text-xs text-dangerColor pl-1';
 
 export default function SignInUser() {
   const dispatch = useDispatch();
@@ -25,18 +27,27 @@ export default function SignInUser() {
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       email: '',
-      password: '',
+      password1: '',
       password2: '',
     },
   });
-  const { shouldConfirmationPopupSignin } = useAppSelector(userState);
+  const { error, isSignIn, shouldConfirmationPopupSignin } =
+    useAppSelector(userState);
+
+  function resetForm() {
+    reset({ email: '', password1: '', password2: '' });
+  }
 
   function checkIfClickedOutside(e: any) {
     if (ref.current && !ref?.current?.contains(e.target)) {
       dispatch(closeConfirmationPopupSignin());
-
-      reset({ email: '', password: '', password2: '' });
+      resetForm();
     }
+  }
+
+  function closePopup() {
+    dispatch(closeConfirmationPopupSignin());
+    resetForm();
   }
 
   useEffect(() => {
@@ -47,19 +58,16 @@ export default function SignInUser() {
         checkIfClickedOutside(e),
       );
     };
-  });
+  }, []);
 
-  function submitHandler({ email, password, password2 }: Register) {
-    dispatch(signIn({ email, password, password2 }));
-    dispatch(closeConfirmationPopupSignin());
+  useEffect(() => {
+    if (isSignIn) {
+      closePopup();
+    }
+  }, [isSignIn]);
 
-    reset({ email: '', password: '' });
-  }
-
-  function closePopup() {
-    dispatch(closeConfirmationPopupSignin());
-
-    reset({ email: '', password: '', password2: '' });
+  function submitHandler({ email, password1, password2 }: Register) {
+    dispatch(signIn({ email, password1, password2 }));
   }
 
   return (
@@ -82,7 +90,7 @@ export default function SignInUser() {
             <Trans>enter</Trans>
           </h2>
         </div>
-        <form onSubmit={handleSubmit(submitHandler)}>
+        <form onSubmit={handleSubmit(submitHandler)} autoComplete="off">
           <div className="mb-1">
             <div className="mb-[30px]">
               <label htmlFor="email-address" className="mb-[5px] block text-sm">
@@ -94,8 +102,17 @@ export default function SignInUser() {
                 required
                 className="relative block w-full rounded-md border bg-whiteColor border-grayColorDb px-3 py-2 text-blackColorDark placeholder:text-grayColor98 focus:z-10 focus:border-primaryColorLight focus:outline-none text-base"
                 placeholder="name@example.com"
+                aria-invalid={error?.email ? 'true' : 'false'}
                 {...register('email')}
               />
+              <div className={INPUT_ERRORS_CONTAINER_CLASSES}>
+                {error &&
+                  error?.email?.map((msg, idx) => (
+                    <p key={idx} role="alert">
+                      {msg}
+                    </p>
+                  ))}
+              </div>
             </div>
             <div className="mb-[30px]">
               <label htmlFor="password" className="mb-[5px] block text-sm">
@@ -107,8 +124,17 @@ export default function SignInUser() {
                 required
                 className="relative block w-full rounded-md border bg-whiteColor border-grayColorDb px-3 py-2 text-blackColorDark placeholder:text-grayColor98 focus:z-10 focus:border-primaryColorLight focus:outline-none text-base mb-1"
                 placeholder="Password"
-                {...register('password')}
+                aria-invalid={error?.password1 ? 'true' : 'false'}
+                {...register('password1')}
               />
+              <div className={INPUT_ERRORS_CONTAINER_CLASSES}>
+                {error &&
+                  error?.password1?.map((msg, idx) => (
+                    <p key={idx} role="alert">
+                      {msg}
+                    </p>
+                  ))}
+              </div>
             </div>
             <div className="mb-[30px]">
               <label htmlFor="password" className="mb-[5px] block text-sm">
@@ -120,8 +146,17 @@ export default function SignInUser() {
                 required
                 className="relative block w-full rounded-md border bg-whiteColor border-grayColorDb px-3 py-2 text-blackColorDark placeholder:text-grayColor98 focus:z-10 focus:border-primaryColorLight focus:outline-none text-base mb-1"
                 placeholder="Password"
+                aria-invalid={error?.password2 ? 'true' : 'false'}
                 {...register('password2')}
               />
+              <div className={INPUT_ERRORS_CONTAINER_CLASSES}>
+                {error &&
+                  error?.password2?.map((msg, idx) => (
+                    <p key={idx} role="alert">
+                      {msg}
+                    </p>
+                  ))}
+              </div>
             </div>
           </div>
           <div className="mb-[20px]">

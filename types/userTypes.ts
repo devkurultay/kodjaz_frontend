@@ -5,7 +5,7 @@ export interface Login {
 
 export interface Register {
   email: string;
-  password: string;
+  password1: string;
   password2: string;
 }
 
