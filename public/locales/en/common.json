@@ -49,5 +49,7 @@
   "whatCodeText": "",
   "whatCodeTitle": "",
   "withSocialMedias": "",
-  "whySimple": ""
+  "whySimple": "",
+  "confirmEmail": "Verify your email",
+  "confirmEmailPopupText": "Please check your {{email}} mailbox. You will recieve an email with a verification link. Click that link to let us know that it belongs to you."
 }

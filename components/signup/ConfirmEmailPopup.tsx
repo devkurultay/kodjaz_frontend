@@ -33,15 +33,11 @@ export default function ConfirmEmailPopup() {
         </div>
         <div>
           <h3 className="text-2xl font-bold tracking-tight text-700 text-md mb-[10px]">
-            <Trans>Confirm email</Trans>
+            <Trans i18nKey="confirmEmail" />
           </h3>
         </div>
         <div>
-          <Trans email={email}>
-            Please check your {{ email }} mailbox. You will recieve an email
-            with a verification link. Click that link to let us know that it
-            belongs to you.
-          </Trans>
+          <Trans i18nKey="confirmEmailPopupText" values={{ email }} />
         </div>
       </div>
     </div>
