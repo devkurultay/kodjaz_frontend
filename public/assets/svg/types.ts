@@ -3,6 +3,6 @@ export interface IconProps {
   fill?: string;
   height?: number;
   strokeFill?: string;
-  style?: {};
+  style?: { [key: string]: any };
   width?: number;
 }
