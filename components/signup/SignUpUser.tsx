@@ -9,6 +9,7 @@ import CloseIcon from '../../public/assets/svg/CloseIcon';
 import GoogleIcon from '../../public/assets/svg/GoogleIcon';
 import AppleIcon from '../../public/assets/svg/AppleIcon';
 import FacebookIcon from '../../public/assets/svg/FacebookIcon';
+import LoadingSpinner from '../ui/Spinner';
 import { useAppSelector } from '../../store/hooks';
 import {
   closeConfirmationPopupSignUp,
@@ -32,7 +33,7 @@ export default function SignUpUser() {
       password2: '',
     },
   });
-  const { error, isSignedUp, shouldConfirmationPopupSignup } =
+  const { error, isSignedUp, shouldConfirmationPopupSignup, loading } =
     useAppSelector(userState);
 
   function resetForm() {
@@ -170,7 +171,7 @@ export default function SignUpUser() {
               type="submit"
               className="group relative flex w-full justify-center rounded-md border border-transparent bg-primaryColorLight py-2 px-4 text-sm font-medium text-whiteColor hover:bg-primaryColorMiddle focus:outline-none focus:bg-primaryColorDark"
             >
-              <Trans>signUp</Trans>
+              {loading ? <LoadingSpinner height={23} /> : <Trans>signUp</Trans>}
             </button>
           </div>
           <div className="mb-[40px]">
