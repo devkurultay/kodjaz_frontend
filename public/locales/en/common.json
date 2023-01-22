@@ -51,5 +51,9 @@
   "withSocialMedias": "",
   "whySimple": "",
   "confirmEmail": "Verify your email",
-  "confirmEmailPopupText": "Please check your {{email}} mailbox. You will recieve an email with a verification link. Click that link to let us know that it belongs to you."
+  "confirmEmailPopupText": "Please check your {{email}} mailbox. You will recieve an email with a verification link. Click that link to let us know that it belongs to you.",
+  "just a second": "just a second...",
+  "Not found.": "Not found.",
+  "ok": "Your email is verified. Now you can log in :)",
+  "emailConfirmationText": "Email verification: {{status}}"
 }
