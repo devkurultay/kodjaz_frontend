@@ -32,6 +32,7 @@ export const signUp: any = createAsyncThunk(
       const {
         response: { data },
       } = error;
+
       return rejectWithValue(data);
     }
   },
