@@ -13,6 +13,10 @@ export async function register(data: any) {
   return response;
 }
 
+export async function confirmEmail(key: string) {
+  return await $api.post('registration/verify-email/', { key });
+}
+
 export async function login(data: Login) {
   const response = await $api.post('token/obtain/', data);
   const newAccessToken = response?.data?.access;
@@ -28,6 +32,7 @@ const logout = () => {};
 
 const authService = {
   register,
+  confirmEmail,
   login,
   logout,
 };

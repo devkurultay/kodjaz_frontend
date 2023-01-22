@@ -27,6 +27,23 @@ export const signUp: any = createAsyncThunk(
     try {
       const response = await authService.register(user);
 
+      return { email: user.email };
+    } catch (error: any) {
+      const {
+        response: { data },
+      } = error;
+
+      return rejectWithValue(data);
+    }
+  },
+);
+
+export const confirmEmail: any = createAsyncThunk(
+  'confirmEmail',
+  async (key: string, { rejectWithValue }) => {
+    try {
+      const response = await authService.confirmEmail(key);
+
       return response.data;
     } catch (error: any) {
       const {
@@ -49,6 +66,8 @@ interface userSliceState {
   shouldConfirmationPopupLogin: Boolean;
   shouldConfirmationPopupSignup: Boolean;
   error?: BackendError;
+  isEmailConfirmationPopupOpen: Boolean;
+  emailConfirmationMsg: string;
 }
 
 const initialState: userSliceState = {
@@ -56,6 +75,8 @@ const initialState: userSliceState = {
   isLoggedIn: false,
   shouldConfirmationPopupLogin: false,
   shouldConfirmationPopupSignup: false,
+  isEmailConfirmationPopupOpen: false,
+  emailConfirmationMsg: '',
 };
 
 const userSlice = createSlice({
@@ -76,6 +97,14 @@ const userSlice = createSlice({
 
     closeConfirmationPopupSignUp(state) {
       state.shouldConfirmationPopupSignup = false;
+    },
+
+    openEmailConfirmationPopup(state) {
+      state.isEmailConfirmationPopupOpen = true;
+    },
+
+    closeEmailConfirmationPopup(state) {
+      state.isEmailConfirmationPopupOpen = false;
     },
   },
   extraReducers: (builder) => {
@@ -112,6 +141,17 @@ const userSlice = createSlice({
         state.isSignedUp = false;
         state.loading = false;
         state.error = payload;
+      })
+      .addCase(confirmEmail.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(confirmEmail.fulfilled, (state, { payload }) => {
+        state.emailConfirmationMsg = payload.detail;
+        state.loading = false;
+      })
+      .addCase(confirmEmail.rejected, (state, { payload }) => {
+        state.emailConfirmationMsg = payload.detail;
+        state.loading = false;
       });
   },
 });
@@ -121,6 +161,8 @@ export const {
   closeConfirmationPopupLogin,
   openConfirmationPopupSignup,
   closeConfirmationPopupSignUp,
+  openEmailConfirmationPopup,
+  closeEmailConfirmationPopup,
 } = userSlice.actions;
 export const userState = (state: RootState) => state.userSlice;
 
