@@ -47,7 +47,7 @@ export default function LoginUser() {
         checkIfClickedOutside(e),
       );
     };
-  });
+  }, []);
 
   useEffect(() => {
     if (isSignedUp) {
