@@ -36,14 +36,17 @@ export default function LoginUser() {
     reset({ email: '', password: '' });
   }
 
-  function checkIfClickedOutside(e: any) {
-    if (ref.current && !ref?.current?.contains(e.target)) {
+  function checkIfClickedOutside(e: MouseEvent) {
+    const targetElement: HTMLElement = e.target as HTMLElement;
+    if (ref.current && !ref?.current?.contains(targetElement)) {
       closePopup();
     }
   }
 
   useEffect(() => {
-    document.addEventListener('mousedown', (e) => checkIfClickedOutside(e));
+    document.addEventListener('mousedown', (e: MouseEvent) =>
+      checkIfClickedOutside(e),
+    );
 
     return () => {
       document.removeEventListener('mousedown', (e) =>
