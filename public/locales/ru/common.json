@@ -56,5 +56,6 @@
   "just a second": "минуточку...",
   "Not found.": "не найдено.",
   "ok": "Ваш email верифицирован. Теперь вы можете залогиниться :)",
-  "emailConfirmationText": "Верификация email: {{status}}"
+  "emailConfirmationText": "Верификация email: {{status}}",
+  "No active account found with the given credentials": "Аккаунт не найдет. Возможно вы ввели неверный пароль."
 }

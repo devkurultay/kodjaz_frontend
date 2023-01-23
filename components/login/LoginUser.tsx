@@ -9,11 +9,11 @@ import CloseIcon from '../../public/assets/svg/CloseIcon';
 import GoogleIcon from '../../public/assets/svg/GoogleIcon';
 import AppleIcon from '../../public/assets/svg/AppleIcon';
 import FacebookIcon from '../../public/assets/svg/FacebookIcon';
+import LoadingSpinner from '../ui/Spinner';
 import { useAppSelector } from '../../store/hooks';
 import {
   closeConfirmationPopupLogin,
   login,
-  openConfirmationPopupLogin,
   userState,
 } from '../../store/slices/userSlice';
 import styles from '../../styles/scss/popup.module.scss';
@@ -28,14 +28,17 @@ export default function LoginUser() {
       password: '',
     },
   });
-  const { shouldConfirmationPopupLogin, isSignedUp } =
+  const { error, shouldConfirmationPopupLogin, isLoggedIn, loading } =
     useAppSelector(userState);
+
+  function closePopup() {
+    dispatch(closeConfirmationPopupLogin());
+    reset({ email: '', password: '' });
+  }
 
   function checkIfClickedOutside(e: any) {
     if (ref.current && !ref?.current?.contains(e.target)) {
-      dispatch(closeConfirmationPopupLogin());
-
-      reset({ email: '', password: '' });
+      closePopup();
     }
   }
 
@@ -50,22 +53,13 @@ export default function LoginUser() {
   }, []);
 
   useEffect(() => {
-    if (isSignedUp) {
-      openConfirmationPopupLogin();
+    if (isLoggedIn) {
+      closePopup();
     }
-  }, [isSignedUp]);
+  }, [isLoggedIn]);
 
   function submitHandler({ email, password }: Login) {
     dispatch(login({ email, password }));
-    dispatch(closeConfirmationPopupLogin());
-
-    reset({ email: '', password: '' });
-  }
-
-  function closePopup() {
-    dispatch(closeConfirmationPopupLogin());
-
-    reset({ email: '', password: '' });
   }
 
   return (
@@ -118,6 +112,11 @@ export default function LoginUser() {
               <button className="text-sm text-primaryColorLight">
                 <Trans>forgotPassword</Trans>
               </button>
+              {error && (
+                <p role="alert" className="mt-3 text-sm text-dangerColor">
+                  <Trans>{error?.detail}</Trans>
+                </p>
+              )}
             </div>
           </div>
           <div className="mb-[30px]">
@@ -125,7 +124,7 @@ export default function LoginUser() {
               type="submit"
               className="group relative flex w-full justify-center rounded-md border border-transparent bg-primaryColorLight py-2 px-4 text-sm font-medium text-whiteColor hover:bg-primaryColorMiddle focus:outline-none focus:bg-primaryColorDark"
             >
-              <Trans>logIn</Trans>
+              {loading ? <LoadingSpinner height={23} /> : <Trans>logIn</Trans>}
             </button>
           </div>
           <p className="text-center mb-5">

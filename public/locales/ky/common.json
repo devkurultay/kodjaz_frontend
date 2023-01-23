@@ -60,5 +60,6 @@
   "just a second": "бир мүнөт...",
   "Not found.": "табылган жок.",
   "ok": "Эмейлиңиз текшерилди. Эми кирсеңиз болот :)",
-  "emailConfirmationText": "Эмейл ырастоо: {{status}}"
+  "emailConfirmationText": "Эмейл ырастоо: {{status}}",
+  "No active account found with the given credentials": "Мындай аккаунт табылган жок. Балким сырзсөзүңүз туура эмес жазылып калгандыр?"
 }
