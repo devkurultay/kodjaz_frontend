@@ -1,13 +1,13 @@
 /* Local dependencies */
 import { Login } from '../../types/userTypes';
-import { $api, setTokens } from './axois-api';
+import { $api, setTokensToCookies } from './axois-api';
 
 export async function register(data: any) {
   const response = await $api.post('registration/', data);
   const newAccessToken = response?.data?.access;
   const newRefreshToken = response?.data?.refresh;
 
-  setTokens(newAccessToken, newRefreshToken);
+  setTokensToCookies(newAccessToken, newRefreshToken);
   $api.defaults.headers.Authorization = 'JWT ' + newAccessToken;
 
   return response;
@@ -34,7 +34,7 @@ export async function login(data: Login) {
   const newAccessToken = response?.data?.access;
   const newRefreshToken = response?.data?.refresh;
 
-  setTokens(newAccessToken, newRefreshToken);
+  setTokensToCookies(newAccessToken, newRefreshToken);
   $api.defaults.headers.Authorization = 'JWT ' + newAccessToken;
 
   return response;
