@@ -13,6 +13,18 @@ export async function register(data: any) {
   return response;
 }
 
+export function performIsAuthCheck(accessToken: string, refreshToken: string) {
+  if (accessToken && refreshToken) {
+    const tokenParts = JSON.parse(atob(refreshToken.split('.')[1]));
+    // exp date in token is expressed in seconds, while now() returns milliseconds:
+    const now = Math.ceil(Date.now() / 1000);
+    if (tokenParts.exp > now) {
+      return true;
+    }
+  }
+  return false;
+}
+
 export async function confirmEmail(key: string) {
   return await $api.post('registration/verify-email/', { key });
 }
