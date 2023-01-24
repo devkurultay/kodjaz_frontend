@@ -8,7 +8,6 @@ import {
 } from '../../../types/userTypes';
 
 async function refreshAccessToken(token: any) {
-  console.log('\n\n GETTING REFRESH');
   const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? '';
   try {
     const response = await fetch(baseUrl + 'token/refresh/', {
@@ -33,12 +32,10 @@ async function refreshAccessToken(token: any) {
         access,
         refresh,
       };
-      console.log('NEW TOKEN\n', newToken);
       return newToken;
     }
-    console.log('RESPONSE OBJ', await response.json());
   } catch (e: any) {
-    console.log('ERROR', e);
+    console.error('ERROR in refreshAccessToken', e);
   }
   return token;
 }
@@ -101,18 +98,6 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, account, user }) {
-      console.log(
-        '@@@@@@',
-        'token:',
-        token,
-        '\n',
-        'account:',
-        account,
-        '\n',
-        'user',
-        user,
-      );
-
       if (user && account) {
         const convertedUser =
           user as unknown as BackendTokensWithExpirationStamp;
@@ -134,7 +119,6 @@ export const authOptions: NextAuthOptions = {
         Date.now() < token.accessTokenExpires;
 
       if (isFresh) {
-        console.log('is fresh');
         return token;
       }
       return refreshAccessToken(token);
