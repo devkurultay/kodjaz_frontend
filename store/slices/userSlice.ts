@@ -4,7 +4,6 @@ import jwtDecode from 'jwt-decode';
 
 /* Local dependencies */
 import authService from '../../pages/api/api-auth';
-import { getTokens } from '../../pages/api/axois-api';
 import { Login, Register, User } from '../../types/userTypes';
 import { RootState } from '../';
 
