@@ -1,5 +1,7 @@
 /* External dependencies */
 import Head from 'next/head';
+import { unstable_getServerSession } from 'next-auth/next';
+import { authOptions } from './api/auth/[...nextauth]';
 import { Trans, useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
@@ -13,8 +15,10 @@ import MainPromo from '../components/website/promo/MainPromo';
 import TextSection from '../components/website/text-section/TextSection';
 import nextI18NextConfig from '../next-i18next.config.js';
 
-export const getStaticProps = async ({ locale }: any) => ({
+export const getStaticProps = async ({ req, res, locale }: any) => ({
   props: {
+    // TODO(murat): move this to the SSR page
+    session: await unstable_getServerSession(req, res, authOptions),
     ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
   },
 });
