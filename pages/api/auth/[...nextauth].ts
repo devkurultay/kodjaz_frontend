@@ -119,7 +119,7 @@ export const authOptions: NextAuthOptions = {
         const jwtUser = user as unknown as JWT;
         return {
           email: user.email,
-          name: user.name,
+          name: user.name ?? '',
           user_id: jwtUser.user_id,
           username: jwtUser.username,
           accessTokenExpires: convertedUser.accessTokenExpires,
@@ -133,19 +133,21 @@ export const authOptions: NextAuthOptions = {
         typeof token.accessTokenExpires === 'number' && // this is to address `of type unknown` error
         Date.now() < token.accessTokenExpires;
 
-      console.log(
-        '=====',
-        Date.now(),
-        token.accessTokenExpires,
-        typeof token.accessTokenExpires === 'number' &&
-          Date.now() < token.accessTokenExpires,
-      );
-
       if (isFresh) {
         console.log('is fresh');
         return token;
       }
       return refreshAccessToken(token);
+    },
+    async session({ session, token }) {
+      const access = token.access;
+      const user = {
+        image: '',
+        email: token.email,
+        name: token.name,
+        username: token.username,
+      };
+      return { ...session, user, access: access as string };
     },
   },
   theme: {
