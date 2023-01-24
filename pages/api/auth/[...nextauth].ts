@@ -1,10 +1,49 @@
 import jwtDecode from 'jwt-decode';
-import NextAuth, { NextAuthOptions, Awaitable } from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
-import { User } from '../../../types/userTypes';
+import {
+  JWT,
+  BackendTokensWithExpirationStamp,
+} from '../../../types/userTypes';
 
-async function getUser(
+async function refreshAccessToken(token: any) {
+  console.log('\n\n GETTING REFRESH');
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? '';
+  try {
+    const response = await fetch(baseUrl + 'token/refresh/', {
+      method: 'POST',
+      body: JSON.stringify({
+        refresh: token.refresh,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      const { access, refresh } = await response.json();
+      const decoded: JWT = jwtDecode(access);
+      const newToken = {
+        email: decoded?.email,
+        name: decoded?.name,
+        user_id: decoded?.user_id,
+        username: decoded?.username,
+        accessTokenExpires: decoded.exp * 1000,
+        access,
+        refresh,
+      };
+      console.log('NEW TOKEN\n', newToken);
+      return newToken;
+    }
+    console.log('RESPONSE OBJ', await response.json());
+  } catch (e: any) {
+    console.log('ERROR', e);
+  }
+  return token;
+}
+
+async function getUserAndTokens(
   credentials: Record<'email' | 'password', string> | undefined,
 ) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? '';
@@ -18,14 +57,17 @@ async function getUser(
       'Content-Type': 'application/json',
     },
   });
-  const { access } = await response.json();
-  const decoded: User = jwtDecode(access);
   if (response.ok) {
+    const { access, refresh } = await response.json();
+    const decoded: JWT = jwtDecode(access);
     return {
       email: decoded?.email,
       name: decoded?.name,
       user_id: decoded?.user_id,
       username: decoded?.username,
+      accessTokenExpires: decoded.exp * 1000,
+      access,
+      refresh,
     };
   }
   return null;
@@ -47,9 +89,9 @@ export const authOptions: NextAuthOptions = {
       // This is were you can put your own external API call to validate Email and Password
       authorize: async (credentials) => {
         try {
-          const user = await getUser(credentials);
-          if (user) {
-            return user as any;
+          const data = await getUserAndTokens(credentials);
+          if (data) {
+            return data as any;
           }
         } catch (e) {
           return null;
@@ -57,6 +99,55 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, account, user }) {
+      console.log(
+        '@@@@@@',
+        'token:',
+        token,
+        '\n',
+        'account:',
+        account,
+        '\n',
+        'user',
+        user,
+      );
+
+      if (user && account) {
+        const convertedUser =
+          user as unknown as BackendTokensWithExpirationStamp;
+        const jwtUser = user as unknown as JWT;
+        return {
+          email: user.email,
+          name: user.name,
+          user_id: jwtUser.user_id,
+          username: jwtUser.username,
+          accessTokenExpires: convertedUser.accessTokenExpires,
+          access: convertedUser.access,
+          refresh: convertedUser.refresh,
+        };
+      }
+
+      // Return previous token if the access token has not expired yet
+      const isFresh =
+        typeof token.accessTokenExpires === 'number' && // this is to address `of type unknown` error
+        Date.now() < token.accessTokenExpires;
+
+      console.log(
+        '=====',
+        Date.now(),
+        token.accessTokenExpires,
+        typeof token.accessTokenExpires === 'number' &&
+          Date.now() < token.accessTokenExpires,
+      );
+
+      if (isFresh) {
+        console.log('is fresh');
+        return token;
+      }
+      return refreshAccessToken(token);
+    },
+  },
   theme: {
     colorScheme: 'light',
   },

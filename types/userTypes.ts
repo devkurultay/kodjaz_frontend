@@ -15,3 +15,20 @@ export interface User {
   user_id: number;
   username: string;
 }
+
+export interface JWT {
+  email: string;
+  name: string;
+  user_id: number;
+  username: string;
+  exp: number;
+}
+
+interface BackendTokens {
+  access: 'string';
+  refresh: string;
+}
+
+export interface BackendTokensWithExpirationStamp extends BackendTokens {
+  accessTokenExpires: number;
+}
