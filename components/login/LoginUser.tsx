@@ -3,6 +3,7 @@ import { Trans } from 'next-i18next';
 import React, { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
+import { signIn, getSession } from 'next-auth/react';
 
 /* Local dependencies */
 import CloseIcon from '../../public/assets/svg/CloseIcon';
@@ -13,7 +14,6 @@ import LoadingSpinner from '../ui/Spinner';
 import { useAppSelector } from '../../store/hooks';
 import {
   closeConfirmationPopupLogin,
-  login,
   userState,
 } from '../../store/slices/userSlice';
 import styles from '../../styles/scss/popup.module.scss';
@@ -28,8 +28,7 @@ export default function LoginUser() {
       password: '',
     },
   });
-  const { error, shouldConfirmationPopupLogin, isLoggedIn, loading } =
-    useAppSelector(userState);
+  const { error, isLoggedIn, loading } = useAppSelector(userState);
 
   function closePopup() {
     dispatch(closeConfirmationPopupLogin());
@@ -61,16 +60,19 @@ export default function LoginUser() {
     }
   }, [isLoggedIn]);
 
-  function submitHandler({ email, password }: Login) {
-    dispatch(login({ email, password }));
+  async function submitHandler({ email, password }: Login) {
+    const url = new URL(location.href);
+    const callbackUrl = url.searchParams.get('callbackUrl')!;
+    await signIn('credentials', {
+      callbackUrl: callbackUrl ?? '/',
+      redirect: true,
+      email: email,
+      password: password,
+    });
   }
 
   return (
-    <div
-      className={`flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8 fixed top-0 left-0 w-full z-50 bg-blackColor/50 overflow-hidden ${
-        shouldConfirmationPopupLogin ? 'block' : 'hidden'
-      }`}
-    >
+    <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8 fixed top-0 left-0 w-full z-50 bg-blackColor/50 overflow-hidden block">
       <div
         className={`w-full max-w-[400px] bg-whiteColor p-[30px] rounded-[20px] ${styles.popup}`}
         ref={ref}

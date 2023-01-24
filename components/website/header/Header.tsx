@@ -3,26 +3,23 @@ import { useSession } from 'next-auth/react';
 import { Popover, Transition } from '@headlessui/react';
 import Link from 'next/link';
 import { Trans } from 'next-i18next';
+import Router from 'next/router';
 import { Fragment } from 'react';
 
 /* Local dependencies */
 import LogoIcon from '../../../public/assets/svg/Logo';
 import BarsIcon from '../../../public/assets/svg/BarsIcon';
 import CloseIcon from '../../../public/assets/svg/CloseIcon';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import {
-  openConfirmationPopupLogin,
-  openConfirmationPopupSignup,
-  userState,
-} from '../../../store/slices/userSlice';
+import { useAppDispatch } from '../../../store/hooks';
+import { openConfirmationPopupSignup } from '../../../store/slices/userSlice';
 
 export default function Header() {
   const dispatch = useAppDispatch();
-  const { data: session, status } = useSession();
-  const { user } = useAppSelector(userState);
+  const { data: session } = useSession();
 
   function openPopupLogin() {
-    dispatch(openConfirmationPopupLogin());
+    const loginPath = `/login?callbackUrl=${location.pathname}`;
+    Router.push(loginPath);
   }
 
   function openPopupSignUp() {

@@ -12,7 +12,6 @@ export default function Layout({ children }: LayoutProps) {
       <Header />
       <main>{children}</main>
       <Footer />
-      <LoginUser />
       <SignUpUser />
       <ConfirmEmailPopup />
     </>
