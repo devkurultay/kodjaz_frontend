@@ -1,3 +1,5 @@
+import { Session } from 'next-auth';
+
 export interface Login {
   email: string;
   password: string;
@@ -31,4 +33,8 @@ interface BackendTokens {
 
 export interface BackendTokensWithExpirationStamp extends BackendTokens {
   accessTokenExpires: number;
+}
+
+export interface ExtendedSession extends Session {
+  access: string;
 }
