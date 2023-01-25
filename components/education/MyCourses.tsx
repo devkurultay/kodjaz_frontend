@@ -2,11 +2,17 @@
 import { Trans } from 'next-i18next';
 import Link from 'next/link';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 /* Local dependencies */
 import LessonIcon from '../../public/assets/svg/LessonIcon';
 import LevelEasyIcon from '../../public/assets/svg/LevelEasyIcon';
+import {
+  getSubscriptions,
+  subscriptionsState,
+} from '../../store/slices/subscriptionsSlice';
+import { useAppSelector } from '../../store/hooks';
 
 export default function MyCourses() {
   const coursesArray = [
@@ -41,6 +47,16 @@ export default function MyCourses() {
       label: <Trans>soon</Trans>,
     },
   ];
+
+  const dispatch = useDispatch();
+
+  const { subscriptions } = useAppSelector(subscriptionsState);
+
+  useEffect(() => {
+    dispatch(getSubscriptions());
+  }, []);
+
+  console.log(subscriptions);
 
   return (
     <section className="py-[80px] bg-grayColorF3 min-h-[80vh]">

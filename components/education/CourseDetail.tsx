@@ -38,7 +38,9 @@ export default function CourseDetail() {
   const lessonsArray = [
     {
       alt: 'JavaScript',
-      icon: '/assets/javaScriptIcon.svg',
+      icon: '/assets/checkIconGray.svg',
+      iconPassed: '/assets/checkIconGreen.svg',
+      iconInProgress: '/assets/playIcon.svg',
       title: 'JavaScript',
       lessonAmount: (
         <>
@@ -51,7 +53,9 @@ export default function CourseDetail() {
     },
     {
       alt: 'Typescript',
-      icon: '/assets/typescriptIcon.svg',
+      icon: '/assets/checkIconGray.svg',
+      iconPassed: '/assets/checkIconGreen.svg',
+      iconInProgress: '/assets/playIcon.svg',
       title: 'Typescript',
       lessonAmount: (
         <>
@@ -126,7 +130,7 @@ export default function CourseDetail() {
                 className="flex md:justify-between bg-grayColorF3 rounded-[30px] p-5 items-center"
               >
                 <div className="flex flex-col grow">
-                  <p className="text-blackColorDark text-md font-bold">
+                  <p className="text-blackColorDark text-md font-bold mb-3.5">
                     <Trans>{item.title}</Trans>
                   </p>
                   {item.label && (
@@ -156,7 +160,7 @@ export default function CourseDetail() {
           <div className="flex basis-1/3 bg-grayColorF3 rounded-[30px] p-5">
             <div>
               <p className="text-grayColor75 text-base font-normal uppercase mb-2.5">
-                <Trans>Курс тууралуу</Trans>
+                <Trans>aboutCourse</Trans>
               </p>
               <p>
                 Инженерлер-программисттер, аналитиктер, маалымат таануучулар
