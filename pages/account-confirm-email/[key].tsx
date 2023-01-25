@@ -18,9 +18,18 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const key = (ctx.query?.key as string) ?? '';
 
   async function getConfirmationStatus(key: string) {
-    const { data } = await confirmEmail(key);
+    // TODO(murat): move try/catch logic to confirmEmail
+    try {
+      const { data } = await confirmEmail(key);
 
-    return data?.detail ?? '';
+      return data?.detail ?? '';
+    } catch (error: any) {
+      const {
+        response: { data },
+      } = error;
+
+      return data?.detail ?? '';
+    }
   }
 
   return {
