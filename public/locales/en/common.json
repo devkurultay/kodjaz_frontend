@@ -55,5 +55,6 @@
   "just a second": "just a second...",
   "Not found.": "Not found.",
   "ok": "Your email is verified. Now you can log in :)",
-  "emailConfirmationText": "Email verification: {{status}}"
+  "emailConfirmationText": "Email verification: {{status}}",
+  "No active account found with the given credentials": "No active account found with the given credentials. Maybe there's a typo in your password?"
 }

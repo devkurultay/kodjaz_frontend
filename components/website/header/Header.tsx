@@ -1,26 +1,25 @@
 // External dependencies
+import { useSession } from 'next-auth/react';
 import { Popover, Transition } from '@headlessui/react';
 import Link from 'next/link';
 import { Trans } from 'next-i18next';
+import Router from 'next/router';
 import { Fragment } from 'react';
 
 /* Local dependencies */
 import LogoIcon from '../../../public/assets/svg/Logo';
 import BarsIcon from '../../../public/assets/svg/BarsIcon';
 import CloseIcon from '../../../public/assets/svg/CloseIcon';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import {
-  openConfirmationPopupLogin,
-  openConfirmationPopupSignup,
-  userState,
-} from '../../../store/slices/userSlice';
+import { useAppDispatch } from '../../../store/hooks';
+import { openConfirmationPopupSignup } from '../../../store/slices/userSlice';
 
 export default function Header() {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector(userState);
+  const { data: session } = useSession();
 
   function openPopupLogin() {
-    dispatch(openConfirmationPopupLogin());
+    const loginPath = `/login?callbackUrl=${location.pathname}`;
+    Router.push(loginPath);
   }
 
   function openPopupSignUp() {
@@ -33,7 +32,7 @@ export default function Header() {
         <div className="flex items-center justify-between border-gray-100 py-6 lg:justify-start lg:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
             <Link href="/" className="w-auto">
-              <span className="sr-only">Your Company</span>
+              <span className="sr-only">kodjaz</span>
               <LogoIcon width={152} height={40} />
             </Link>
           </div>
@@ -63,9 +62,9 @@ export default function Header() {
             </Popover>
           </Popover.Group>
           <div className="hidden items-center justify-end lg:flex lg:flex-1 lg:w-0">
-            {user ? (
+            {session ? (
               <div>
-                <p>{user.email}</p>
+                <p>{session.user?.email}</p>
               </div>
             ) : (
               <>
@@ -119,9 +118,9 @@ export default function Header() {
             </div>
             <div className="space-y-6 py-8 px-5">
               <div className="flex flex-col justify-end">
-                {user ? (
+                {session ? (
                   <div>
-                    <p>{user.username}</p>
+                    <p>{session.user?.email}</p>
                   </div>
                 ) : (
                   <>

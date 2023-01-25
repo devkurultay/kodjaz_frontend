@@ -4,7 +4,6 @@ import jwtDecode from 'jwt-decode';
 
 /* Local dependencies */
 import authService from '../../pages/api/api-auth';
-import { getTokens } from '../../pages/api/axois-api';
 import { Login, Register, User } from '../../types/userTypes';
 import { RootState } from '../';
 
@@ -16,7 +15,11 @@ export const login: any = createAsyncThunk(
 
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error);
+      const {
+        response: { data },
+      } = error;
+
+      return rejectWithValue(data);
     }
   },
 );
@@ -127,7 +130,8 @@ const userSlice = createSlice({
       })
       .addCase(login.rejected, (state, { payload }) => {
         state.isLoggedIn = false;
-        state.error = payload.message;
+        state.loading = false;
+        state.error = payload;
       })
       .addCase(signUp.pending, (state) => {
         state.loading = true;
