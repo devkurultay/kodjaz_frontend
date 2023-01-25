@@ -15,7 +15,7 @@ import { GetServerSidePropsContext } from 'next';
 import { confirmEmail } from '../api/api-auth';
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const key = (ctx.query?.key as string) ?? '';
+  const key = ctx.params?.key ?? '';
 
   async function getConfirmationStatus(key: string) {
     // TODO(murat): move try/catch logic to confirmEmail
