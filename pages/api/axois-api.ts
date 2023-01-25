@@ -2,8 +2,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-export const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'https://api.kodjaz.com/api/';
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.kodjaz.com/api/';
 
 export const $api = axios.create({
   baseURL: API_URL,
