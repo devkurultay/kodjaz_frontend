@@ -5,7 +5,7 @@ import React from 'react';
 /* Local dependencies */
 import Portrait from '../portrait/Portrait';
 
-export default function Command() {
+export default function Team() {
   const commands = [
     {
       alt: 'Murat Jumashev',
@@ -50,13 +50,6 @@ export default function Command() {
       text: 'Project Manager',
     },
     {
-      alt: 'Nurdiana',
-      src: '/assets/nurdiana.png',
-      color: `bg-[#FFD33D]`,
-      name: 'Нурдиана (Nurdiana)',
-      text: 'Flutter Developer',
-    },
-    {
       alt: 'Kubanych',
       src: '/assets/kuba.png',
       color: `bg-[#019999]`,
@@ -72,7 +65,10 @@ export default function Command() {
       </h2>
       <div className="flex flex-wrap sm:justify-center">
         {commands.map((item: any, index: number) => (
-          <div key={index} className="sm:basis-1/2 lg:basis-1/4 flex flex-row sm:flex-col items-center mb-[50px]">
+          <div
+            key={index}
+            className="sm:basis-1/2 lg:basis-1/4 flex flex-row sm:flex-col items-center mb-[50px]"
+          >
             <Portrait alt={item.alt} src={item.src} bgColor={item.color} />
             <div className="w-[calc(100%-120px)] sm:w-auto sm:text-center ml-5 sm:ml-0">
               <h4 className="text-sm2 font-semibold mb-2">{item.name}</h4>
