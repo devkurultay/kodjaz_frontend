@@ -14,6 +14,9 @@ import MenuIDE from './menu-ide/MenuIDE';
 
 const Editor = dynamic(() => import('./editor/Editor'), { ssr: false });
 import { useState } from 'react';
+import { useAppDispatch } from '../../store/hooks';
+import { useEffect } from 'react';
+import { getSubscriptionById } from '../../store/slices/subscriptionByIdSlice';
 
 const arr = [
   {
@@ -49,6 +52,11 @@ const arr = [
 
 export default function IDE() {
   const [isOpenMenu, setIsOpenMenu] = useState<Boolean>(false);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getSubscriptionById());
+  });
 
   return (
     <div className="max-w-[1440px] m-auto">
