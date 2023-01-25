@@ -5,7 +5,7 @@ import React from 'react';
 /* Local dependencies */
 import Portrait from '../portrait/Portrait';
 
-export default function Command() {
+export default function Team() {
   const commands = [
     {
       alt: 'Murat Jumashev',

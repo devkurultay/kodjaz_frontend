@@ -5,7 +5,7 @@ import React from 'react';
 
 /* Local dependencies */
 import Layout from '../../../components/layout/Layout';
-import Command from '../../../components/website/command/Command';
+import Team from '../../../components/website/command/Team';
 import AboutPromo from '../../../components/website/promo/AboutPromo';
 import InfoAbout from '../../../components/website/info/InfoAbout';
 import nextI18NextConfig from '../../../next-i18next.config.js';
@@ -31,7 +31,7 @@ export default function About() {
       <Layout>
         <AboutPromo />
         <InfoAbout />
-        <Command />
+        <Team />
       </Layout>
     </>
   );
