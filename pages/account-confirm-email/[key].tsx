@@ -1,50 +1,67 @@
 /* External dependencies */
 import Head from 'next/head';
 import { Trans } from 'next-i18next';
+import { SSRConfig } from 'next-i18next/dist/types/types';
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { useTranslation } from 'next-i18next';
 
 /* Local dependencies */
 import Layout from '../../components/layout/Layout';
-import NonSSRWrapper from '../../components/common/NonSSRWrapper';
-import { useDispatch } from 'react-redux';
-import { confirmEmail, userState } from '../../store/slices/userSlice';
-import { useAppSelector } from '../../store/hooks';
 import nextI18NextConfig from '../../next-i18next.config.js';
 import TextSection from '../../components/website/text-section/TextSection';
+import { GetServerSidePropsContext } from 'next';
+import { confirmEmail } from '../api/api-auth';
 
-export const getServerSideProps = async ({ locale }: any) => ({
-  props: {
-    ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
-  },
-});
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const key = (ctx.query?.key as string) ?? '';
 
-export default function AccountConfirmEmail() {
-  const { emailConfirmationMsg } = useAppSelector(userState);
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const { key } = router.query;
+  async function getConfirmationStatus(key: string) {
+    // TODO(murat): move try/catch logic to confirmEmail
+    try {
+      const { data } = await confirmEmail(key);
+
+      return data?.detail ?? '';
+    } catch (error: any) {
+      const {
+        response: { data },
+      } = error;
+
+      return data?.detail ?? '';
+    }
+  }
+
+  return {
+    props: {
+      confirmationStatus: await getConfirmationStatus(key),
+      ...(await serverSideTranslations(
+        ctx.locale ?? 'ky',
+        ['common'],
+        nextI18NextConfig,
+      )),
+    },
+  };
+};
+
+interface AccountConfirmEmailProps extends SSRConfig {
+  [key: string]: any;
+}
+
+export default function AccountConfirmEmail(props: AccountConfirmEmailProps) {
+  const { confirmationStatus } = props;
   const { t } = useTranslation('common');
   const [status, setStatus] = useState<string>('just a second');
   const translatedStatus = t(status);
 
   useEffect(() => {
-    if (key) {
-      dispatch(confirmEmail(key));
+    if (confirmationStatus) {
+      setStatus(confirmationStatus);
     }
-  }, [key]);
-
-  useEffect(() => {
-    if (emailConfirmationMsg) {
-      setStatus(emailConfirmationMsg);
-    }
-  }, [emailConfirmationMsg, setStatus]);
+  }, [confirmationStatus, setStatus]);
 
   return (
-    <NonSSRWrapper>
+    <>
       <Head>
         <title>Kodjaz - программалоо негиздер боюнча акысыз курстар</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -58,6 +75,6 @@ export default function AccountConfirmEmail() {
           />
         </TextSection>
       </Layout>
-    </NonSSRWrapper>
+    </>
   );
 }
