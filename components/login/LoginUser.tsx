@@ -62,7 +62,10 @@ export default function LoginUser() {
 
   async function submitHandler({ email, password }: Login) {
     const url = new URL(location.href);
-    const callbackUrl = url.searchParams.get('callbackUrl')!;
+    let callbackUrl = url.searchParams.get('callbackUrl') ?? '';
+    if (callbackUrl.includes('account-confirm-email')) {
+      callbackUrl = '/website/courses';
+    }
     await signIn('credentials', {
       callbackUrl: callbackUrl ?? '/',
       redirect: true,
