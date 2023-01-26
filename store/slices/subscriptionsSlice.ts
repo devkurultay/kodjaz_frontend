@@ -10,9 +10,9 @@ import subscriptionsService from '../../pages/api/api-subscription';
 
 export const getSubscriptions: any = createAsyncThunk(
   'getSubscriptions',
-  async (res, { rejectWithValue }) => {
+  async (token: string, { rejectWithValue }) => {
     try {
-      const response = await subscriptionsService.getSubscriptions();
+      const response = await subscriptionsService.getSubscriptions(token);
 
       return response.data;
     } catch (error: any) {

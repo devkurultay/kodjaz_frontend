@@ -1,9 +1,8 @@
 /* Local dependencies */
-import { SubscriptionsTypes } from '../../types/subscriptionsTypes';
 import { getRequest } from './axois-api';
 
-export async function getSubscriptions() {
-  const response = await getRequest('v1/user/subscriptions');
+export async function getSubscriptions(token: string) {
+  const response = await getRequest(token, 'v1/user/subscriptions');
 
   return response;
 }

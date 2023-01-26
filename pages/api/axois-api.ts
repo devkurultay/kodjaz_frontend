@@ -9,9 +9,9 @@ export const $api = axios.create({
   baseURL: API_URL,
 });
 
-export const getHeaders = () => ({
+export const getHeaders = (token: string) => ({
   'Content-Type': 'application/json; charset=utf-8',
-  Authorization: `Bearer ${Cookies.get('token') ? Cookies.get('token') : ''}`,
+  Authorization: `Bearer ${token}`,
 });
 
 export function getTokens() {
@@ -26,18 +26,29 @@ export function setTokens(accessToken: string, refreshToken: string) {
   Cookies.set('refresh_token', refreshToken);
 }
 
-export const getRequest = async (url: string) => {
-  const headers = getHeaders();
+export const getRequest = async (token: string, url: string) => {
+  const headers = getHeaders(token);
   const config = {
     method: 'GET',
     headers: headers,
   };
-
-  return await $api.get(url, config);
+  try {
+    const res = await $api.get(url, config);
+    return res?.data ?? {};
+  } catch (error: any) {
+    const {
+      response: { data },
+    } = error;
+    return data;
+  }
 };
 
-export const postRequest = (url, data) => {
-  const headers = getHeaders();
+type Payload = {
+  [key: string]: any;
+};
+
+export const postRequest = (token: string, url: string, data: Payload) => {
+  const headers = getHeaders(token);
   const config = {
     method: 'POST',
     headers: headers,
@@ -48,8 +59,8 @@ export const postRequest = (url, data) => {
   return $api(config);
 };
 
-export const putRequest = (url, data) => {
-  const headers = getHeaders();
+export const putRequest = (token: string, url: string, data: Payload) => {
+  const headers = getHeaders(token);
   const config = {
     method: 'PUT',
     headers: headers,
