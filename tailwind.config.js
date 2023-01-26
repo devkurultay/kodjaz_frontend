@@ -1,6 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./app/**/*.{js,ts,jsx,tsx}', './pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
+  content: [
+    './app/**/*.{js,ts,jsx,tsx}',
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+  ],
   theme: {
     screens: {
       xs: '420px',
@@ -22,6 +26,7 @@ module.exports = {
       grayColorC3: '#c3c3c3',
       grayColor98: '#98989a',
       grayColor75: '#757575',
+      grayColorCF: '#CFCFCF',
       primaryColorDark: '#133099',
       primaryColorLight: '#3050c1',
       primaryColorMiddle: '#1d3ba8',

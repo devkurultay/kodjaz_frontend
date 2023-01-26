@@ -9,9 +9,11 @@ import {
 
 /* Local dependencies */
 import userSlice from './slices/userSlice';
+import subscriptionsSlice from './slices/subscriptionsSlice';
 
 const combineReducer = combineReducers({
   userSlice,
+  subscriptionsSlice,
 });
 
 export function makeStore() {
