@@ -2,36 +2,47 @@
 import { Trans } from 'next-i18next';
 import Link from 'next/link';
 import Image from 'next/image';
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
 
-/* Local dependencies */
-import LessonIcon from '../../public/assets/svg/LessonIcon';
-import LevelEasyIcon from '../../public/assets/svg/LevelEasyIcon';
-import {
-  getSubscriptions,
-  subscriptionsState,
-} from '../../store/slices/subscriptionsSlice';
-import { useAppSelector } from '../../store/hooks';
+const icons: { [key: string]: string } = {
+  Python: '/assets/pythonIcon.svg',
+  JavaScript: '/assets/javaScriptIcon.svg',
+  Typescript: '/assets/typescriptIcon.svg',
+  Unknown: '/assets/frame91.svg',
+};
 
-export default function MyCourses() {
+export default function MyCourses({ subscribedTracks }: any) {
+  const subscribedTracksNames: string[] = [];
+  const transformedTracks = !!subscribedTracks.length
+    ? subscribedTracks.map((track: any) => {
+        const name = track.name as unknown as string;
+        subscribedTracksNames.push(name);
+        return {
+          alt: name,
+          icon: icons?.[name] ?? icons.Unknown,
+          title: name,
+          description: track.description,
+        };
+      })
+    : [
+        {
+          alt: 'Сиз курс тандай элексиз',
+          icon: icons.Unknown,
+          title: 'Сиз курс тандай элексиз',
+          description: 'Төмөнкү тизмектеги курстарга жазылсаңыз болот',
+          placeholder: true,
+        },
+      ];
+
+  // TODO(murat): read from db
   const coursesArray = [
-    {
-      alt: 'Сиз курс тандай элексиз',
-      icon: '/assets/frame91.svg',
-      title: 'Сиз курс тандай элексиз',
-      description: 'Биздин каталогду карап чыгыңыз',
-    },
     {
       alt: 'Python',
       icon: '/assets/pythonIcon.svg',
       title: 'Python',
       description:
-        'Иштеп чыгуучунун өндүрүмдүүлүгүнө жана коддун окумдуу болушуна багытталган жогорку даражалуу, жалпы милдеттерди аткарууга арналган программалоо тили',
+        'Үйрөнүүгө оңой, ошол эле учурда мүмкүнчүлүктөрү зор программалоо тили.',
     },
-  ];
-
-  const coursesArray2 = [
     {
       alt: 'JavaScript',
       icon: '/assets/javaScriptIcon.svg',
@@ -48,15 +59,9 @@ export default function MyCourses() {
     },
   ];
 
-  const dispatch = useDispatch();
-
-  const { subscriptions } = useAppSelector(subscriptionsState);
-
-  useEffect(() => {
-    dispatch(getSubscriptions());
-  }, []);
-
-  console.log(subscriptions);
+  const recommendedCourses = coursesArray.filter((course) => {
+    return !subscribedTracksNames.includes(course.title);
+  });
 
   return (
     <section className="py-[80px] bg-grayColorF3 min-h-[80vh]">
@@ -65,7 +70,7 @@ export default function MyCourses() {
           <Trans>myCourses</Trans>
         </h2>
         <div className="flex flex-wrap gap-y-[30px] mx-[-15px]">
-          {coursesArray.map((item: any, index: number) => (
+          {transformedTracks.map((item: any, index: number) => (
             <div
               key={index}
               className="flex basis-full md:justify-between bg-whiteColor rounded-[30px] p-10 flex-col-reverse md:flex-row"
@@ -81,13 +86,15 @@ export default function MyCourses() {
                     </p>
                   </div>
                 </div>
-                <Link
-                  href="#"
-                  className="inline-flex items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight w-fit mt-4 px-12 py-1.5 md:py-2.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
-                >
-                  <Trans>selectCourse</Trans>
-                  {/* <Trans>continueCourse</Trans> */}
-                </Link>
+                {/* Put a button and scroll down to recommended courses */}
+                {!item?.placeholder && (
+                  <Link
+                    href="#"
+                    className="inline-flex items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight w-fit mt-4 px-12 py-1.5 md:py-2.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
+                  >
+                    <Trans>continueCourse</Trans>
+                  </Link>
+                )}
               </div>
               <div className="flex justify-start pb-6 md:justify-end md:pb-0 md:basis-1/4">
                 <Image
@@ -106,7 +113,7 @@ export default function MyCourses() {
           <Trans>recommendation</Trans>
         </h2>
         <div className="flex flex-wrap gap-y-[30px] mx-[-15px]">
-          {coursesArray2.map((item: any, index: number) => (
+          {recommendedCourses.map((item: any, index: number) => (
             <div
               key={index}
               className="flex basis-full md:justify-between bg-whiteColor rounded-[30px] p-10 flex-col-reverse md:flex-row"
