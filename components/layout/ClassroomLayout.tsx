@@ -3,18 +3,18 @@ import React from 'react';
 import { useSession } from 'next-auth/react';
 
 /* Local dependencies */
-import FooterAdmin from '../footer-admin/FooterAdmin';
-import HeaderAdmin from '../header-admin/HeaderAdmin';
+import FooterClassroom from '../footer-classroom/FooterClassroom';
+import HeaderClassroom from '../header-classroom/HeaderClassroom';
 import { LayoutProps } from './type';
 import Layout from './Layout';
 import AccessDenied from '../common/AccessDenied';
 
-export default function AdminLayout({ children }: LayoutProps) {
+export default function ClassroomLayout({ children }: LayoutProps) {
   const { data: session, status } = useSession();
 
   return (
     <>
-      <HeaderAdmin />
+      <HeaderClassroom />
       {session ? (
         <main>{children}</main>
       ) : (
@@ -22,7 +22,7 @@ export default function AdminLayout({ children }: LayoutProps) {
           <AccessDenied />
         </Layout>
       )}
-      <FooterAdmin />
+      <FooterClassroom />
     </>
   );
 }

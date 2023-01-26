@@ -7,7 +7,7 @@ import React from 'react';
 import LogoWithoutText from '../../public/assets/svg/LogoWithoutText';
 import UserIcon from '../../public/assets/svg/UserIcon';
 
-export default function HeaderAdmin() {
+export default function HeaderClassroom() {
   return (
     <div className="bg-blackColor text-whiteColor md:h-[80px]">
       <div className="flex max-w-[1440px] m-auto p-5 items-center justify-between">
@@ -16,7 +16,7 @@ export default function HeaderAdmin() {
             <LogoWithoutText />
           </Link>
           <span className="font-medium ml-10">
-            <Link href="/admin/courses">
+            <Link href="/classroom/courses">
               <Trans>mainPage</Trans>
             </Link>
           </span>

@@ -4,7 +4,7 @@ import React from 'react';
 
 /* Local dependencies */
 import IDE from '../../../components/ide/IDE';
-import AdminLayout from '../../../components/layout/AdminLayout';
+import ClassroomLayout from '../../../components/layout/ClassroomLayout';
 import { ExtendedSession } from '../../../types/userTypes';
 import { authOptions } from '../../api/auth/[...nextauth]';
 
@@ -37,8 +37,8 @@ export async function getServerSideProps(context: any) {
 export default function IDEPage(props: any) {
   console.log('data', props.data);
   return (
-    <AdminLayout>
+    <ClassroomLayout>
       <IDE />
-    </AdminLayout>
+    </ClassroomLayout>
   );
 }
