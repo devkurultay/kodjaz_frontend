@@ -7,13 +7,13 @@ import { Trans } from 'next-i18next';
 import React from 'react';
 
 /* Local dependencies */
-import MyCourses from '../../../components/education/MyCourses';
-import Layout from '../../../components/layout/Layout';
-import nextI18NextConfig from '../../../next-i18next.config.js';
-import { authOptions } from '../../api/auth/[...nextauth]';
-import { ExtendedSession } from '../../../types/userTypes';
-import { getRequest } from '../../api/axois-api';
-import { getSubscriptions, subscribe } from '../../api/api-subscription';
+import MyCourses from '../../components/education/MyCourses';
+import Layout from '../../components/layout/Layout';
+import nextI18NextConfig from '../../next-i18next.config.js';
+import { authOptions } from '../api/auth/[...nextauth]';
+import { ExtendedSession } from '../../types/userTypes';
+import { getRequest } from '../api/axois-api';
+import { getSubscriptions, subscribe } from '../api/api-subscription';
 
 export async function getServerSideProps(context: any) {
   // TODO(murat): move this to a helper
