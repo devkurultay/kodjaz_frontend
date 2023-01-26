@@ -13,7 +13,7 @@ import nextI18NextConfig from '../../../next-i18next.config.js';
 import { authOptions } from '../../api/auth/[...nextauth]';
 import { ExtendedSession } from '../../../types/userTypes';
 import { getRequest } from '../../api/axois-api';
-import { getSubscriptions } from '../../api/api-subscription';
+import { getSubscriptions, subscribe } from '../../api/api-subscription';
 
 export async function getServerSideProps(context: any) {
   // TODO(murat): move this to a helper
@@ -35,6 +35,7 @@ export async function getServerSideProps(context: any) {
 
   return {
     props: {
+      token: extSession.access,
       subscribedTracks: subscribedTracks,
       ...(await serverSideTranslations(
         context.locale,
@@ -47,6 +48,9 @@ export async function getServerSideProps(context: any) {
 
 // TODO(murat): put a proper type
 export default function CoursesPage(props: any) {
+  const signUpToCourse = async (id: number) => {
+    return await subscribe(props.token, { track: id });
+  };
   return (
     <>
       <Head>
@@ -55,7 +59,10 @@ export default function CoursesPage(props: any) {
         <meta property="og:title" content="Kodjaz - Курстар" key="title" />
       </Head>
       <Layout>
-        <MyCourses subscribedTracks={props?.subscribedTracks ?? []} />
+        <MyCourses
+          subscribedTracks={props?.subscribedTracks ?? []}
+          signUpToCourse={signUpToCourse}
+        />
       </Layout>
     </>
   );

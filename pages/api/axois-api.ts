@@ -47,7 +47,11 @@ type Payload = {
   [key: string]: any;
 };
 
-export const postRequest = (token: string, url: string, data: Payload) => {
+export const postRequest = async (
+  token: string,
+  url: string,
+  data: Payload,
+) => {
   const headers = getHeaders(token);
   const config = {
     method: 'POST',
@@ -56,7 +60,15 @@ export const postRequest = (token: string, url: string, data: Payload) => {
     data,
   };
 
-  return $api(config);
+  try {
+    const res = await $api(config);
+    return res?.data ?? {};
+  } catch (error: any) {
+    const {
+      response: { data },
+    } = error;
+    return data;
+  }
 };
 
 export const putRequest = (token: string, url: string, data: Payload) => {

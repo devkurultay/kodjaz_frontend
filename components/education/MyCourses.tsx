@@ -11,7 +11,7 @@ const icons: { [key: string]: string } = {
   Unknown: '/assets/frame91.svg',
 };
 
-export default function MyCourses({ subscribedTracks }: any) {
+export default function MyCourses({ subscribedTracks, signUpToCourse }: any) {
   const subscribedTracksNames: string[] = [];
   const transformedTracks = !!subscribedTracks.length
     ? subscribedTracks.map((track: any) => {
@@ -22,6 +22,7 @@ export default function MyCourses({ subscribedTracks }: any) {
           icon: icons?.[name] ?? icons.Unknown,
           title: name,
           description: track.description,
+          id: track.id,
         };
       })
     : [
@@ -42,6 +43,7 @@ export default function MyCourses({ subscribedTracks }: any) {
       title: 'Python',
       description:
         'Үйрөнүүгө оңой, ошол эле учурда мүмкүнчүлүктөрү зор программалоо тили.',
+      id: 1,
     },
     {
       alt: 'JavaScript',
@@ -145,12 +147,12 @@ export default function MyCourses({ subscribedTracks }: any) {
                   </div>
                 )}
                 {!item.label && (
-                  <Link
-                    href="#"
+                  <button
                     className="inline-flex items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight w-fit mt-4 px-12 py-1.5 md:py-2.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
+                    onClick={() => signUpToCourse(item.id)}
                   >
                     <Trans>startLearning</Trans>
-                  </Link>
+                  </button>
                 )}
               </div>
               <div className="flex justify-start pb-6 md:justify-end md:pb-0 md:basis-1/4">
