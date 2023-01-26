@@ -4,9 +4,9 @@ import { $api, getRequest } from '../../pages/api/axois-api';
 
 export const getSubscriptionById: any = createAsyncThunk(
   'subscribtion-by-id',
-  async (subscriptionById: any, { rejectWithValue }) => {
+  async (token: string, { rejectWithValue }) => {
     try {
-      const response = await getRequest('v1/tracks'); //https://api.kodjaz.com/api/v1/tracks/
+      const response = await getRequest(token, 'v1/tracks'); //https://api.kodjaz.com/api/v1/tracks/
 
       console.log(response);
 
