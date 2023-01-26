@@ -46,17 +46,17 @@ export default function Header() {
           </div>
           <Popover.Group as="nav" className="hidden space-x-10 lg:flex">
             <Popover className="relative">
-              <Link href="/website/courses">
+              <Link href="/courses">
                 <Trans>courses</Trans>
               </Link>
             </Popover>
             <Popover className="relative">
-              <Link href="/website/about">
+              <Link href="/about">
                 <Trans>aboutUs</Trans>
               </Link>
             </Popover>
             <Popover className="relative">
-              <Link href="/website/resources">
+              <Link href="/resources">
                 <Trans>resources</Trans>
               </Link>
             </Popover>

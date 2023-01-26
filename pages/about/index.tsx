@@ -4,11 +4,11 @@ import Head from 'next/head';
 import React from 'react';
 
 /* Local dependencies */
-import Layout from '../../../components/layout/Layout';
-import Team from '../../../components/website/command/Team';
-import AboutPromo from '../../../components/website/promo/AboutPromo';
-import InfoAbout from '../../../components/website/info/InfoAbout';
-import nextI18NextConfig from '../../../next-i18next.config.js';
+import Layout from '../../components/layout/Layout';
+import Team from '../../components/website/command/Team';
+import AboutPromo from '../../components/website/promo/AboutPromo';
+import InfoAbout from '../../components/website/info/InfoAbout';
+import nextI18NextConfig from '../../next-i18next.config.js';
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {

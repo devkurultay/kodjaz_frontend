@@ -5,10 +5,10 @@ import { Trans } from 'next-i18next';
 import React from 'react';
 
 /* Local dependencies */
-import Layout from '../../../components/layout/Layout';
-import Courses from '../../../components/website/courses/Courses';
-import TextSection from '../../../components/website/text-section/TextSection';
-import nextI18NextConfig from '../../../next-i18next.config.js';
+import Layout from '../../components/layout/Layout';
+import Courses from '../../components/website/courses/Courses';
+import TextSection from '../../components/website/text-section/TextSection';
+import nextI18NextConfig from '../../next-i18next.config.js';
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {

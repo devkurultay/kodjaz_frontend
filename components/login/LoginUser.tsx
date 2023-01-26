@@ -64,7 +64,7 @@ export default function LoginUser() {
     const url = new URL(location.href);
     let callbackUrl = url.searchParams.get('callbackUrl') ?? '';
     if (callbackUrl.includes('account-confirm-email')) {
-      callbackUrl = '/website/courses';
+      callbackUrl = '/courses';
     }
     await signIn('credentials', {
       callbackUrl: callbackUrl ?? '/',
