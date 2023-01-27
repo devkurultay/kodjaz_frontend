@@ -4,7 +4,7 @@ import jwtDecode from 'jwt-decode';
 
 /* Local dependencies */
 import authService from '../../pages/api/api-auth';
-import { Login, Register, User } from '../../types/userTypes';
+import { BackendError, Login, Register, User } from '../../types/userTypes';
 import { RootState } from '../';
 
 export const login: any = createAsyncThunk(
@@ -56,10 +56,6 @@ export const confirmEmail: any = createAsyncThunk(
     }
   },
 );
-
-interface BackendError {
-  [key: string]: Array<string>;
-}
 
 interface userSliceState {
   user?: User | any;

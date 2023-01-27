@@ -38,3 +38,7 @@ export interface BackendTokensWithExpirationStamp extends BackendTokens {
 export interface ExtendedSession extends Session {
   access: string;
 }
+
+export interface BackendError {
+  [key: string]: Array<string>;
+}
