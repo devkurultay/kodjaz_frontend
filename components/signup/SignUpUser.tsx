@@ -13,6 +13,7 @@ import styles from '../../styles/scss/popup.module.scss';
 import { BackendError, Register } from '../../types/userTypes';
 import { useRouter } from 'next/router';
 import { postRequest } from '../../pages/api/axois-api';
+import CloseIcon from '../../public/assets/svg/CloseIcon';
 
 const INPUT_ERRORS_CONTAINER_CLASSES =
   'relative block text-xs text-dangerColor pl-1';
@@ -30,6 +31,10 @@ export default function SignUpUser() {
       password2: '',
     },
   });
+
+  function closePopup() {
+    router.push('/');
+  }
 
   async function submitHandler({ email, password1, password2 }: Register) {
     setLoading(true);
@@ -57,6 +62,11 @@ export default function SignUpUser() {
         className={`w-full max-w-[400px] bg-whiteColor p-[30px] rounded-[20px] ${styles.popup}`}
       >
         <div>
+          <div className="flex justify-end">
+            <button className="mr-[-15px] mt-[-12px]" onClick={closePopup}>
+              <CloseIcon strokeFill="#98989A" />
+            </button>
+          </div>
           <h2 className="text-3xl font-bold tracking-tight text-700 text-lg mb-[30px]">
             <Trans>enter</Trans>
           </h2>
