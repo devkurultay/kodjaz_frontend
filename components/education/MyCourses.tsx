@@ -15,7 +15,8 @@ import { useAppSelector } from '../../store/hooks';
 import { Track } from '../../types/tracksTypes';
 import { useRouter } from 'next/navigation';
 
-const icons: { [key: string]: string } = {
+// TOOD(murat): move to modules
+export const COURSE_ICONS: { [key: string]: string } = {
   Python: '/assets/pythonIcon.svg',
   JavaScript: '/assets/javaScriptIcon.svg',
   Typescript: '/assets/typescriptIcon.svg',
@@ -53,7 +54,7 @@ export default function MyCourses() {
     ? subscribedTracks.map((track: Track) => {
         return {
           alt: track.name,
-          icon: icons?.[track.name] ?? icons.Unknown,
+          icon: COURSE_ICONS?.[track.name] ?? COURSE_ICONS.Unknown,
           title: track.name,
           description: track.description,
           id: track.id,
@@ -62,7 +63,7 @@ export default function MyCourses() {
     : [
         {
           alt: 'Сиз курс тандай элексиз',
-          icon: icons.Unknown,
+          icon: COURSE_ICONS.Unknown,
           title: 'Сиз курс тандай элексиз',
           description: 'Төмөнкү тизмектеги курстарга жазылсаңыз болот',
           placeholder: true,
@@ -132,7 +133,7 @@ export default function MyCourses() {
                       <Trans>continueCourse</Trans>
                     </Link>
                     <Link
-                      href="#"
+                      href={`/classroom/course-details/${item.id}`}
                       className="inline-flex items-center justify-center whitespace-nowrap w-fit mt-4 px-12 py-1.5 md:py-2.5 underline text-blue-600 hover:text-blue-800"
                     >
                       <Trans>courseInfo</Trans>
