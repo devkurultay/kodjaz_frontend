@@ -7,6 +7,8 @@ import React from 'react';
 import CourseDetail from '../../../components/education/CourseDetail';
 import Layout from '../../../components/layout/Layout';
 import nextI18NextConfig from '../../../next-i18next.config.js';
+import { useRouter } from 'next/navigation';
+import { Hashmap } from '../../../types/userTypes';
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {
@@ -14,7 +16,18 @@ export const getStaticProps = async ({ locale }: any) => ({
   },
 });
 
+export const getStaticPaths = async ({}) => {
+  const res = await fetch('https://.../posts');
+  const paths: Hashmap[] = [{ id: 1 }];
+  return {
+    paths,
+    fallback: true,
+  };
+};
+
 export default function CoursePage() {
+  const router = useRouter();
+  console.log(router);
   return (
     <>
       <Head>

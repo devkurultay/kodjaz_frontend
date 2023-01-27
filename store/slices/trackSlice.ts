@@ -2,7 +2,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '..';
 import { getRequest, postRequest } from '../../pages/api/axois-api';
-import { Track, TrackById, TrackByName } from '../../types/tracksTypes';
+import {
+  Track,
+  TrackById,
+  TrackByName,
+  Subscription,
+} from '../../types/tracksTypes';
 
 type TokenAndTrackId = {
   token: string;
@@ -17,8 +22,7 @@ export const getTracks: any = createAsyncThunk(
 
       return await Promise.all(
         subscriptions.map(
-          // TODO(murat): put proper type
-          async ({ track }: any) =>
+          async ({ track }: Subscription) =>
             await getRequest(token, `v1/user/tracks/${track}/`),
         ),
       );

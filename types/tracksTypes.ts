@@ -54,3 +54,9 @@ export type TrackById = {
 export type TrackByName = {
   [key: string]: Track;
 };
+
+export type Subscription = {
+  id: number;
+  track: number;
+  user: number;
+};
