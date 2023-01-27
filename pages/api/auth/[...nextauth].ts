@@ -67,7 +67,8 @@ async function getUserAndTokens(
       refresh,
     };
   }
-  return null;
+  const result = await response.json();
+  throw new Error(result?.detail ?? 'Authentication error');
 }
 
 export const authOptions: NextAuthOptions = {
@@ -91,7 +92,7 @@ export const authOptions: NextAuthOptions = {
             return data as any;
           }
         } catch (e) {
-          return null;
+          throw new Error(e as string);
         }
       },
     }),
