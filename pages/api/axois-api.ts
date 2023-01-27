@@ -9,10 +9,19 @@ export const $api = axios.create({
   baseURL: API_URL,
 });
 
-export const getHeaders = (token: string) => ({
-  'Content-Type': 'application/json; charset=utf-8',
-  Authorization: `Bearer ${token}`,
-});
+type Header = {
+  [key: string]: string;
+};
+
+export const getHeaders = (token: string) => {
+  const res: Header = {
+    'Content-Type': 'application/json; charset=utf-8',
+  };
+  if (token) {
+    res['Authorization'] = `Bearer ${token}`;
+  }
+  return res;
+};
 
 export function getTokens() {
   const refreshToken = Cookies.get('refresh_token');
