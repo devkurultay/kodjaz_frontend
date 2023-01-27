@@ -1,3 +1,4 @@
+// TODO(murat): move to modules folder
 /* External dependencies */
 import axios from 'axios';
 import Cookies from 'js-cookie';
