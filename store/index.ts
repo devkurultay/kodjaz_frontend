@@ -1,5 +1,4 @@
 /* External dependencies */
-import { createWrapper } from 'next-redux-wrapper';
 import {
   configureStore,
   ThunkAction,
@@ -37,4 +36,4 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   Action<string>
 >;
 
-export const wrapper = createWrapper<RootStore>(makeStore);
+export default store;
