@@ -46,3 +46,5 @@ export default function CoursePage({ track }: any) {
     </>
   );
 }
+
+CoursePage.requireAuth = true;

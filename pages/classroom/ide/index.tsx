@@ -42,3 +42,5 @@ export default function IDEPage(props: any) {
     </ClassroomLayout>
   );
 }
+
+IDEPage.requireAuth = true;

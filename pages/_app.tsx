@@ -6,6 +6,7 @@ import { Roboto } from '@next/font/google';
 
 /* Local dependencies */
 import '../styles/globals.scss';
+import AuthGuard from '../components/auth/AuthGuard';
 
 const roboto = Roboto({
   weight: ['400', '500', '700', '900'],
@@ -19,7 +20,14 @@ const App = ({ Component, pageProps }: AppProps) => {
           font-family: ${roboto.style.fontFamily};
         }
       `}</style>
-      <Component {...pageProps} />
+      {/* @ts-ignore */}
+      {Component.requireAuth ? (
+        <AuthGuard>
+          <Component {...pageProps} />
+        </AuthGuard>
+      ) : (
+        <Component {...pageProps} />
+      )}
     </SessionProvider>
   );
 };

@@ -30,3 +30,5 @@ export default function ClassroomPage() {
     </Provider>
   );
 }
+
+ClassroomPage.requireAuth = true;
