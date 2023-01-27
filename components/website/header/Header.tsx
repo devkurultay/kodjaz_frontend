@@ -3,27 +3,26 @@ import { useSession } from 'next-auth/react';
 import { Popover, Transition } from '@headlessui/react';
 import Link from 'next/link';
 import { Trans } from 'next-i18next';
-import Router from 'next/router';
 import { Fragment } from 'react';
 
 /* Local dependencies */
 import LogoIcon from '../../../public/assets/svg/Logo';
 import BarsIcon from '../../../public/assets/svg/BarsIcon';
 import CloseIcon from '../../../public/assets/svg/CloseIcon';
-import { useAppDispatch } from '../../../store/hooks';
-import { openConfirmationPopupSignup } from '../../../store/slices/userSlice';
+import { useRouter } from 'next/navigation';
 
 export default function Header() {
-  const dispatch = useAppDispatch();
+  const router = useRouter();
   const { data: session } = useSession();
 
-  function openPopupLogin() {
+  function goToLoginPage() {
     const loginPath = `/login?callbackUrl=${location.pathname}`;
-    Router.push(loginPath);
+    router.push(loginPath);
   }
 
-  function openPopupSignUp() {
-    dispatch(openConfirmationPopupSignup());
+  function goToSignUpPage() {
+    const signupPath = `/signup`;
+    router.push(signupPath);
   }
 
   return (
@@ -69,14 +68,14 @@ export default function Header() {
             ) : (
               <>
                 <button
-                  onClick={openPopupLogin}
+                  onClick={goToLoginPage}
                   className="whitespace-nowrap rounded-lg border-2 px-5 py-1.5 font-medium text-primaryColorLight hover:bg-primaryColorLight hover:text-whiteColor"
                   type="button"
                 >
                   <Trans>logIn</Trans>
                 </button>
                 <button
-                  onClick={openPopupSignUp}
+                  onClick={goToSignUpPage}
                   className="ml-8 inline-flex items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight px-5 py-1.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
                   type="button"
                 >
@@ -125,13 +124,13 @@ export default function Header() {
                 ) : (
                   <>
                     <button
-                      onClick={openPopupLogin}
+                      onClick={goToLoginPage}
                       className="mb-3 flex w-full items-center justify-center whitespace-nowrap rounded-lg border-2 px-5 py-1.5 font-medium text-primaryColorLight hover:bg-primaryColorLight hover:text-whiteColor"
                     >
                       <Trans>logIn</Trans>
                     </button>
                     <button
-                      onClick={openPopupSignUp}
+                      onClick={goToSignUpPage}
                       className="flex w-full items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight px-5 py-1.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
                     >
                       <Trans>start</Trans>
