@@ -2,7 +2,13 @@
 import { Trans } from 'next-i18next';
 import Link from 'next/link';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { getTracks, trackState } from '../../store/slices/trackSlice';
+import { ExtendedSession } from '../../types/userTypes';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../store/hooks';
+import { Track } from '../../types/tracksTypes';
 
 const icons: { [key: string]: string } = {
   Python: '/assets/pythonIcon.svg',
@@ -11,16 +17,29 @@ const icons: { [key: string]: string } = {
   Unknown: '/assets/frame91.svg',
 };
 
-export default function MyCourses({ subscribedTracks, signUpToCourse }: any) {
-  const subscribedTracksNames: string[] = [];
+export default function MyCourses() {
+  const dispatch = useDispatch();
+  // TODO(murat): show loading indicator and errors if any
+  const { tracksByName } = useAppSelector(trackState);
+  const { data } = useSession();
+
+  useEffect(() => {
+    const tk = (data as ExtendedSession)?.access ?? '';
+    // TODO(murat): Don't call getTracks if we already have them
+    if (tk) {
+      dispatch(getTracks(tk));
+    }
+  }, [data, getTracks, dispatch]);
+
+  const subscribedTracksNames: string[] = Object.keys(tracksByName);
+  const subscribedTracks: Track[] = Object.values(tracksByName);
+
   const transformedTracks = !!subscribedTracks.length
-    ? subscribedTracks.map((track: any) => {
-        const name = track.name as unknown as string;
-        subscribedTracksNames.push(name);
+    ? subscribedTracks.map((track: Track) => {
         return {
-          alt: name,
-          icon: icons?.[name] ?? icons.Unknown,
-          title: name,
+          alt: track.name,
+          icon: icons?.[track.name] ?? icons.Unknown,
+          title: track.name,
           description: track.description,
           id: track.id,
         };
@@ -90,12 +109,20 @@ export default function MyCourses({ subscribedTracks, signUpToCourse }: any) {
                 </div>
                 {/* Put a button and scroll down to recommended courses */}
                 {!item?.placeholder && (
-                  <Link
-                    href="#"
-                    className="inline-flex items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight w-fit mt-4 px-12 py-1.5 md:py-2.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
-                  >
-                    <Trans>continueCourse</Trans>
-                  </Link>
+                  <div className="font-medium">
+                    <Link
+                      href="#"
+                      className="inline-flex items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight w-fit mt-4 px-12 py-1.5 md:py-2.5 text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
+                    >
+                      <Trans>continueCourse</Trans>
+                    </Link>
+                    <Link
+                      href="#"
+                      className="inline-flex items-center justify-center whitespace-nowrap w-fit mt-4 px-12 py-1.5 md:py-2.5 underline text-blue-600 hover:text-blue-800"
+                    >
+                      <Trans>courseInfo</Trans>
+                    </Link>
+                  </div>
                 )}
               </div>
               <div className="flex justify-start pb-6 md:justify-end md:pb-0 md:basis-1/4">

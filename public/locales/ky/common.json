@@ -67,5 +67,6 @@
   "Not found.": "табылган жок.",
   "ok": "Эмейлиңиз текшерилди. Эми кирсеңиз болот :)",
   "emailConfirmationText": "Эмейл ырастоо: {{status}}",
-  "Error: No active account found with the given credentials": "Мындай аккаунт табылган жок. Балким сырзсөзүңүз туура эмес жазылып калгандыр?"
+  "Error: No active account found with the given credentials": "Мындай аккаунт табылган жок. Балким сырзсөзүңүз туура эмес жазылып калгандыр?",
+  "courseInfo": "Маалымат"
 }
