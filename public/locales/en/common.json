@@ -63,5 +63,8 @@
   "ok": "Your email is verified. Now you can log in :)",
   "emailConfirmationText": "Email verification: {{status}}",
   "Error: No active account found with the given credentials": "No active account found with the given credentials. Maybe there's a typo in your password?",
-  "courseInfo": "Details"
+  "courseInfo": "Details",
+  "unitsCount": "{{numUnits}} units",
+  "lessonsCount": "{{numLessons}} lessons",
+  "beginner": "Beginner"
 }

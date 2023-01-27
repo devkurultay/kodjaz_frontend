@@ -7,27 +7,32 @@ import React from 'react';
 import CourseDetail from '../../../components/education/CourseDetail';
 import Layout from '../../../components/layout/Layout';
 import nextI18NextConfig from '../../../next-i18next.config.js';
-import { useRouter } from 'next/navigation';
-import { Hashmap } from '../../../types/userTypes';
+import { getRequest } from '../../api/axois-api';
+import { Track } from '../../../types/tracksTypes';
 
-export const getStaticProps = async ({ locale }: any) => ({
-  props: {
-    ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
-  },
-});
+export const getStaticPaths = async () => {
+  const tracks = await getRequest('', 'v1/tracks/');
+  const paths = tracks.map((track: Track) => ({
+    params: { id: `${track.id}` },
+  }));
 
-export const getStaticPaths = async ({}) => {
-  const res = await fetch('https://.../posts');
-  const paths: Hashmap[] = [{ id: 1 }];
   return {
     paths,
     fallback: true,
   };
 };
 
-export default function CoursePage() {
-  const router = useRouter();
-  console.log(router);
+export const getStaticProps = async ({ locale, params }: any) => {
+  const track = await getRequest('', `v1/tracks/${params.id}`);
+  return {
+    props: {
+      track,
+      ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
+    },
+  };
+};
+
+export default function CoursePage({ track }: any) {
   return (
     <>
       <Head>
@@ -36,7 +41,7 @@ export default function CoursePage() {
         <meta property="og:title" content="Kodjaz - Курстар" key="title" />
       </Head>
       <Layout>
-        <CourseDetail />
+        <CourseDetail track={track} />
       </Layout>
     </>
   );

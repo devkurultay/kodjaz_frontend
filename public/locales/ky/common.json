@@ -68,5 +68,8 @@
   "ok": "Эмейлиңиз текшерилди. Эми кирсеңиз болот :)",
   "emailConfirmationText": "Эмейл ырастоо: {{status}}",
   "Error: No active account found with the given credentials": "Мындай аккаунт табылган жок. Балким сырзсөзүңүз туура эмес жазылып калгандыр?",
-  "courseInfo": "Маалымат"
+  "courseInfo": "Маалымат",
+  "unitsCount": "{{numUnits}} бап",
+  "lessonsCount": "{{numLessons}} сабак",
+  "beginner": "Оңой"
 }
