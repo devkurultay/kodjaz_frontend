@@ -7,7 +7,7 @@ import React from 'react';
 import store from '../../store';
 import MyCourses from '../../components/education/MyCourses';
 import nextI18NextConfig from '../../next-i18next.config.js';
-import ClassroomLayout from '../../components/layout/ClassroomLayout';
+import Layout from '../../components/layout/Layout';
 import { Provider } from 'react-redux';
 
 export const getStaticProps = async ({ locale }: any) => ({
@@ -24,9 +24,9 @@ export default function ClassroomPage() {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta property="og:title" content="Kodjaz - Курстар" key="title" />
       </Head>
-      <ClassroomLayout>
+      <Layout>
         <MyCourses />
-      </ClassroomLayout>
+      </Layout>
     </Provider>
   );
 }
