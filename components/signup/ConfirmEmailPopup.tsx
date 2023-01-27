@@ -1,28 +1,31 @@
 import { Trans } from 'next-i18next';
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 import CloseIcon from '../../public/assets/svg/CloseIcon';
-import { useAppSelector } from '../../store/hooks';
-import {
-  closeEmailConfirmationPopup,
-  userState,
-} from '../../store/slices/userSlice';
 import styles from '../../styles/scss/popup.module.scss';
 
 export default function ConfirmEmailPopup() {
-  const dispatch = useDispatch();
-  const { isEmailConfirmationPopupOpen, user } = useAppSelector(userState);
-  const email = user?.email || '';
+  const [isOpen, setIsOpen] = useState(false);
+  const [emailAddress, setEmailAddress] = useState('');
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const email = searchParams.get('email');
+    if (email) {
+      setEmailAddress(email);
+      setIsOpen(true);
+    }
+  }, [setEmailAddress, setIsOpen]);
 
   function closePopup() {
-    dispatch(closeEmailConfirmationPopup());
+    setIsOpen(false);
   }
 
   return (
     <div
       className={`flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8 fixed top-0 left-0 w-full z-50 bg-blackColor/50 overflow-hidden ${
-        isEmailConfirmationPopupOpen ? 'block' : 'hidden'
+        isOpen ? 'block' : 'hidden'
       }`}
     >
       <div
@@ -39,7 +42,10 @@ export default function ConfirmEmailPopup() {
           </h3>
         </div>
         <div>
-          <Trans i18nKey="confirmEmailPopupText" values={{ email }} />
+          <Trans
+            i18nKey="confirmEmailPopupText"
+            values={{ email: emailAddress }}
+          />
         </div>
       </div>
     </div>

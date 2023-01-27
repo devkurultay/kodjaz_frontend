@@ -1,5 +1,4 @@
 /* External dependencies */
-import { createWrapper } from 'next-redux-wrapper';
 import {
   configureStore,
   ThunkAction,
@@ -8,14 +7,14 @@ import {
 } from '@reduxjs/toolkit';
 
 /* Local dependencies */
-import getSubscriptionByIdSlice from './slices/subscriptionByIdSlice';
+import trackSlice from './slices/trackSlice';
 import userSlice from './slices/userSlice';
 import subscriptionsSlice from './slices/subscriptionsSlice';
 
 const combineReducer = combineReducers({
   userSlice,
   subscriptionsSlice,
-  getSubscriptionByIdSlice,
+  trackSlice,
 });
 
 export function makeStore() {
@@ -37,4 +36,4 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   Action<string>
 >;
 
-export const wrapper = createWrapper<RootStore>(makeStore);
+export default store;

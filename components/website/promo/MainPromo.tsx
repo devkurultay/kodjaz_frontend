@@ -1,19 +1,23 @@
 /* External dependencies */
+import { useSession } from 'next-auth/react';
 import { Trans } from 'next-i18next';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
-import { openConfirmationPopupSignup } from '../../../store/slices/userSlice';
 
 /* Local dependencies */
 import styles from '../../../styles/scss/promo.module.scss';
-import { useAppDispatch } from '../../../store/hooks';
 import Promo from './Promo';
 
 export default function MainPromo() {
-  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const session = useSession();
 
-  function openPopupSignUp() {
-    dispatch(openConfirmationPopupSignup());
+  function start() {
+    if (session?.status === 'authenticated') {
+      router.push('/classroom');
+    } else {
+      router.push('/signup');
+    }
   }
 
   return (
@@ -28,7 +32,7 @@ export default function MainPromo() {
           <Trans>mainPromoTitle</Trans>
         </h1>
         <button
-          onClick={openPopupSignUp}
+          onClick={start}
           className="inline-flex items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight w-full sm:w-auto px-12 py-1.5 md:py-2.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
         >
           <Trans>start</Trans>

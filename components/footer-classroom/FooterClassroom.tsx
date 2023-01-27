@@ -2,7 +2,7 @@
 import { Trans } from 'next-i18next';
 import React from 'react';
 
-export default function FooterAdmin() {
+export default function FooterClassroom() {
   return (
     <div className="bg-blackColor text-whiteColor md:h-[80px]">
       <div className="flex max-w-[1440px] m-auto p-5 items-center justify-end">

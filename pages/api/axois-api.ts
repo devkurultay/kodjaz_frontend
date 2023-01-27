@@ -1,3 +1,4 @@
+// TODO(murat): move to modules folder
 /* External dependencies */
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -9,10 +10,19 @@ export const $api = axios.create({
   baseURL: API_URL,
 });
 
-export const getHeaders = (token: string) => ({
-  'Content-Type': 'application/json; charset=utf-8',
-  Authorization: `Bearer ${token}`,
-});
+type Header = {
+  [key: string]: string;
+};
+
+export const getHeaders = (token: string) => {
+  const res: Header = {
+    'Content-Type': 'application/json; charset=utf-8',
+  };
+  if (token) {
+    res['Authorization'] = `Bearer ${token}`;
+  }
+  return res;
+};
 
 export function getTokens() {
   const refreshToken = Cookies.get('refresh_token');
@@ -41,7 +51,7 @@ export const getRequest = async (token: string, url: string) => {
       response: { data },
     } = error;
 
-    return data;
+    throw data;
   }
 };
 
@@ -67,7 +77,7 @@ export const postRequest = async (token: string, url: string, data: any) => {
       response: { data },
     } = error;
 
-    return data;
+    throw data;
   }
 };
 

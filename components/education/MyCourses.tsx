@@ -2,25 +2,60 @@
 import { Trans } from 'next-i18next';
 import Link from 'next/link';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import {
+  getTracks,
+  signUpToTrack,
+  trackState,
+} from '../../store/slices/trackSlice';
+import { ExtendedSession } from '../../types/userTypes';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../store/hooks';
+import { Track } from '../../types/tracksTypes';
+import { useRouter } from 'next/navigation';
 
-const icons: { [key: string]: string } = {
+// TOOD(murat): move to modules
+export const COURSE_ICONS: { [key: string]: string } = {
   Python: '/assets/pythonIcon.svg',
   JavaScript: '/assets/javaScriptIcon.svg',
   Typescript: '/assets/typescriptIcon.svg',
   Unknown: '/assets/frame91.svg',
 };
 
-export default function MyCourses({ subscribedTracks, signUpToCourse }: any) {
-  const subscribedTracksNames: string[] = [];
+export default function MyCourses() {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  // TODO(murat): show loading indicator and errors if any
+  const { tracksByName } = useAppSelector(trackState);
+  const { data: sessionData } = useSession();
+
+  useEffect(() => {
+    const tk = (sessionData as ExtendedSession)?.access ?? '';
+    // TODO(murat): Don't call getTracks if we already have them
+    if (tk) {
+      dispatch(getTracks(tk));
+    }
+  }, [sessionData, getTracks, dispatch]);
+
+  const signUpToCourse = (id: number) => {
+    const tk = (sessionData as ExtendedSession)?.access ?? '';
+    if (!tk) {
+      router.push('/login');
+    }
+    dispatch(signUpToTrack({ token: tk, trackId: id }));
+    dispatch(getTracks(tk));
+  };
+
+  const subscribedTracksNames: string[] = Object.keys(tracksByName);
+  const subscribedTracks: Track[] = Object.values(tracksByName);
+
   const transformedTracks = !!subscribedTracks.length
-    ? subscribedTracks.map((track: any) => {
-        const name = track.name as unknown as string;
-        subscribedTracksNames.push(name);
+    ? subscribedTracks.map((track: Track) => {
         return {
-          alt: name,
-          icon: icons?.[name] ?? icons.Unknown,
-          title: name,
+          alt: track.name,
+          icon: COURSE_ICONS?.[track.name] ?? COURSE_ICONS.Unknown,
+          title: track.name,
           description: track.description,
           id: track.id,
         };
@@ -28,7 +63,7 @@ export default function MyCourses({ subscribedTracks, signUpToCourse }: any) {
     : [
         {
           alt: 'Сиз курс тандай элексиз',
-          icon: icons.Unknown,
+          icon: COURSE_ICONS.Unknown,
           title: 'Сиз курс тандай элексиз',
           description: 'Төмөнкү тизмектеги курстарга жазылсаңыз болот',
           placeholder: true,
@@ -90,12 +125,20 @@ export default function MyCourses({ subscribedTracks, signUpToCourse }: any) {
                 </div>
                 {/* Put a button and scroll down to recommended courses */}
                 {!item?.placeholder && (
-                  <Link
-                    href="#"
-                    className="inline-flex items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight w-fit mt-4 px-12 py-1.5 md:py-2.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
-                  >
-                    <Trans>continueCourse</Trans>
-                  </Link>
+                  <div className="font-medium">
+                    <Link
+                      href="#"
+                      className="inline-flex items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight w-fit mt-4 px-12 py-1.5 md:py-2.5 text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
+                    >
+                      <Trans>continueCourse</Trans>
+                    </Link>
+                    <Link
+                      href={`/classroom/course-details/${item.id}`}
+                      className="inline-flex items-center justify-center whitespace-nowrap w-fit mt-4 px-12 py-1.5 md:py-2.5 underline text-blue-600 hover:text-blue-800"
+                    >
+                      <Trans>courseInfo</Trans>
+                    </Link>
+                  </div>
                 )}
               </div>
               <div className="flex justify-start pb-6 md:justify-end md:pb-0 md:basis-1/4">

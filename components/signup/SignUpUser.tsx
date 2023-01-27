@@ -1,31 +1,29 @@
 /* External dependencies */
 import { Trans } from 'next-i18next';
-import React, { useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 /* Local dependencies */
-import CloseIcon from '../../public/assets/svg/CloseIcon';
 import GoogleIcon from '../../public/assets/svg/GoogleIcon';
 import AppleIcon from '../../public/assets/svg/AppleIcon';
 import FacebookIcon from '../../public/assets/svg/FacebookIcon';
 import LoadingSpinner from '../ui/Spinner';
-import { useAppSelector } from '../../store/hooks';
-import {
-  closeConfirmationPopupSignUp,
-  openEmailConfirmationPopup,
-  signUp,
-  userState,
-} from '../../store/slices/userSlice';
+
 import styles from '../../styles/scss/popup.module.scss';
-import { Register } from '../../types/userTypes';
+import { BackendError, Register } from '../../types/userTypes';
+import { useRouter } from 'next/router';
+import { postRequest } from '../../pages/api/axois-api';
+import CloseIcon from '../../public/assets/svg/CloseIcon';
 
 const INPUT_ERRORS_CONTAINER_CLASSES =
   'relative block text-xs text-dangerColor pl-1';
 
 export default function SignUpUser() {
-  const dispatch = useDispatch();
-  const ref = useRef<HTMLDivElement>(null);
+  // TODO(murat): signout if already signed in
+  const router = useRouter();
+  const [error, setError] = useState<BackendError>({});
+  const [loading, setLoading] = useState<Boolean>(false);
+
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       email: '',
@@ -33,66 +31,42 @@ export default function SignUpUser() {
       password2: '',
     },
   });
-  const { error, isSignedUp, shouldConfirmationPopupSignup, loading } =
-    useAppSelector(userState);
-
-  function resetForm() {
-    reset({ email: '', password1: '', password2: '' });
-  }
-
-  function checkIfClickedOutside(e: any) {
-    if (ref.current && !ref?.current?.contains(e.target)) {
-      dispatch(closeConfirmationPopupSignUp());
-      resetForm();
-    }
-  }
 
   function closePopup() {
-    dispatch(closeConfirmationPopupSignUp());
-    resetForm();
+    router.push('/');
   }
 
-  function closePopupAndOpenEmailConfirmationPopup() {
-    closePopup();
-    dispatch(openEmailConfirmationPopup());
-  }
-
-  useEffect(() => {
-    document.addEventListener('mousedown', (e) => checkIfClickedOutside(e));
-
-    return () => {
-      document.removeEventListener('mousedown', (e) =>
-        checkIfClickedOutside(e),
-      );
-    };
-  }, []);
-
-  useEffect(() => {
-    if (isSignedUp) {
-      closePopupAndOpenEmailConfirmationPopup();
-    }
-  }, [isSignedUp]);
-
-  function submitHandler({ email, password1, password2 }: Register) {
-    dispatch(signUp({ email, password1, password2 }));
+  async function submitHandler({ email, password1, password2 }: Register) {
+    setLoading(true);
+    postRequest('', 'registration/', {
+      email,
+      password1,
+      password2,
+    }).then((res: any) => {
+      if (res?.detail) {
+        setLoading(false);
+        router.push(`/?email=${email}`);
+      } else {
+        setError(res);
+        setLoading(false);
+      }
+    });
   }
 
   return (
     <div
-      className={`flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8 fixed top-0 left-0 w-full z-50 bg-blackColor/50 overflow-hidden ${
-        shouldConfirmationPopupSignup ? 'block' : 'hidden'
+      className={`flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8 fixed top-0 left-0 w-full z-50 bg-blackColor/50 overflow-hidden block'
       }`}
     >
       <div
         className={`w-full max-w-[400px] bg-whiteColor p-[30px] rounded-[20px] ${styles.popup}`}
-        ref={ref}
       >
-        <div className="flex justify-end">
-          <button className="mr-[-15px] mt-[-12px]" onClick={closePopup}>
-            <CloseIcon strokeFill="#98989A" />
-          </button>
-        </div>
         <div>
+          <div className="flex justify-end">
+            <button className="mr-[-15px] mt-[-12px]" onClick={closePopup}>
+              <CloseIcon strokeFill="#98989A" />
+            </button>
+          </div>
           <h2 className="text-3xl font-bold tracking-tight text-700 text-lg mb-[30px]">
             <Trans>enter</Trans>
           </h2>

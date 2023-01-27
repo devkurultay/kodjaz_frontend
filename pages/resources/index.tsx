@@ -5,10 +5,9 @@ import { Trans } from 'next-i18next';
 import React from 'react';
 
 /* Local dependencies */
-import Layout from '../../../components/layout/Layout';
-import Courses from '../../../components/website/courses/Courses';
-import TextSection from '../../../components/website/text-section/TextSection';
-import nextI18NextConfig from '../../../next-i18next.config.js';
+import Layout from '../../components/layout/Layout';
+import TextSection from '../../components/website/text-section/TextSection';
+import nextI18NextConfig from '../../next-i18next.config.js';
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {
@@ -16,7 +15,7 @@ export const getStaticProps = async ({ locale }: any) => ({
   },
 });
 
-export default function CoursesPage() {
+export default function ResourcesPage() {
   return (
     <>
       <Head>
@@ -25,10 +24,11 @@ export default function CoursesPage() {
         <meta property="og:title" content="Kodjaz - Курстар" key="title" />
       </Head>
       <Layout>
-        <TextSection>
-          <Trans i18nKey="coursesDescription" />
-        </TextSection>
-        <Courses />
+        <div className="min-h-[80vh]">
+          <TextSection>
+            <Trans i18nKey="resoursesDescription" />
+          </TextSection>
+        </div>
       </Layout>
     </>
   );

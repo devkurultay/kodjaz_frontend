@@ -1,9 +1,8 @@
 /* External dependencies */
 import { Trans } from 'next-i18next';
-import React, { useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { signIn, getSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 
 /* Local dependencies */
 import CloseIcon from '../../public/assets/svg/CloseIcon';
@@ -11,77 +10,52 @@ import GoogleIcon from '../../public/assets/svg/GoogleIcon';
 import AppleIcon from '../../public/assets/svg/AppleIcon';
 import FacebookIcon from '../../public/assets/svg/FacebookIcon';
 import LoadingSpinner from '../ui/Spinner';
-import { useAppSelector } from '../../store/hooks';
-import {
-  closeConfirmationPopupLogin,
-  userState,
-} from '../../store/slices/userSlice';
 import styles from '../../styles/scss/popup.module.scss';
 import { Login } from '../../types/userTypes';
+import { useRouter } from 'next/navigation';
 
 export default function LoginUser() {
-  const dispatch = useDispatch();
-  const ref = useRef<HTMLDivElement>(null);
-  const { register, handleSubmit, reset } = useForm({
+  const router = useRouter();
+  const [error, setError] = useState<string>('');
+  const [loading, setLoading] = useState<Boolean>(false);
+  const { register, handleSubmit } = useForm({
     defaultValues: {
       email: '',
       password: '',
     },
   });
-  const { error, isLoggedIn, loading } = useAppSelector(userState);
 
-  function closePopup() {
-    dispatch(closeConfirmationPopupLogin());
-    reset({ email: '', password: '' });
+  function closePage() {
+    router.push('/');
   }
-
-  function checkIfClickedOutside(e: MouseEvent) {
-    const targetElement: HTMLElement = e.target as HTMLElement;
-    if (ref.current && !ref?.current?.contains(targetElement)) {
-      closePopup();
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener('mousedown', (e: MouseEvent) =>
-      checkIfClickedOutside(e),
-    );
-
-    return () => {
-      document.removeEventListener('mousedown', (e) =>
-        checkIfClickedOutside(e),
-      );
-    };
-  }, []);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      closePopup();
-    }
-  }, [isLoggedIn]);
 
   async function submitHandler({ email, password }: Login) {
+    setLoading(true);
     const url = new URL(location.href);
     let callbackUrl = url.searchParams.get('callbackUrl') ?? '';
     if (callbackUrl.includes('account-confirm-email')) {
-      callbackUrl = '/website/courses';
+      callbackUrl = '/classroom';
     }
-    await signIn('credentials', {
-      callbackUrl: callbackUrl ?? '/',
-      redirect: true,
+    const res = await signIn('credentials', {
+      redirect: false,
       email: email,
       password: password,
     });
+    if (res?.ok) {
+      router.push(callbackUrl);
+    } else if (res?.error) {
+      setLoading(false);
+      setError(res?.error ?? '');
+    }
   }
 
   return (
     <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8 fixed top-0 left-0 w-full z-50 bg-blackColor/50 overflow-hidden block">
       <div
         className={`w-full max-w-[400px] bg-whiteColor p-[30px] rounded-[20px] ${styles.popup}`}
-        ref={ref}
       >
         <div className="flex justify-end">
-          <button className="mr-[-15px] mt-[-12px]" onClick={closePopup}>
+          <button className="mr-[-15px] mt-[-12px]" onClick={closePage}>
             <CloseIcon strokeFill="#98989A" />
           </button>
         </div>
@@ -122,7 +96,7 @@ export default function LoginUser() {
               </button>
               {error && (
                 <p role="alert" className="mt-3 text-sm text-dangerColor">
-                  <Trans>{error?.detail}</Trans>
+                  <Trans>{error}</Trans>
                 </p>
               )}
             </div>

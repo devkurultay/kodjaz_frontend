@@ -1,3 +1,4 @@
+// TODO(murat): move to modules folder or remove completely
 /* Local dependencies */
 import { getRequest, postRequest } from './axois-api';
 
