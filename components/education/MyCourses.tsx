@@ -4,11 +4,16 @@ import Link from 'next/link';
 import Image from 'next/image';
 import React, { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { getTracks, trackState } from '../../store/slices/trackSlice';
+import {
+  getTracks,
+  signUpToTrack,
+  trackState,
+} from '../../store/slices/trackSlice';
 import { ExtendedSession } from '../../types/userTypes';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../store/hooks';
 import { Track } from '../../types/tracksTypes';
+import { useRouter } from 'next/navigation';
 
 const icons: { [key: string]: string } = {
   Python: '/assets/pythonIcon.svg',
@@ -18,18 +23,28 @@ const icons: { [key: string]: string } = {
 };
 
 export default function MyCourses() {
+  const router = useRouter();
   const dispatch = useDispatch();
   // TODO(murat): show loading indicator and errors if any
   const { tracksByName } = useAppSelector(trackState);
-  const { data } = useSession();
+  const { data: sessionData } = useSession();
 
   useEffect(() => {
-    const tk = (data as ExtendedSession)?.access ?? '';
+    const tk = (sessionData as ExtendedSession)?.access ?? '';
     // TODO(murat): Don't call getTracks if we already have them
     if (tk) {
       dispatch(getTracks(tk));
     }
-  }, [data, getTracks, dispatch]);
+  }, [sessionData, getTracks, dispatch]);
+
+  const signUpToCourse = (id: number) => {
+    const tk = (sessionData as ExtendedSession)?.access ?? '';
+    if (!tk) {
+      router.push('/login');
+    }
+    dispatch(signUpToTrack({ token: tk, trackId: id }));
+    dispatch(getTracks(tk));
+  };
 
   const subscribedTracksNames: string[] = Object.keys(tracksByName);
   const subscribedTracks: Track[] = Object.values(tracksByName);

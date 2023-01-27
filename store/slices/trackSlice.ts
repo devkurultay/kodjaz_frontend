@@ -1,7 +1,7 @@
 /* External dependencies */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '..';
-import { getRequest } from '../../pages/api/axois-api';
+import { getRequest, postRequest } from '../../pages/api/axois-api';
 import { Track, TrackById, TrackByName } from '../../types/tracksTypes';
 
 type TokenAndTrackId = {
@@ -29,12 +29,27 @@ export const getTracks: any = createAsyncThunk(
 );
 
 export const getTrackById: any = createAsyncThunk(
-  'track-by-id',
+  'get-track-by-id',
   async ({ token, trackId }: TokenAndTrackId, { rejectWithValue }) => {
     try {
       const response = await getRequest(token, `/v1/user/tracks/${trackId}/`);
 
       return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const signUpToTrack: any = createAsyncThunk(
+  'sign-up-to-track',
+  async ({ token, trackId }: TokenAndTrackId, { rejectWithValue }) => {
+    try {
+      const response = await postRequest(token, 'v1/user/subscriptions/', {
+        track: trackId,
+      });
+
+      return response;
     } catch (error: any) {
       return rejectWithValue(error);
     }
@@ -88,6 +103,16 @@ const userTrackSlice = createSlice({
         state.tracksByName = tracksByName;
       })
       .addCase(getTracks.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      })
+      .addCase(signUpToTrack.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(signUpToTrack.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(signUpToTrack.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
       });
