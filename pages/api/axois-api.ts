@@ -50,7 +50,7 @@ export const getRequest = async (token: string, url: string) => {
       response: { data },
     } = error;
 
-    return data;
+    throw data;
   }
 };
 
@@ -76,7 +76,7 @@ export const postRequest = async (token: string, url: string, data: any) => {
       response: { data },
     } = error;
 
-    return data;
+    throw data;
   }
 };
 
