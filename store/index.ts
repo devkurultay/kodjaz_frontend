@@ -7,14 +7,14 @@ import {
 } from '@reduxjs/toolkit';
 
 /* Local dependencies */
-import getSubscriptionByIdSlice from './slices/subscriptionByIdSlice';
+import trackSlice from './slices/trackSlice';
 import userSlice from './slices/userSlice';
 import subscriptionsSlice from './slices/subscriptionsSlice';
 
 const combineReducer = combineReducers({
   userSlice,
   subscriptionsSlice,
-  getSubscriptionByIdSlice,
+  trackSlice,
 });
 
 export function makeStore() {

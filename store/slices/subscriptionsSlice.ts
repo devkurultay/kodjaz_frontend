@@ -1,12 +1,11 @@
 /* External dependencies */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import jwtDecode from 'jwt-decode';
 
 /* Local dependencies */
-import authService from '../../pages/api/api-auth';
-import { Login, Register, User } from '../../types/userTypes';
+import { BackendError } from '../../types/userTypes';
 import { RootState } from '../';
 import subscriptionsService from '../../pages/api/api-subscription';
+import { SubscriptionType } from '../../types/subscriptionsTypes';
 
 export const getSubscriptions: any = createAsyncThunk(
   'getSubscriptions',
@@ -21,22 +20,15 @@ export const getSubscriptions: any = createAsyncThunk(
   },
 );
 
-interface BackendError {
-  [key: string]: Array<string>;
-}
-
 interface subscriptionsSliceState {
   error?: BackendError;
   loading: Boolean;
-  subscriptions: {
-    track?: string;
-    user?: User | any;
-  };
+  subscriptions: SubscriptionType[];
 }
 
 const initialState: subscriptionsSliceState = {
   loading: false,
-  subscriptions: {},
+  subscriptions: [],
 };
 
 const subscriptionsSlice = createSlice({

@@ -1,4 +1,4 @@
-export interface SubscriptionsTypes {
+export interface SubscriptionType {
   track: string;
   user: string;
 }
