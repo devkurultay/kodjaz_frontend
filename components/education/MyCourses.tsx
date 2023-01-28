@@ -2,7 +2,7 @@
 import { Trans } from 'next-i18next';
 import Link from 'next/link';
 import Image from 'next/image';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import {
   getTracks,
@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../store/hooks';
 import { Exercise, Track } from '../../types/tracksTypes';
 import { useRouter } from 'next/navigation';
+import LoadingSpinner from '../ui/Spinner';
 
 // TOOD(murat): move to modules
 export const COURSE_ICONS: { [key: string]: string } = {
@@ -26,6 +27,7 @@ export const COURSE_ICONS: { [key: string]: string } = {
 export default function MyCourses() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   // TODO(murat): show loading indicator and errors if any
   const { tracksByName, exercisesById } = useAppSelector(trackState);
   const { data: sessionData } = useSession();
@@ -39,6 +41,7 @@ export default function MyCourses() {
   }, [sessionData, getTracks, dispatch]);
 
   const signUpToCourse = (id: number) => {
+    setLoading(true);
     const tk = (sessionData as ExtendedSession)?.access ?? '';
     if (!tk) {
       router.push('/login');
@@ -48,6 +51,7 @@ export default function MyCourses() {
   };
 
   const goToLatestExercise = () => {
+    setLoading(true);
     const exercises = Object.values(exercisesById);
 
     function findExercise(isComplete: Boolean, isInProgress: Boolean) {
@@ -156,13 +160,21 @@ export default function MyCourses() {
                       onClick={goToLatestExercise}
                       className="inline-flex items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight w-fit mt-4 px-12 py-1.5 md:py-2.5 text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
                     >
-                      <Trans>continueCourse</Trans>
+                      {loading ? (
+                        <LoadingSpinner height={23} />
+                      ) : (
+                        <Trans>continueCourse</Trans>
+                      )}
                     </button>
                     <Link
                       href={`/classroom/course-details/${item.id}`}
                       className="inline-flex items-center justify-center whitespace-nowrap w-fit mt-4 px-12 py-1.5 md:py-2.5 underline text-blue-600 hover:text-blue-800"
                     >
-                      <Trans>courseInfo</Trans>
+                      {loading ? (
+                        <LoadingSpinner height={23} />
+                      ) : (
+                        <Trans>courseInfo</Trans>
+                      )}
                     </Link>
                   </div>
                 )}
