@@ -61,7 +61,7 @@ export default function IDE() {
     const tk = (sessionData as ExtendedSession)?.access ?? '';
     // TODO(murat): Don't call getTracks if we already have them
     if (tk) {
-      dispatch(getTrackById(tk, '1'));
+      dispatch(getTrackById({ token: tk, trackId: 1 }));
     }
   }, [sessionData, tracksById, dispatch]);
 

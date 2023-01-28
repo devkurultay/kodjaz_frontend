@@ -1,3 +1,8 @@
+export type ProgressData = {
+  is_complete: Boolean;
+  is_in_progress: Boolean;
+};
+
 export type Exercise = {
   id: number;
   name: string;
@@ -12,6 +17,7 @@ export type Exercise = {
   lesson: number;
   unit_id: number;
   track_id: number;
+  progress_data?: ProgressData;
 };
 
 export type Lesson = {
@@ -22,7 +28,7 @@ export type Lesson = {
   is_published: Boolean;
   lesson_exercises: Exercise[];
   unit: number;
-  progress_data?: string;
+  progress_data?: ProgressData;
 };
 
 export type Unit = {
@@ -33,7 +39,7 @@ export type Unit = {
   unit_lessons: Lesson[];
   is_published: Boolean;
   track: number;
-  progress_data?: string;
+  progress_data?: ProgressData;
 };
 
 export type Track = {
@@ -44,7 +50,7 @@ export type Track = {
   track_units: Array<Unit>;
   is_published: Boolean;
   programming_language: string;
-  progress_data?: string;
+  progress_data?: ProgressData;
 };
 
 export type EntityByName<T> = {
