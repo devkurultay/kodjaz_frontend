@@ -112,6 +112,7 @@ const userTrackSlice = createSlice({
         const exercisesById: EntityById<Exercise> = {};
 
         payload.forEach((track: Track) => {
+
           tracksById[track.id] = track;
           tracksByName[track.name] = track;
 

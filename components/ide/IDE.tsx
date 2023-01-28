@@ -1,19 +1,23 @@
 /* External dependencies */
 import { Trans } from 'next-i18next';
 import dynamic from 'next/dynamic';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 /* Local dependencies */
 import RunCodeIcon from '../../public/assets/svg/RunCodeIcon';
 import TabBurgerIcon from '../../public/assets/svg/TabBurgerIcon';
 import TabChatIcon from '../../public/assets/svg/TabChatIcon';
 import styles from '../../styles/scss/ide.module.scss';
-import TabsIDE from './tabs-ide/TabsIDE';
+import { useAppSelector } from '../../store/hooks';
 import Description from './description/Description';
 import MenuIDE from './menu-ide/MenuIDE';
+import TabsIDE from './tabs-ide/TabsIDE';
+import { useDispatch } from 'react-redux';
+import { useSession } from 'next-auth/react';
+import { ExtendedSession } from '../../types/userTypes';
+import { getTrackById, trackState } from '../../store/slices/trackSlice';
 
 const Editor = dynamic(() => import('./editor/Editor'), { ssr: false });
-import { useState } from 'react';
 
 const arr = [
   {
@@ -49,9 +53,20 @@ const arr = [
 
 export default function IDE() {
   const [isOpenMenu, setIsOpenMenu] = useState<Boolean>(false);
+  const { loading, tracksById } = useAppSelector(trackState);
+  const dispatch = useDispatch();
+  const { data: sessionData } = useSession();
+
+  useEffect(() => {
+    const tk = (sessionData as ExtendedSession)?.access ?? '';
+    // TODO(murat): Don't call getTracks if we already have them
+    if (tk) {
+      dispatch(getTrackById(tk, '1'));
+    }
+  }, [sessionData, tracksById, dispatch]);
 
   return (
-    <div className="max-w-[1440px] m-auto">
+    <div className="m-auto">
       <div className="flex md:min-h-[calc(100vh - 160px)]">
         <div className="basis-1/3 h-[inherit] relative">
           <TabsIDE

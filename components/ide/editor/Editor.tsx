@@ -1,6 +1,8 @@
 /* External dependencies */
 import React from 'react';
 import AceEditor from 'react-ace';
+import 'ace-builds/src-noconflict/mode-javascript';
+import 'ace-builds/src-noconflict/theme-terminal';
 
 /* Local dependencies */
 import styles from '../../../styles/scss/ide.module.scss';
@@ -12,7 +14,7 @@ export default function Editor() {
 
   return (
     <AceEditor
-      mode="java"
+      mode="javascript"
       theme="terminal"
       onChange={onChange}
       name="UNIQUE_ID_OF_DIV"

@@ -9,11 +9,9 @@ import {
 /* Local dependencies */
 import trackSlice from './slices/trackSlice';
 import userSlice from './slices/userSlice';
-import subscriptionsSlice from './slices/subscriptionsSlice';
 
 const combineReducer = combineReducers({
   userSlice,
-  subscriptionsSlice,
   trackSlice,
 });
 
