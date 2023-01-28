@@ -92,23 +92,27 @@ export const submitCode: any = createAsyncThunk(
 interface userTrackState {
   error?: Error;
   loading: boolean;
+  submissionLoading: boolean;
   track?: '';
   tracksByName: EntityByName<Track>;
   tracksById: EntityById<Track>;
   unitsById: EntityById<Unit>;
   lessonsById: EntityById<Lesson>;
   exercisesById: EntityById<Exercise>;
-  submission: Submission | {};
+  submission: Submission | null;
+  submissionsByExerciseId: EntityById<Submission>;
 }
 
 const initialState: userTrackState = {
   loading: false,
+  submissionLoading: false,
   tracksByName: {},
   tracksById: {},
   unitsById: {},
   lessonsById: {},
   exercisesById: {},
-  submission: {},
+  submission: null,
+  submissionsByExerciseId: {},
 };
 
 const userTrackSlice = createSlice({
@@ -178,14 +182,15 @@ const userTrackSlice = createSlice({
         state.error = payload;
       })
       .addCase(submitCode.pending, (state) => {
-        state.loading = true;
+        state.submissionLoading = true;
       })
       .addCase(submitCode.fulfilled, (state, { payload }) => {
-        state.loading = false;
+        state.submissionLoading = false;
         state.submission = payload;
+        state.submissionsByExerciseId[payload.exercise] = payload;
       })
       .addCase(submitCode.rejected, (state, { payload }) => {
-        state.loading = false;
+        state.submissionLoading = false;
         state.error = payload;
       });
   },

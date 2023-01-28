@@ -39,7 +39,8 @@ type TabContents = {
 
 export default function IDE() {
   const dispatch = useDispatch();
-  const { loading, exercisesById, submission } = useAppSelector(trackState);
+  const { loading, submissionLoading, exercisesById, submission } =
+    useAppSelector(trackState);
   const [isOpenMenu, setIsOpenMenu] = useState<Boolean>(false);
   const [exercise, setExercise] = useState<Exercise>();
   const [tabsContent, setTabsContent] = useState<TabContents>([]);
@@ -184,7 +185,11 @@ export default function IDE() {
             >
               <RunCodeIcon />
               <span className="ml-3">
-                <Trans>runCode</Trans>
+                {submissionLoading ? (
+                  <LoadingSpinner height={23} />
+                ) : (
+                  <Trans>runCode</Trans>
+                )}
               </span>
             </button>
           </div>
