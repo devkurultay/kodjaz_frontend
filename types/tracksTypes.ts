@@ -22,7 +22,7 @@ export type Lesson = {
   is_published: Boolean;
   lesson_exercises: Exercise[];
   unit: number;
-  progress_data: string;
+  progress_data?: string;
 };
 
 export type Unit = {
@@ -33,7 +33,7 @@ export type Unit = {
   unit_lessons: Lesson[];
   is_published: Boolean;
   track: number;
-  progress_data: string;
+  progress_data?: string;
 };
 
 export type Track = {
@@ -41,18 +41,18 @@ export type Track = {
   name: string;
   description: string;
   entity_type: string;
-  track_units: Unit[];
+  track_units: Array<Unit>;
   is_published: Boolean;
   programming_language: string;
-  progress_data: string;
+  progress_data?: string;
 };
 
-export type TrackById = {
-  [key: number]: Track;
+export type EntityByName<T> = {
+  [key: string]: T;
 };
 
-export type TrackByName = {
-  [key: string]: Track;
+export type EntityById<T> = {
+  [key: number]: T;
 };
 
 export type Subscription = {
