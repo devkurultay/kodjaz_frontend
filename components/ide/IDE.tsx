@@ -1,69 +1,84 @@
 /* External dependencies */
 import { Trans } from 'next-i18next';
 import dynamic from 'next/dynamic';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 /* Local dependencies */
 import RunCodeIcon from '../../public/assets/svg/RunCodeIcon';
 import TabBurgerIcon from '../../public/assets/svg/TabBurgerIcon';
 import TabChatIcon from '../../public/assets/svg/TabChatIcon';
 import styles from '../../styles/scss/ide.module.scss';
-import { useAppSelector } from '../../store/hooks';
 import Description from './description/Description';
 import MenuIDE from './menu-ide/MenuIDE';
 import TabsIDE from './tabs-ide/TabsIDE';
-import { useDispatch } from 'react-redux';
-import { useSession } from 'next-auth/react';
-import { ExtendedSession } from '../../types/userTypes';
-import { getTrackById, trackState } from '../../store/slices/trackSlice';
 
 const Editor = dynamic(() => import('./editor/Editor'), { ssr: false });
 
-const arr = [
-  {
-    content: (
-      <Description>
-        When printing things in Python, we are supplying a text block that we
-        want to be printed. Text in Python is considered a specific type of data
-        called a string. A string, so named because they’re a series of letters,
-        numbers, or symbols connected in order — as if threaded together by
-        string. Strings can be defined in different ways:
-      </Description>
-    ),
-    icon: <TabBurgerIcon />,
-    text: 'Description',
-    width: 20,
-    height: 17,
-    viewbox: '0 0 14 18',
-  },
-  {
-    content: (
-      <Description>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nemo rem
-        minima consequatur.
-      </Description>
-    ),
-    icon: <TabChatIcon />,
-    text: 'Discussion',
-    width: 18,
-    height: 17,
-    viewbox: '0 0 18 17',
-  },
-];
-
 export default function IDE() {
   const [isOpenMenu, setIsOpenMenu] = useState<Boolean>(false);
-  const { loading, tracksById } = useAppSelector(trackState);
-  const dispatch = useDispatch();
-  const { data: sessionData } = useSession();
 
-  useEffect(() => {
-    const tk = (sessionData as ExtendedSession)?.access ?? '';
-    // TODO(murat): Don't call getTracks if we already have them
-    if (tk) {
-      dispatch(getTrackById({ token: tk, trackId: 1 }));
-    }
-  }, [sessionData, tracksById, dispatch]);
+  const arr = [
+    {
+      content: (
+        <Description>
+          When printing things in Python, we are supplying a text block that we
+          want to be printed. Text in Python is considered a specific type of
+          data called a string. A string, so named because they’re a series of
+          letters, numbers, or symbols connected in order — as if threaded
+          together by string. Strings can be defined in different ways:
+        </Description>
+      ),
+      icon: <TabBurgerIcon />,
+      text: 'Description',
+      width: 20,
+      height: 17,
+      viewbox: '0 0 14 18',
+    },
+    {
+      content: (
+        <Description>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nemo rem
+          minima consequatur.
+        </Description>
+      ),
+      icon: <TabChatIcon />,
+      text: 'Discussion',
+      width: 18,
+      height: 17,
+      viewbox: '0 0 18 17',
+    },
+  ];
+
+  const items = [
+    {
+      name: 'Text 1',
+      isActive: false,
+      lessons: [
+        {
+          name: 'Text 1.1',
+          isActive: false,
+        },
+        {
+          name: 'Text 1.2',
+          isActive: false,
+        },
+      ],
+    },
+    {
+      name: 'Text 2',
+      isActive: true,
+      lesson_exercises: [
+        {
+          name: 'Text 2.1',
+          isActive: true,
+        },
+        {
+          name: 'Text 2.2',
+          isActive: false,
+        },
+      ],
+    },
+  ];
 
   return (
     <div className="m-auto">
@@ -76,7 +91,11 @@ export default function IDE() {
               setIsOpenMenu(!isOpenMenu);
             }}
           />
-          <MenuIDE activeClass={isOpenMenu ? 'block' : 'hidden'} />
+          <MenuIDE
+            activeClass={isOpenMenu ? 'block' : 'hidden'}
+            listItem={items}
+            title="Title"
+          />
         </div>
         <div className="grow h-full relative">
           <Editor />

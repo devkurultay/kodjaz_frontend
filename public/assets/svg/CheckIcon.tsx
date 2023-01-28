@@ -4,7 +4,7 @@ import React from 'react';
 /* Local dependencies */
 import { IconProps } from './types';
 
-export default function ChechIcon({
+export default function CheckIcon({
   fill = '#C4C4C4',
   height = 30,
   width = 30,

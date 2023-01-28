@@ -1,42 +1,80 @@
 /* External dependencies */
-import React from 'react';
+import React, { useState } from 'react';
 
 /* Local dependencies */
-import ChechIcon from '../../../public/assets/svg/ChechIcon';
+import CheckIcon from '../../../public/assets/svg/CheckIcon';
+import PlayIcon from '../../../public/assets/svg/PlayIcon';
+import ArrowDown from '../../../public/assets/svg/ArrowDown';
 
 type ListItemIDETypes = {
-  itemText?: string;
+  name?: string;
+  isActive?: boolean;
 };
 
 type ListMenuIDETypes = {
-  text: string;
-  items?: Array<ListItemIDETypes>;
+  isActive?: boolean;
+  name: string;
+  lesson_exercises?: Array<ListItemIDETypes>;
 };
 
 interface MenuIDEProps {
   activeClass?: string;
-  listItem?: (ListMenuIDETypes | undefined)[] | undefined;
+  listItem?: Array<ListMenuIDETypes>;
+  title: string;
 }
 
-export default function MenuIDE({ activeClass, listItem }: MenuIDEProps) {
+export default function MenuIDE({
+  activeClass,
+  listItem,
+  title,
+}: MenuIDEProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleOpen = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <div
       className={`${activeClass} w-full h-full bg-whiteColor absolute top-0 left-0`}
     >
-      <ul>
+      <p className="pl-14 py-3">{title}</p>
+      <ul className="pt-14">
         {listItem?.map((list, listIndex: number) => {
           return (
-            <li key={listIndex} className="flex">
-              <ChechIcon />
-              <span>{list?.text}</span>
-              <ul>
-                {list?.items?.map((item, index) => (
-                  <li key={index}>
-                    <ChechIcon width={14} height={14} />
-                    <span>{item.itemText}</span>
-                  </li>
-                ))}
-              </ul>
+            <li key={listIndex}>
+              <div
+                className={`flex items-center justify-between py-[15px] px-[20px] ${
+                  isOpen && 'bg-grayColorE7'
+                }`}
+                onClick={toggleOpen}
+              >
+                <div className="flex items-center">
+                  {list.isActive ? (
+                    <PlayIcon width={28} height={28} />
+                  ) : (
+                    <CheckIcon width={28} height={28} />
+                  )}
+                  <span className="pl-2">{list?.name}</span>
+                </div>
+                <div className={isOpen ? 'rotate-180' : ''}>
+                  <ArrowDown />
+                </div>
+              </div>
+              {isOpen && (
+                <ul>
+                  {list?.lesson_exercises?.map((item, index) => (
+                    <li key={index} className="flex items-center pl-10">
+                      <CheckIcon
+                        width={14}
+                        height={14}
+                        fill={item.isActive ? '#28A745' : '#C4C4C4'}
+                      />
+                      <span className="pl-2">{item.name}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           );
         })}
