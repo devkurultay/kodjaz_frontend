@@ -1,16 +1,16 @@
 // External dependencies
+import React, { Fragment } from 'react';
 import { useSession } from 'next-auth/react';
 import { Popover, Transition } from '@headlessui/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Trans } from 'next-i18next';
-import { Fragment } from 'react';
+import { useRouter } from 'next/navigation';
 
 /* Local dependencies */
 import LogoIcon from '../../../public/assets/svg/Logo';
 import BarsIcon from '../../../public/assets/svg/BarsIcon';
 import CloseIcon from '../../../public/assets/svg/CloseIcon';
-import { useRouter } from 'next/navigation';
 import UserIcon from '../../../public/assets/svg/UserIcon';
 
 export default function Header() {

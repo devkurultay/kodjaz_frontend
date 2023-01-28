@@ -1,5 +1,6 @@
 /* External dependencies */
 import React from 'react';
+import { useSession } from 'next-auth/react';
 import { Trans } from 'next-i18next';
 import Link from 'next/link';
 
@@ -10,6 +11,8 @@ import FacebookIcon from '../../../public/assets/svg/FacebookIcon';
 import TelegramIcon from '../../../public/assets/svg/TelegramIcon';
 
 export default function Footer() {
+  const { data: session } = useSession();
+
   return (
     <>
       <div className="bg-blackColorDark">
@@ -21,31 +24,63 @@ export default function Footer() {
                 <Logo fill="#fff" width={92} height={24} />
               </Link>
             </div>
-            <div className="flex md:basis-1/2 md:justify-center text-whiteColor flex-col md:flex-row">
-              <div className="mb-4 md:basis-1/3 md:mb-0">
-                <Link href="/courses">
-                  <Trans>courses</Trans>
-                </Link>
+            {session ? (
+              <div className="flex md:basis-1/2 md:justify-center text-whiteColor flex-col md:flex-row">
+                <div className="mb-4 md:basis-1/3 md:mb-0">
+                  <Link href="/classroom">
+                    <Trans>myRoom</Trans>
+                  </Link>
+                </div>
+                <div className="mb-4 md:basis-1/3 md:mb-0">
+                  <Link href="/about">
+                    <Trans>aboutUs</Trans>
+                  </Link>
+                </div>
+                <div className="mb-14 md:basis-1/3 md:mb-0">
+                  <Link href="/resources">
+                    <Trans>resources</Trans>
+                  </Link>
+                </div>
               </div>
-              <div className="mb-4 md:basis-1/3 md:mb-0">
-                <Link href="/about">
-                  <Trans>aboutUs</Trans>
-                </Link>
+            ) : (
+              <div className="flex md:basis-1/2 md:justify-center text-whiteColor flex-col md:flex-row">
+                <div className="mb-4 md:basis-1/3 md:mb-0">
+                  <Link href="/courses">
+                    <Trans>courses</Trans>
+                  </Link>
+                </div>
+                <div className="mb-4 md:basis-1/3 md:mb-0">
+                  <Link href="/about">
+                    <Trans>aboutUs</Trans>
+                  </Link>
+                </div>
+                <div className="mb-14 md:basis-1/3 md:mb-0">
+                  <Link href="/resources">
+                    <Trans>resources</Trans>
+                  </Link>
+                </div>
               </div>
-              <div className="mb-14 md:basis-1/3 md:mb-0">
-                <Link href="/resources">
-                  <Trans>resources</Trans>
-                </Link>
-              </div>
-            </div>
+            )}
             <div className="flex md:basis-1/4 md:justify-end items-center">
-              <Link href="#" className="flex pr-8 md:pl-8 md:pr-0">
+              <Link
+                href="https://www.instagram.com/kodjaz/"
+                target="_blank"
+                className="flex pr-8 md:pl-8 md:pr-0"
+              >
                 <InstagramIcon />
               </Link>
-              <Link href="#" className="flex pr-8 md:pl-8 md:pr-0">
+              <Link
+                href="https://www.facebook.com/kodjaz"
+                target="_blank"
+                className="flex pr-8 md:pl-8 md:pr-0"
+              >
                 <FacebookIcon />
               </Link>
-              <Link href="#" className="flex pr-8 md:pl-8 md:pr-0">
+              <Link
+                href="https://t.me/kodjaz_community"
+                target="_blank"
+                className="flex pr-8 md:pl-8 md:pr-0"
+              >
                 <TelegramIcon />
               </Link>
             </div>
