@@ -71,5 +71,6 @@
   "courseInfo": "Маалымат",
   "unitsCount": "{{numUnits}} бап",
   "lessonsCount": "{{numLessons}} сабак",
-  "beginner": "Оңой"
+  "beginner": "Оңой",
+  "signInWith": "{{name}} менен кирүү"
 }

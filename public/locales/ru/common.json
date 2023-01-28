@@ -67,5 +67,6 @@
   "courseInfo": "Информация",
   "unitsCount": "Глав: {{numUnits}}",
   "lessonsCount": "Уроков: {{numLessons}}",
-  "beginner": "Начальный"
+  "beginner": "Начальный",
+  "signInWith": "Вход через {{name}}"
 }

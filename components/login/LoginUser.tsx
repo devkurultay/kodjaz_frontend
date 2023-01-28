@@ -1,8 +1,8 @@
 /* External dependencies */
 import { Trans } from 'next-i18next';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { signIn } from 'next-auth/react';
+import { signIn, getProviders } from 'next-auth/react';
 
 /* Local dependencies */
 import CloseIcon from '../../public/assets/svg/CloseIcon';
@@ -16,8 +16,16 @@ import { useRouter } from 'next/navigation';
 
 export default function LoginUser() {
   const router = useRouter();
+  const [providers, setProviders] = useState([]);
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<Boolean>(false);
+
+  useEffect(() => {
+    getProviders().then((pr: any) => {
+      setProviders(pr);
+    });
+  }, []);
+
   const { register, handleSubmit } = useForm({
     defaultValues: {
       email: '',
@@ -29,24 +37,34 @@ export default function LoginUser() {
     router.push('/');
   }
 
-  async function submitHandler({ email, password }: Login) {
-    setLoading(true);
+  function getCallbackUrl() {
     const url = new URL(location.href);
     let callbackUrl = url.searchParams.get('callbackUrl') ?? '';
     if (callbackUrl.includes('account-confirm-email')) {
       callbackUrl = '/classroom';
     }
+    return callbackUrl;
+  }
+
+  async function submitHandler({ email, password }: Login) {
+    setLoading(true);
+
     const res = await signIn('credentials', {
       redirect: false,
       email: email,
       password: password,
     });
     if (res?.ok) {
-      router.push(callbackUrl);
+      router.push(getCallbackUrl());
     } else if (res?.error) {
       setLoading(false);
       setError(res?.error ?? '');
     }
+  }
+
+  async function googleHandler(providerId: string) {
+    setLoading(true);
+    await signIn(providerId, { redirect: true, callbackUrl: getCallbackUrl() });
   }
 
   return (
@@ -109,36 +127,56 @@ export default function LoginUser() {
               {loading ? <LoadingSpinner height={23} /> : <Trans>logIn</Trans>}
             </button>
           </div>
-          <p className="text-center mb-5">
-            <Trans>withSocialMedias</Trans>
-          </p>
-          <div className="flex gap-x-4 justify-center mb-[30px]">
-            <button className="border rounded-md border-grayColorDb flex justify-center items-center w-[50px] h-[50px]">
-              <GoogleIcon />
-            </button>
-            <button className="border rounded-md border-grayColorDb flex justify-center items-center w-[50px] h-[50px]">
-              <AppleIcon />
-            </button>
-            <button className="border rounded-md border-grayColorDb flex justify-center items-center w-[50px] h-[50px]">
-              <FacebookIcon
-                fill="#3872DC"
-                width={17}
-                height={37}
-                className="mt-2 ml-1"
-              />
-            </button>
-          </div>
-          <p className="text-center">
-            <Trans
-              i18nKey="noAccountSignUp"
-              components={{
-                textPrimary: (
-                  <a href="#" className="text-primaryColorLight"></a>
-                ),
-              }}
-            />
-          </p>
         </form>
+        <p className="text-center mb-5">
+          <Trans>withSocialMedias</Trans>
+        </p>
+        <div className="flex gap-x-4 justify-center mb-[30px]">
+          {Object.values(providers).map((provider: any) => (
+            <React.Fragment key={provider.id}>
+              {provider.name !== 'Email and Password' && (
+                <div>
+                  <button
+                    onClick={() => googleHandler(provider.id)}
+                    className="border rounded-md border-grayColorDb flex justify-center items-center w-[50px] h-[50px]"
+                  >
+                    {/* TODO(murat): come up with a nicer way of picking up a correct icon */}
+                    {provider.name === 'Google' ? (
+                      <GoogleIcon />
+                    ) : (
+                      <span>
+                        <Trans
+                          i18nKey="signInWith"
+                          values={{ name: provider.name }}
+                        />
+                      </span>
+                    )}
+                  </button>
+                </div>
+              )}
+            </React.Fragment>
+          ))}
+          {/*
+          <button className="border rounded-md border-grayColorDb flex justify-center items-center w-[50px] h-[50px]">
+            <AppleIcon />
+          </button>
+          <button className="border rounded-md border-grayColorDb flex justify-center items-center w-[50px] h-[50px]">
+            <FacebookIcon
+              fill="#3872DC"
+              width={17}
+              height={37}
+              className="mt-2 ml-1"
+            />
+          </button> */}
+        </div>
+        <p className="text-center">
+          <Trans
+            i18nKey="noAccountSignUp"
+            components={{
+              textPrimary: <a href="#" className="text-primaryColorLight"></a>,
+            }}
+          />
+        </p>
       </div>
     </div>
   );
