@@ -16,14 +16,16 @@ export const getStaticProps = async ({ locale }: any) => ({
 
 export default function ExercisePage() {
   return (
-    <ClassroomLayout>
+    <>
       <Head>
         <title>Kodjaz - программалоо негиздер боюнча акысыз курстар</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta property="og:title" content="Kodjaz - Курстар" key="title" />
       </Head>
-      <IDE />
-    </ClassroomLayout>
+      <ClassroomLayout>
+        <IDE />
+      </ClassroomLayout>
+    </>
   );
 }
 
