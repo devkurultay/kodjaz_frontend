@@ -6,8 +6,8 @@ import { IconProps } from './types';
 
 export default function ArrowDown({
   fill = '#98989A',
-  height = 16,
-  width = 11,
+  height = 14,
+  width = 9,
 }: IconProps) {
   return (
     <svg

@@ -36,7 +36,7 @@ export default function MenuIDE({
 
   return (
     <div
-      className={`${activeClass} w-full h-full bg-whiteColor absolute top-0 left-0`}
+      className={`${activeClass} w-full min-h-auto lg:min-h-full z-10 lg:h-full bg-whiteColor absolute top-0 left-0 pb-8`}
     >
       <p className="pl-14 py-3">{title}</p>
       <ul className="pt-14">
@@ -57,7 +57,7 @@ export default function MenuIDE({
                   )}
                   <span className="pl-2">{list?.name}</span>
                 </div>
-                <div className={isOpen ? 'rotate-180' : ''}>
+                <div className={isOpen ? 'rotate-0' : 'rotate-[270deg]'}>
                   <ArrowDown />
                 </div>
               </div>

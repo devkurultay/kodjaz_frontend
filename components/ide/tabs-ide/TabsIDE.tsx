@@ -64,7 +64,7 @@ export default function TabsIDE({
         })}
       </div>
       {items.length > 0 && (
-        <div className="tab-content">{items[activeTab].content}</div>
+        <div className={styles.tab_content}>{items[activeTab].content}</div>
       )}
     </>
   );
