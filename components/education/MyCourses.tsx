@@ -170,11 +170,7 @@ export default function MyCourses() {
                       href={`/classroom/course-details/${item.id}`}
                       className="inline-flex items-center justify-center whitespace-nowrap w-fit mt-4 px-12 py-1.5 md:py-2.5 underline text-primaryColorLight"
                     >
-                      {loading ? (
-                        <LoadingSpinner height={23} />
-                      ) : (
-                        <Trans>courseInfo</Trans>
-                      )}
+                      <Trans>courseInfo</Trans>
                     </Link>
                   </div>
                 )}

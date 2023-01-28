@@ -62,7 +62,7 @@ export default function CourseDetail({ track }: any) {
             </div>
           </div>
         </div>
-        <div className="flex justify-between flex-col md:flex-row gap-x-[20px] mt-5">
+        <div className="flex justify-between flex-col md:flex-row gap-x-[20px] mt-8">
           <div className="flex grow flex-wrap flex-col gap-y-[30px]">
             {track.track_units.map((unit: Unit) => (
               <div
@@ -96,7 +96,7 @@ export default function CourseDetail({ track }: any) {
               </div>
             ))}
           </div>
-          <div className="flex basis-1/3 bg-grayColorF3 rounded-[30px] p-5 mt-5 md:mt-0">
+          <div className="flex basis-1/3 bg-grayColorF3 rounded-[30px] p-5 mt-8 md:mt-0">
             <div>
               <p className="text-grayColor75 text-base font-normal uppercase mb-2.5">
                 <Trans>aboutCourse</Trans>
