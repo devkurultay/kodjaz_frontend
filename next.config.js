@@ -18,6 +18,13 @@ const nextConfig = {
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
   },
+  webpack: (config, options) => {
+    config.module.rules.push({
+      test: /ace-builds.*\/worker-.*$/,
+      type: 'asset/resource',
+    });
+    return config;
+  },
 };
 
 module.exports = nextConfig;
