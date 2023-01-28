@@ -68,6 +68,7 @@ export type Subscription = {
 };
 
 export type Submission = {
+  id: number;
   submitted_code: string;
   exercise: number;
   console_output: string;

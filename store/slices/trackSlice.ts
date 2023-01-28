@@ -13,9 +13,9 @@ import {
   Submission,
 } from '../../types/tracksTypes';
 
-type TokenAndTrackId = {
+type TokenAndId = {
   token: string;
-  trackId: number;
+  [key: string]: number | string;
 };
 
 type SubmitCodePayload = {
@@ -44,7 +44,7 @@ export const getTracks: any = createAsyncThunk(
 
 export const getTrackById: any = createAsyncThunk(
   'get-track-by-id',
-  async ({ token, trackId }: TokenAndTrackId, { rejectWithValue }) => {
+  async ({ token, trackId }: TokenAndId, { rejectWithValue }) => {
     try {
       const response = await getRequest(token, `/v1/user/tracks/${trackId}/`);
 
@@ -57,7 +57,7 @@ export const getTrackById: any = createAsyncThunk(
 
 export const signUpToTrack: any = createAsyncThunk(
   'sign-up-to-track',
-  async ({ token, trackId }: TokenAndTrackId, { rejectWithValue }) => {
+  async ({ token, trackId }: TokenAndId, { rejectWithValue }) => {
     try {
       const response = await postRequest(token, 'v1/user/subscriptions/', {
         track: trackId,
@@ -83,6 +83,29 @@ export const submitCode: any = createAsyncThunk(
       });
 
       return response;
+    } catch (error: any) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
+// TODO(murat): create an endpoint on the backend
+export const getLastSubmissionByExerciseId: any = createAsyncThunk(
+  'get-last-submission-by-exercise-id',
+  async ({ token, exerciseId }: TokenAndId, { rejectWithValue }) => {
+    try {
+      const response = await getRequest(token, `v1/user/submissions/`);
+      const submissions = response.filter(
+        (sub: Submission) => sub.exercise === exerciseId,
+      );
+
+      const latest = submissions.reduce(
+        (max: Submission, current: Submission) =>
+          current.id > max.id ? current : max,
+        { id: -Infinity },
+      );
+
+      return latest;
     } catch (error: any) {
       return rejectWithValue(error);
     }
@@ -192,7 +215,18 @@ const userTrackSlice = createSlice({
       .addCase(submitCode.rejected, (state, { payload }) => {
         state.submissionLoading = false;
         state.error = payload;
-      });
+      })
+      .addCase(getLastSubmissionByExerciseId.pending, (state) => {
+        state.submissionLoading = true;
+      })
+      .addCase(
+        getLastSubmissionByExerciseId.fulfilled,
+        (state, { payload }) => {
+          state.submissionLoading = false;
+          state.submission = payload;
+          state.submissionsByExerciseId[payload.exercise] = payload;
+        },
+      );
   },
 });
 

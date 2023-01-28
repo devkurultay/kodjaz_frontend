@@ -14,6 +14,7 @@ import TabsIDE from './tabs-ide/TabsIDE';
 import { useRouter } from 'next/router';
 
 import {
+  getLastSubmissionByExerciseId,
   getTracks,
   submitCode,
   trackState,
@@ -58,16 +59,19 @@ export default function IDE() {
   useEffect(() => {
     if (id) {
       const exId = Number(id);
+      const tk = (sessionData as ExtendedSession)?.access ?? '';
+      if (status !== 'loading') {
+        dispatch(
+          getLastSubmissionByExerciseId({ token: tk, exerciseId: exId }),
+        );
+      }
       if (exId in exercisesById) {
         const ex = exercisesById[exId];
         setExercise(ex);
         setUserCode(ex.default_code ?? '');
       } else if (status !== 'loading') {
-        const tk = (sessionData as ExtendedSession)?.access ?? '';
         // TODO(murat): Don't call getTracks if we already have them
-        if (tk) {
-          dispatch(getTracks(tk));
-        }
+        dispatch(getTracks(tk));
       }
     }
   }, [loading, sessionData, status]);
