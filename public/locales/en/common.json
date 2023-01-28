@@ -66,5 +66,6 @@
   "courseInfo": "Details",
   "unitsCount": "{{numUnits}} units",
   "lessonsCount": "{{numLessons}} lessons",
-  "beginner": "Beginner"
+  "beginner": "Beginner",
+  "signInWith": "Sign in with {{name}}"
 }
