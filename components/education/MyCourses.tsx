@@ -155,7 +155,7 @@ export default function MyCourses() {
                 </div>
                 {/* Put a button and scroll down to recommended courses */}
                 {!item?.placeholder && (
-                  <div className="font-medium">
+                  <div className="font-medium flex flex-col items-center md:items-start">
                     <button
                       onClick={goToLatestExercise}
                       className="inline-flex items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight w-fit mt-4 px-12 py-1.5 md:py-2.5 text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
@@ -168,7 +168,7 @@ export default function MyCourses() {
                     </button>
                     <Link
                       href={`/classroom/course-details/${item.id}`}
-                      className="inline-flex items-center justify-center whitespace-nowrap w-fit mt-4 px-12 py-1.5 md:py-2.5 underline text-blue-600 hover:text-blue-800"
+                      className="inline-flex items-center justify-center whitespace-nowrap w-fit mt-4 px-12 py-1.5 md:py-2.5 underline text-primaryColorLight"
                     >
                       {loading ? (
                         <LoadingSpinner height={23} />
@@ -179,7 +179,7 @@ export default function MyCourses() {
                   </div>
                 )}
               </div>
-              <div className="flex justify-start pb-6 md:justify-end md:pb-0 md:basis-1/4">
+              <div className="flex justify-center pb-6 md:justify-end md:pb-0 md:basis-1/4 items-center">
                 <Image
                   src={item.icon}
                   alt={item.alt}

@@ -1,6 +1,7 @@
 // External dependencies
 import { useSession } from 'next-auth/react';
 import { Popover, Transition } from '@headlessui/react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Trans } from 'next-i18next';
 import { Fragment } from 'react';
@@ -10,6 +11,7 @@ import LogoIcon from '../../../public/assets/svg/Logo';
 import BarsIcon from '../../../public/assets/svg/BarsIcon';
 import CloseIcon from '../../../public/assets/svg/CloseIcon';
 import { useRouter } from 'next/navigation';
+import UserIcon from '../../../public/assets/svg/UserIcon';
 
 export default function Header() {
   const router = useRouter();
@@ -44,6 +46,13 @@ export default function Header() {
             </Popover.Button>
           </div>
           <Popover.Group as="nav" className="hidden space-x-10 lg:flex">
+            {session && (
+              <Popover className="relative">
+                <Link href="/classroom">
+                  <Trans>myRoom</Trans>
+                </Link>
+              </Popover>
+            )}
             <Popover className="relative">
               <Link href="/courses">
                 <Trans>courses</Trans>
@@ -79,7 +88,7 @@ export default function Header() {
                   className="ml-8 inline-flex items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight px-5 py-1.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
                   type="button"
                 >
-                  <Trans>start</Trans>
+                  <Trans>signUpMenu</Trans>
                 </button>
               </>
             )}
@@ -99,7 +108,7 @@ export default function Header() {
           focus
           className="absolute inset-x-0 top-0 origin-top-right z-10 h-[100vh] left-auto max-w-sm transform transition lg:hidden"
         >
-          <div className="divide-gray-50 bg-whiteColor shadow-lg ring-black ring-opacity-5 h-full flex flex-col justify-between w-[90%] min-w-[300px] max-h-[640px]">
+          <div className="divide-gray-50 bg-whiteColor shadow-lg ring-black ring-opacity-5 h-full flex flex-col w-[90%] min-w-[300px] max-h-[640px]">
             <div className="px-5 pt-5 pb-6">
               <div className="flex items-center justify-between">
                 <div className="w-auto">
@@ -116,28 +125,52 @@ export default function Header() {
               </div>
             </div>
             <div className="space-y-6 py-8 px-5">
-              <div className="flex flex-col justify-end">
-                {session ? (
-                  <div>
-                    <p>{session.user?.email}</p>
+              {session ? (
+                <>
+                  <div className="flex flex-col gap-y-[20px]">
+                    <div className="flex justify-between font-semibold">
+                      <UserIcon />
+                      <p>{session.user?.email}</p>
+                    </div>
+                    <Link href="/classroom">
+                      <Trans>myRoom</Trans>
+                    </Link>
+                    <Link href="/about">
+                      <Trans>aboutUs</Trans>
+                    </Link>
+                    <Link href="/resources">
+                      <Trans>resources</Trans>
+                    </Link>
                   </div>
-                ) : (
-                  <>
-                    <button
-                      onClick={goToLoginPage}
-                      className="mb-3 flex w-full items-center justify-center whitespace-nowrap rounded-lg border-2 px-5 py-1.5 font-medium text-primaryColorLight hover:bg-primaryColorLight hover:text-whiteColor"
-                    >
-                      <Trans>logIn</Trans>
-                    </button>
-                    <button
-                      onClick={goToSignUpPage}
-                      className="flex w-full items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight px-5 py-1.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
-                    >
-                      <Trans>start</Trans>
-                    </button>{' '}
-                  </>
-                )}
-              </div>
+                  <div className="mb-3 flex w-full items-center justify-center whitespace-nowrap rounded-lg border-2 px-5 py-1.5 font-medium text-primaryColorLight hover:bg-primaryColorLight hover:text-whiteColor">
+                    logOut
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Link href="/courses">
+                    <Trans>courses</Trans>
+                  </Link>
+                  <Link href="/about">
+                    <Trans>aboutUs</Trans>
+                  </Link>
+                  <Link href="/resources">
+                    <Trans>resources</Trans>
+                  </Link>
+                  <button
+                    onClick={goToLoginPage}
+                    className="mb-3 flex w-full items-center justify-center whitespace-nowrap rounded-lg border-2 px-5 py-1.5 font-medium text-primaryColorLight hover:bg-primaryColorLight hover:text-whiteColor"
+                  >
+                    <Trans>logIn</Trans>
+                  </button>
+                  <button
+                    onClick={goToSignUpPage}
+                    className="flex w-full items-center justify-center border-primaryColorLight whitespace-nowrap rounded-lg border-2 bg-primaryColorLight px-5 py-1.5 font-medium text-whiteColor hover:bg-whiteColor hover:text-primaryColorLight"
+                  >
+                    <Trans>signUpMenu</Trans>
+                  </button>{' '}
+                </>
+              )}
             </div>
           </div>
         </Popover.Panel>

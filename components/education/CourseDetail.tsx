@@ -24,7 +24,7 @@ export default function CourseDetail({ track }: any) {
       <div className="container mx-auto">
         <div className="flex flex-wrap gap-y-[30px]">
           <div className="flex basis-full md:justify-between bg-grayColorF3 rounded-[30px] p-10 flex-col-reverse md:flex-row">
-            <div className="flex flex-col basis-1/2">
+            <div className="flex flex-col basis-1/2 items-center md:items-start">
               <div className="mb-5">
                 <div className="grow mb-5">
                   <p className="text-blackColorDark mb-5 text-lg font-bold">
@@ -57,7 +57,7 @@ export default function CourseDetail({ track }: any) {
                 <Trans>continueCourse</Trans>
               </Link>
             </div>
-            <div className="flex justify-start pb-6 md:justify-end md:pb-0 md:basis-1/4">
+            <div className="flex justify-start pb-6 justify-center md:justify-end md:pb-0 md:basis-1/4">
               <Image src={icon} alt={track.name} width={160} height={160} />
             </div>
           </div>
