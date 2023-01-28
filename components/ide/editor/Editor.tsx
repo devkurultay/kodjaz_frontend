@@ -1,5 +1,5 @@
 /* External dependencies */
-import React from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import AceEditor from 'react-ace';
 import { config } from 'ace-builds';
 import 'ace-builds/src-noconflict/mode-python';
@@ -12,21 +12,18 @@ config.setModuleUrl('ace/mode/javascript_worker', jsWorkerUrl);
 import styles from '../../../styles/scss/ide.module.scss';
 
 type EditorProps = {
-  code: string;
+  userCode: string;
+  setUserCode: Dispatch<SetStateAction<string>>;
 };
 
-export default function Editor({ code }: EditorProps) {
-  function onChange(newValue: any) {
-    console.log('change', newValue); // TODO: add function when redux will be ready
-  }
-
+export default function Editor({ userCode, setUserCode }: EditorProps) {
   return (
     <AceEditor
       mode="python"
       theme="terminal"
-      onChange={(val) => onChange(val)}
+      onChange={setUserCode}
       name="UNIQUE_ID_OF_DIV"
-      value={code || ''}
+      value={userCode}
       editorProps={{ $blockScrolling: true }}
       style={{ width: '100%', height: '100%' }}
       className={styles.ace_editor}

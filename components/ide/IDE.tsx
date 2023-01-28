@@ -38,6 +38,7 @@ export default function IDE() {
   const [isOpenMenu, setIsOpenMenu] = useState<Boolean>(false);
   const [exercise, setExercise] = useState<Exercise>();
   const [tabsContent, setTabsContent] = useState<TabContents>([]);
+  const [userCode, setUserCode] = useState<string>('');
   const router = useRouter();
   const { loading, exercisesById } = useAppSelector(trackState);
   const { id } = router.query;
@@ -49,6 +50,7 @@ export default function IDE() {
       if (exId in exercisesById) {
         const ex = exercisesById[exId];
         setExercise(ex);
+        setUserCode(ex.default_code ?? '');
       } else if (status !== 'loading') {
         const tk = (sessionData as ExtendedSession)?.access ?? '';
         // TODO(murat): Don't call getTracks if we already have them
@@ -63,16 +65,23 @@ export default function IDE() {
     if (exercise) {
       const contents = [
         {
-          content: (<div className="h-full pt-2.5 relative flex flex-col">
-          <Description>{exercise?.lecture ?? ''}</Description>
-          <Instruction items={[{
-            children: exercise?.instruction ?? '',
-            heading: 'instruction',
-          }, {
-            children: exercise?.hint ?? '',
-            heading: 'hints',
-          }]}></Instruction>
-        </div>),
+          content: (
+            <div className="h-full pt-2.5 relative flex flex-col">
+              <Description>{exercise?.lecture ?? ''}</Description>
+              <Instruction
+                items={[
+                  {
+                    children: exercise?.instruction ?? '',
+                    heading: 'instruction',
+                  },
+                  {
+                    children: exercise?.hint ?? '',
+                    heading: 'hints',
+                  },
+                ]}
+              ></Instruction>
+            </div>
+          ),
           icon: <TabBurgerIcon />,
           text: 'Description',
           width: 20,
@@ -128,6 +137,10 @@ export default function IDE() {
     },
   ];
 
+  function submitCode() {
+    console.log('===', userCode);
+  }
+
   return (
     <div className="m-auto">
       <div className="flex flex-col lg:flex-row lg:min-h-[calc(100vh - 160px)]">
@@ -150,9 +163,12 @@ export default function IDE() {
           />
         </div>
         <div className="basis-full h-[60vh] lg:basis-auto lg:grow lg:h-full relative">
-          <Editor code={exercise?.default_code ?? ''} />
+          <Editor userCode={userCode} setUserCode={setUserCode} />
           <div className="editor-footer absolute bottom-0 t-auto l-0 pr-5 pl-[60px] py-3 bg-[#3A3B42] w-full h-[60px] flex items-center">
-            <button className="flex items-center bg-primaryColorLight text-whiteColor font-medium text-sm px-3.5 py-2 rounded-md hover:bg-primaryColorMiddle">
+            <button
+              onClick={submitCode}
+              className="flex items-center bg-primaryColorLight text-whiteColor font-medium text-sm px-3.5 py-2 rounded-md hover:bg-primaryColorMiddle"
+            >
               <RunCodeIcon />
               <span className="ml-3">
                 <Trans>runCode</Trans>
