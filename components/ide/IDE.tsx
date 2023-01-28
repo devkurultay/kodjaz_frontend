@@ -49,7 +49,9 @@ export default function IDE() {
   const { data: sessionData, status } = useSession();
 
   useEffect(() => {
-    console.log('SUBMISSION', submission);
+    if (submission) {
+      setUserCode(submission?.submitted_code ?? exercise?.default_code ?? '');
+    }
   }, [submission]);
 
   useEffect(() => {
