@@ -10,11 +10,18 @@ import {
   Unit,
   Lesson,
   Exercise,
+  Submission,
 } from '../../types/tracksTypes';
 
 type TokenAndTrackId = {
   token: string;
   trackId: number;
+};
+
+type SubmitCodePayload = {
+  token: string;
+  userCode: string;
+  exercise: number;
 };
 
 export const getTracks: any = createAsyncThunk(
@@ -63,6 +70,25 @@ export const signUpToTrack: any = createAsyncThunk(
   },
 );
 
+export const submitCode: any = createAsyncThunk(
+  'submit-code',
+  async (
+    { token, userCode, exercise }: SubmitCodePayload,
+    { rejectWithValue },
+  ) => {
+    try {
+      const response = await postRequest(token, 'v1/user/submissions/', {
+        submitted_code: userCode,
+        exercise,
+      });
+
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
 interface userTrackState {
   error?: Error;
   loading: boolean;
@@ -72,6 +98,7 @@ interface userTrackState {
   unitsById: EntityById<Unit>;
   lessonsById: EntityById<Lesson>;
   exercisesById: EntityById<Exercise>;
+  submission: Submission | {};
 }
 
 const initialState: userTrackState = {
@@ -81,6 +108,7 @@ const initialState: userTrackState = {
   unitsById: {},
   lessonsById: {},
   exercisesById: {},
+  submission: {},
 };
 
 const userTrackSlice = createSlice({
@@ -112,7 +140,6 @@ const userTrackSlice = createSlice({
         const exercisesById: EntityById<Exercise> = {};
 
         payload.forEach((track: Track) => {
-
           tracksById[track.id] = track;
           tracksByName[track.name] = track;
 
@@ -147,6 +174,17 @@ const userTrackSlice = createSlice({
         state.loading = false;
       })
       .addCase(signUpToTrack.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      })
+      .addCase(submitCode.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(submitCode.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.submission = payload;
+      })
+      .addCase(submitCode.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
       });
