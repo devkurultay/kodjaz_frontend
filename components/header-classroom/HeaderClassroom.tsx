@@ -10,7 +10,7 @@ import UserIcon from '../../public/assets/svg/UserIcon';
 export default function HeaderClassroom() {
   return (
     <div className="bg-blackColor text-whiteColor md:h-[80px]">
-      <div className="flex max-w-[1440px] m-auto p-5 items-center justify-between">
+      <div className="flex max-w-[1440px] m-auto p-5 items-center justify-between md:h-full">
         <div className="flex items-center">
           <Link href="/">
             <LogoWithoutText />
