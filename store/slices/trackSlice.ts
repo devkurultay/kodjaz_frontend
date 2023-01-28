@@ -98,7 +98,7 @@ const userTrackSlice = createSlice({
       .addCase(getTracks.fulfilled, (state, { payload }) => {
         const tracksById: TrackById = {};
         const tracksByName: TrackByName = {};
-        payload.forEach((track: Track) => {
+        payload?.forEach((track: Track) => {
           tracksById[track.id] = track;
           tracksByName[track.name] = track;
         });
