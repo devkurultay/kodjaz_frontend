@@ -2,7 +2,7 @@
 import React from 'react';
 import AceEditor from 'react-ace';
 import { config } from 'ace-builds';
-import 'ace-builds/src-noconflict/mode-javascript';
+import 'ace-builds/src-noconflict/mode-python';
 import 'ace-builds/src-noconflict/theme-terminal';
 
 import jsWorkerUrl from 'ace-builds/src-noconflict/worker-javascript';
@@ -18,7 +18,7 @@ export default function Editor() {
 
   return (
     <AceEditor
-      mode="javascript"
+      mode="python"
       theme="terminal"
       onChange={onChange}
       name="UNIQUE_ID_OF_DIV"
