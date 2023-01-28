@@ -135,37 +135,6 @@ export default function IDE() {
     }
   }, [exercise]);
 
-  const items = [
-    {
-      name: 'Text 1',
-      isActive: false,
-      lessons: [
-        {
-          name: 'Text 1.1',
-          isActive: false,
-        },
-        {
-          name: 'Text 1.2',
-          isActive: false,
-        },
-      ],
-    },
-    {
-      name: 'Text 2',
-      isActive: true,
-      lesson_exercises: [
-        {
-          name: 'Text 2.1',
-          isActive: true,
-        },
-        {
-          name: 'Text 2.2',
-          isActive: false,
-        },
-      ],
-    },
-  ];
-
   function submitUserCode() {
     const tk = (sessionData as ExtendedSession)?.access ?? '';
     const exId = Number(id);
@@ -174,7 +143,7 @@ export default function IDE() {
   }
 
   return (
-    <div className="lg:h-100vh lg:fixed w-full overflow-hidden">
+    <div className="lg:h-100vh lg:fixed w-full">
       <HeaderClassroom />
       <div className="flex flex-col lg:flex-row">
         <div className="lg:h-[inherit] relative lg:w-[480px] flex-none">
@@ -202,7 +171,7 @@ export default function IDE() {
           <div className="h-[48px] flex-none bg-blackColorLight"></div>
           <Editor userCode={userCode} setUserCode={setUserCode} />
           <div>
-            <div className="editor-footer absolute bottom-0 t-auto l-0 pr-5 pl-[60px] py-3 bg-[#3A3B42] w-full h-[60px] flex items-center">
+            <div className="editor-footer pr-5 pl-[60px] py-3 bg-[#3A3B42] w-full h-[60px] flex items-center">
               <button
                 onClick={submitUserCode}
                 className="flex items-center bg-primaryColorLight text-whiteColor font-medium text-sm px-3.5 py-2 rounded-md hover:bg-primaryColorMiddle"
