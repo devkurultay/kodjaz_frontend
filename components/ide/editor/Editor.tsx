@@ -11,7 +11,11 @@ config.setModuleUrl('ace/mode/javascript_worker', jsWorkerUrl);
 /* Local dependencies */
 import styles from '../../../styles/scss/ide.module.scss';
 
-export default function Editor() {
+type EditorProps = {
+  code: string;
+};
+
+export default function Editor({ code }: EditorProps) {
   function onChange(newValue: any) {
     console.log('change', newValue); // TODO: add function when redux will be ready
   }
@@ -20,8 +24,9 @@ export default function Editor() {
     <AceEditor
       mode="python"
       theme="terminal"
-      onChange={onChange}
+      onChange={(val) => onChange(val)}
       name="UNIQUE_ID_OF_DIV"
+      value={code || ''}
       editorProps={{ $blockScrolling: true }}
       style={{ width: '100%', height: '100%' }}
       className={styles.ace_editor}
