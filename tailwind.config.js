@@ -20,6 +20,7 @@ module.exports = {
       blackColorMiddle: '#212229',
       blueColorLight: '#F2FAFF',
       dangerColor: '#d73a49',
+      dangerColorConsole: '#FF3346',
       grayColorF3: '#f3f3f3',
       grayColorE7: '#e7e7ec',
       grayColorDb: '#dbdbdb',
