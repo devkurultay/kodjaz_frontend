@@ -58,7 +58,7 @@ export default function IDE() {
 
   useEffect(() => {
     if (submission) {
-      setUserCode(submission?.submitted_code ?? exercise?.default_code ?? '');
+      setUserCode(submission?.submitted_code ?? '');
       setConsoleOutput(submission.console_output);
       setConsoleError(submission.error_message);
       setIsConsoleShow(true);
@@ -71,14 +71,16 @@ export default function IDE() {
       if (exId in exercisesById) {
         const ex = exercisesById[exId];
         setExercise(ex);
-        setUserCode(ex.default_code ?? '');
+        if (!userCode) {
+          setUserCode(ex.default_code ?? '');
+        }
       } else if (status !== 'loading') {
         // TODO(murat): Don't call getTracks if we already have them
         const tk = (sessionData as ExtendedSession)?.access ?? '';
         dispatch(getTracks(tk));
       }
     }
-  }, [id]);
+  }, [id, exercisesById]);
 
   useEffect(() => {
     if (id) {
@@ -122,8 +124,7 @@ export default function IDE() {
           content: (
             <div className="h-full pt-2.5 relative flex flex-col">
               <Description>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nemo
-                rem minima consequatur.
+                Жакында бул жерде сонун талкуулар болот, буйруса.
               </Description>
             </div>
           ),
@@ -200,7 +201,7 @@ export default function IDE() {
               {isConsoleShow ? (
                 <div
                   className={`px-7 text-whiteColor overflow-y-scroll max-h-[40vh] lg:max-h-[50vh] w-inherit ${
-                    submission?.error_message ? 'text-dangerColorConsole' : ''
+                    consoleError ? 'text-dangerColorConsole' : ''
                   }`}
                 >
                   <div>
