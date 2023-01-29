@@ -20,7 +20,7 @@ import {
   trackState,
 } from '../../store/slices/trackSlice';
 import { useAppSelector } from '../../store/hooks';
-import { Exercise } from '../../types/tracksTypes';
+import { Exercise, Track } from '../../types/tracksTypes';
 import { useDispatch } from 'react-redux';
 import { useSession } from 'next-auth/react';
 import { ExtendedSession } from '../../types/userTypes';
@@ -42,10 +42,11 @@ type TabContents = {
 
 export default function IDE() {
   const dispatch = useDispatch();
-  const { loading, submissionLoading, exercisesById, submission } =
+  const { loading, submissionLoading, exercisesById, tracksById, submission } =
     useAppSelector(trackState);
   const [isOpenMenu, setIsOpenMenu] = useState<Boolean>(false);
   const [exercise, setExercise] = useState<Exercise>();
+  const [track, setTrack] = useState<Track>();
   const [tabsContent, setTabsContent] = useState<TabContents>([]);
   const [userCode, setUserCode] = useState<string>('');
   const router = useRouter();
@@ -127,6 +128,8 @@ export default function IDE() {
         },
       ];
       setTabsContent(contents);
+      const tr = tracksById?.[exercise.track_id];
+      tr && setTrack(tr);
     }
   }, [exercise]);
 
@@ -185,11 +188,13 @@ export default function IDE() {
                 }}
               />
             )}
-            <MenuIDE
-              activeClass={isOpenMenu ? 'block' : 'hidden'}
-              listItem={items}
-              title="Title"
-            />
+            {exercise && (
+              <MenuIDE
+                activeClass={isOpenMenu ? 'block' : 'hidden'}
+                track={track}
+                exercise={exercise}
+              />
+            )}
           </div>
           <div className="basis-full h-[60vh] lg:basis-auto lg:grow lg:h-full relative">
             <Editor userCode={userCode} setUserCode={setUserCode} />
