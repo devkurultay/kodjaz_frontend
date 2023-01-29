@@ -16,7 +16,7 @@ import ProfileMenu from '../../profile/ProfileMenu';
 
 export default function Header() {
   const router = useRouter();
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLButtonElement>(null);
   const { data: session } = useSession();
   const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
 
