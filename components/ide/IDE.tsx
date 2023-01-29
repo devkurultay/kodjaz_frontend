@@ -27,9 +27,9 @@ import { ExtendedSession } from '../../types/userTypes';
 import LoadingSpinner from '../ui/Spinner';
 import HeaderClassroom from '../header-classroom/HeaderClassroom';
 import FooterClassroom from '../footer-classroom/FooterClassroom';
+import AccordionComponent from './accordion/AccordionComponent';
 
 const Editor = dynamic(() => import('./editor/Editor'), { ssr: false });
-import Instruction from './accordion/AccordionComponent';
 
 type TabContents = {
   content: JSX.Element;
@@ -93,18 +93,20 @@ export default function IDE() {
           content: (
             <div className="h-full pt-2.5 relative flex flex-col">
               <Description>{exercise?.lecture ?? ''}</Description>
-              <Instruction
-                items={[
-                  {
-                    children: exercise?.instruction ?? '',
-                    heading: 'instruction',
-                  },
-                  {
-                    children: exercise?.hint ?? '',
-                    heading: 'hints',
-                  },
-                ]}
-              ></Instruction>
+              <div>
+                <AccordionComponent
+                  items={[
+                    {
+                      children: exercise?.instruction ?? '',
+                      heading: 'instructions',
+                    },
+                    {
+                      children: exercise?.hint ?? '',
+                      heading: 'hints',
+                    },
+                  ]}
+                />
+              </div>
             </div>
           ),
           icon: <TabBurgerIcon />,
