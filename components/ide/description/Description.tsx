@@ -8,7 +8,7 @@ interface DescriptionProps {
 
 export default function Description({ children, title }: DescriptionProps) {
   return (
-    <div className="grow px-5 min-h-[40vh] overflow-y-auto">
+    <div className="grow px-5">
       <h2 className="text-sm2 font-semibold mb-2.5">{title}</h2>
       <p className="mb-2.5">{children}</p>
     </div>
