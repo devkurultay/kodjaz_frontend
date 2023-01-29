@@ -1,10 +1,13 @@
 /* External dependencies */
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 /* Local dependencies */
 import CheckIcon from '../../../public/assets/svg/CheckIcon';
 import PlayIcon from '../../../public/assets/svg/PlayIcon';
 import ArrowDown from '../../../public/assets/svg/ArrowDown';
+import LoadingSpinner from '../../ui/Spinner';
+import { Exercise, Lesson, Track, Unit } from '../../../types/tracksTypes';
 
 type ListItemIDETypes = {
   name?: string;
@@ -19,58 +22,142 @@ type ListMenuIDETypes = {
 
 interface MenuIDEProps {
   activeClass?: string;
-  listItem?: Array<ListMenuIDETypes>;
-  title: string;
+  track?: Track;
+  exercise: Exercise;
+  setIsOpenMenu: Dispatch<SetStateAction<Boolean>>;
 }
 
 export default function MenuIDE({
   activeClass,
-  listItem,
-  title,
+  track,
+  exercise,
+  setIsOpenMenu,
 }: MenuIDEProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+  const [openUnit, setOpenUnit] = useState<number>(exercise.unit_id);
+  const [openLesson, setOpenLesson] = useState<number>(exercise.lesson);
+  const [navLoading, setNavLoading] = useState<number>(0);
 
-  const toggleOpen = () => {
-    setIsOpen(!isOpen);
+  useEffect(() => {
+    setIsOpenMenu(false);
+    setNavLoading(0);
+  }, [router.query]);
+
+  const handleExerciseClick = (id: number) => {
+    setNavLoading(id);
+    router.push(`/classroom/exercise/${id}`, '', { shallow: true });
+  };
+
+  const toggleUnit = (id: number) => {
+    if (openUnit === id) {
+      setOpenUnit(0);
+    } else {
+      setOpenUnit(id);
+    }
+  };
+
+  const toggleLesson = (id: number) => {
+    if (openLesson === id) {
+      setOpenLesson(0);
+    } else {
+      setOpenLesson(id);
+    }
   };
 
   return (
     <div
       className={`${activeClass} w-full min-h-auto lg:min-h-full z-10 lg:h-full bg-whiteColor absolute top-0 left-0 pb-8`}
     >
-      <p className="pl-14 py-3">{title}</p>
+      <p className="pl-14 py-3">{track?.name}</p>
       <ul className="pt-14">
-        {listItem?.map((list, listIndex: number) => {
+        {track?.track_units?.map((unit: Unit) => {
           return (
-            <li key={listIndex}>
+            <li key={unit.id}>
               <div
                 className={`flex items-center justify-between py-[15px] px-[20px] ${
-                  isOpen && 'bg-grayColorE7'
+                  openUnit === unit.id && 'bg-grayColorE7'
                 }`}
-                onClick={toggleOpen}
+                onClick={() => toggleUnit(unit.id)}
               >
                 <div className="flex items-center">
-                  {list.isActive ? (
-                    <PlayIcon width={28} height={28} />
-                  ) : (
+                  {unit.progress_data?.is_complete ? (
                     <CheckIcon width={28} height={28} />
+                  ) : (
+                    <PlayIcon width={28} height={28} />
                   )}
-                  <span className="pl-2">{list?.name}</span>
+                  <span className="pl-2">{unit.name}</span>
                 </div>
-                <div className={isOpen ? 'rotate-0' : 'rotate-[270deg]'}>
+                <div
+                  className={
+                    openUnit === unit.id ? 'rotate-0' : 'rotate-[270deg]'
+                  }
+                >
                   <ArrowDown />
                 </div>
               </div>
-              {isOpen && (
+              {openUnit === unit.id && (
                 <ul>
-                  {list?.lesson_exercises?.map((item, index) => (
-                    <li key={index} className="flex items-center pl-10">
-                      <CheckIcon
-                        width={14}
-                        height={14}
-                        fill={item.isActive ? '#28A745' : '#C4C4C4'}
-                      />
-                      <span className="pl-2">{item.name}</span>
+                  {unit?.unit_lessons?.map((lesson: Lesson) => (
+                    <li key={lesson.id}>
+                      <div
+                        className={`flex items-center justify-between py-[15px] pl-[30px] pr-[20px] ${
+                          openLesson === lesson.id && 'bg-grayColorE7'
+                        }`}
+                        onClick={() => toggleLesson(lesson.id)}
+                      >
+                        <div className="flex items-center">
+                          {lesson.progress_data?.is_complete ? (
+                            <CheckIcon width={28} height={28} />
+                          ) : (
+                            <PlayIcon width={28} height={28} />
+                          )}
+                          <span className="pl-2">{lesson.name}</span>
+                        </div>
+                        <div
+                          className={
+                            openLesson === lesson.id
+                              ? 'rotate-0'
+                              : 'rotate-[270deg]'
+                          }
+                        >
+                          <ArrowDown />
+                        </div>
+                      </div>
+                      {openLesson === lesson.id && (
+                        <ul>
+                          {lesson?.lesson_exercises?.map(
+                            (exercise: Exercise) => (
+                              <li
+                                key={exercise.id}
+                                className="flex items-center pl-10"
+                              >
+                                <CheckIcon
+                                  width={14}
+                                  height={14}
+                                  fill={
+                                    exercise.progress_data?.is_complete
+                                      ? '#C4C4C4'
+                                      : '#28A745'
+                                  }
+                                />
+                                {navLoading === exercise.id ? (
+                                  <LoadingSpinner height={10} />
+                                ) : (
+                                  <button
+                                    onClick={() =>
+                                      handleExerciseClick(exercise.id)
+                                    }
+                                  >
+                                    <span className="pl-2">
+                                      {exercise.name}
+                                    </span>
+                                  </button>
+                                )}
+                              </li>
+                            ),
+                          )}
+                        </ul>
+                      )}
                     </li>
                   ))}
                 </ul>
