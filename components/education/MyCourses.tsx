@@ -21,7 +21,7 @@ export const COURSE_ICONS: { [key: string]: string } = {
   Python: '/assets/pythonIcon.svg',
   JavaScript: '/assets/javaScriptIcon.svg',
   Typescript: '/assets/typescriptIcon.svg',
-  Unknown: '/assets/frame91.svg',
+  Unknown: '/assets/unknownCourse.svg',
 };
 
 export default function MyCourses() {
