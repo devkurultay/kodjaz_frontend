@@ -1,13 +1,13 @@
 /* External dependencies */
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 /* Local dependencies */
 import CheckIcon from '../../../public/assets/svg/CheckIcon';
 import PlayIcon from '../../../public/assets/svg/PlayIcon';
 import ArrowDown from '../../../public/assets/svg/ArrowDown';
+import LoadingSpinner from '../../ui/Spinner';
 import { Exercise, Lesson, Track, Unit } from '../../../types/tracksTypes';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 type ListItemIDETypes = {
   name?: string;
@@ -36,10 +36,17 @@ export default function MenuIDE({
   const router = useRouter();
   const [openUnit, setOpenUnit] = useState<number>(exercise.unit_id);
   const [openLesson, setOpenLesson] = useState<number>(exercise.lesson);
+  const [navLoading, setNavLoading] = useState<number>(0);
 
   useEffect(() => {
     setIsOpenMenu(false);
+    setNavLoading(0);
   }, [router.query]);
+
+  const handleExerciseClick = (id: number) => {
+    setNavLoading(id);
+    router.push(`/classroom/exercise/${id}`, '', { shallow: true });
+  };
 
   const toggleUnit = (id: number) => {
     if (openUnit === id) {
@@ -133,11 +140,19 @@ export default function MenuIDE({
                                       : '#28A745'
                                   }
                                 />
-                                <Link
-                                  href={`/classroom/exercise/${exercise.id}`}
-                                >
-                                  <span className="pl-2">{exercise.name}</span>
-                                </Link>
+                                {navLoading === exercise.id ? (
+                                  <LoadingSpinner height={10} />
+                                ) : (
+                                  <button
+                                    onClick={() =>
+                                      handleExerciseClick(exercise.id)
+                                    }
+                                  >
+                                    <span className="pl-2">
+                                      {exercise.name}
+                                    </span>
+                                  </button>
+                                )}
                               </li>
                             ),
                           )}
