@@ -1,11 +1,13 @@
 /* External dependencies */
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 /* Local dependencies */
 import CheckIcon from '../../../public/assets/svg/CheckIcon';
 import PlayIcon from '../../../public/assets/svg/PlayIcon';
 import ArrowDown from '../../../public/assets/svg/ArrowDown';
 import { Exercise, Lesson, Track, Unit } from '../../../types/tracksTypes';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 type ListItemIDETypes = {
   name?: string;
@@ -22,15 +24,22 @@ interface MenuIDEProps {
   activeClass?: string;
   track?: Track;
   exercise: Exercise;
+  setIsOpenMenu: Dispatch<SetStateAction<Boolean>>;
 }
 
 export default function MenuIDE({
   activeClass,
   track,
   exercise,
+  setIsOpenMenu,
 }: MenuIDEProps) {
+  const router = useRouter();
   const [openUnit, setOpenUnit] = useState<number>(exercise.unit_id);
   const [openLesson, setOpenLesson] = useState<number>(exercise.lesson);
+
+  useEffect(() => {
+    setIsOpenMenu(false);
+  }, [router.query]);
 
   const toggleUnit = (id: number) => {
     if (openUnit === id) {
@@ -124,7 +133,11 @@ export default function MenuIDE({
                                       : '#28A745'
                                   }
                                 />
-                                <span className="pl-2">{exercise.name}</span>
+                                <Link
+                                  href={`/classroom/exercise/${exercise.id}`}
+                                >
+                                  <span className="pl-2">{exercise.name}</span>
+                                </Link>
                               </li>
                             ),
                           )}

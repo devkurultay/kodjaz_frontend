@@ -193,6 +193,7 @@ export default function IDE() {
                 activeClass={isOpenMenu ? 'block' : 'hidden'}
                 track={track}
                 exercise={exercise}
+                setIsOpenMenu={setIsOpenMenu}
               />
             )}
           </div>
