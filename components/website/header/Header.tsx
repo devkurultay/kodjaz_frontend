@@ -16,7 +16,7 @@ import ProfileMenu from '../../profile/ProfileMenu';
 
 export default function Header() {
   const router = useRouter();
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const { data: session } = useSession();
   const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
 
@@ -34,7 +34,7 @@ export default function Header() {
     setIsOpenProfileMenu(!isOpenProfileMenu);
   };
 
-  function checkIfClickedOutside(e) {
+  function checkIfClickedOutside(e: any) {
     if (ref.current && !ref.current.contains(e.target)) {
       setIsOpenProfileMenu(false);
     }
