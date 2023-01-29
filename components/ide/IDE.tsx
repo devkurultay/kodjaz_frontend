@@ -206,10 +206,14 @@ export default function IDE() {
                 >
                   <div>
                     {consoleError && (
-                      <pre dangerouslySetInnerHTML={{ __html: consoleError }} />
+                      <pre
+                        className="whitespace-pre-wrap"
+                        dangerouslySetInnerHTML={{ __html: consoleError }}
+                      />
                     )}
                     {consoleOutput && (
                       <pre
+                        className="whitespace-pre-wrap"
                         dangerouslySetInnerHTML={{ __html: consoleOutput }}
                       />
                     )}
