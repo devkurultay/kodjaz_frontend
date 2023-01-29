@@ -25,6 +25,8 @@ import { useDispatch } from 'react-redux';
 import { useSession } from 'next-auth/react';
 import { ExtendedSession } from '../../types/userTypes';
 import LoadingSpinner from '../ui/Spinner';
+import HeaderClassroom from '../header-classroom/HeaderClassroom';
+import FooterClassroom from '../footer-classroom/FooterClassroom';
 
 const Editor = dynamic(() => import('./editor/Editor'), { ssr: false });
 import Instruction from './accordion/AccordionComponent';
@@ -59,22 +61,29 @@ export default function IDE() {
   useEffect(() => {
     if (id) {
       const exId = Number(id);
-      const tk = (sessionData as ExtendedSession)?.access ?? '';
-      if (status !== 'loading') {
-        dispatch(
-          getLastSubmissionByExerciseId({ token: tk, exerciseId: exId }),
-        );
-      }
       if (exId in exercisesById) {
         const ex = exercisesById[exId];
         setExercise(ex);
         setUserCode(ex.default_code ?? '');
       } else if (status !== 'loading') {
         // TODO(murat): Don't call getTracks if we already have them
+        const tk = (sessionData as ExtendedSession)?.access ?? '';
         dispatch(getTracks(tk));
       }
     }
-  }, [loading, sessionData, status]);
+  }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      const exId = Number(id);
+      const tk = (sessionData as ExtendedSession)?.access ?? '';
+      if (status !== 'loading' && !submission) {
+        dispatch(
+          getLastSubmissionByExerciseId({ token: tk, exerciseId: exId }),
+        );
+      }
+    }
+  }, [status, submission]);
 
   useEffect(() => {
     if (exercise) {
@@ -160,45 +169,49 @@ export default function IDE() {
   }
 
   return (
-    <div className="m-auto">
-      <div className="flex flex-col lg:flex-row lg:min-h-[calc(100vh - 160px)]">
-        <div className="basis-full lg:basis-1/3 lg:h-[inherit] relative">
-          {loading ? (
-            <LoadingSpinner height={23} />
-          ) : (
-            <TabsIDE
-              burgerClassName={isOpenMenu ? styles.ide_burger_active : ''}
-              items={tabsContent}
-              onClickedBurger={() => {
-                setIsOpenMenu(!isOpenMenu);
-              }}
+    <>
+      <HeaderClassroom />
+      <div className="m-auto">
+        <div className="flex flex-col lg:flex-row lg:min-h-[calc(100vh - 160px)]">
+          <div className="basis-full lg:basis-1/3 lg:h-[inherit] relative">
+            {loading && !exercise ? (
+              <LoadingSpinner height={23} />
+            ) : (
+              <TabsIDE
+                burgerClassName={isOpenMenu ? styles.ide_burger_active : ''}
+                items={tabsContent}
+                onClickedBurger={() => {
+                  setIsOpenMenu(!isOpenMenu);
+                }}
+              />
+            )}
+            <MenuIDE
+              activeClass={isOpenMenu ? 'block' : 'hidden'}
+              listItem={items}
+              title="Title"
             />
-          )}
-          <MenuIDE
-            activeClass={isOpenMenu ? 'block' : 'hidden'}
-            listItem={items}
-            title="Title"
-          />
-        </div>
-        <div className="basis-full h-[60vh] lg:basis-auto lg:grow lg:h-full relative">
-          <Editor userCode={userCode} setUserCode={setUserCode} />
-          <div className="editor-footer absolute bottom-0 t-auto l-0 pr-5 pl-[60px] py-3 bg-[#3A3B42] w-full h-[60px] flex items-center">
-            <button
-              onClick={submitUserCode}
-              className="flex items-center bg-primaryColorLight text-whiteColor font-medium text-sm px-3.5 py-2 rounded-md hover:bg-primaryColorMiddle"
-            >
-              <RunCodeIcon />
-              <span className="ml-3">
-                {submissionLoading ? (
-                  <LoadingSpinner height={23} />
-                ) : (
-                  <Trans>runCode</Trans>
-                )}
-              </span>
-            </button>
+          </div>
+          <div className="basis-full h-[60vh] lg:basis-auto lg:grow lg:h-full relative">
+            <Editor userCode={userCode} setUserCode={setUserCode} />
+            <div className="editor-footer absolute bottom-0 t-auto l-0 pr-5 pl-[60px] py-3 bg-[#3A3B42] w-full h-[60px] flex items-center">
+              <button
+                onClick={submitUserCode}
+                className="flex items-center bg-primaryColorLight text-whiteColor font-medium text-sm px-3.5 py-2 rounded-md hover:bg-primaryColorMiddle"
+              >
+                <RunCodeIcon />
+                <span className="ml-3">
+                  {submissionLoading ? (
+                    <LoadingSpinner height={23} />
+                  ) : (
+                    <Trans>runCode</Trans>
+                  )}
+                </span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <FooterClassroom exercise={exercise} isSuccess={true} />
+    </>
   );
 }

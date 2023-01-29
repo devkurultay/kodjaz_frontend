@@ -217,16 +217,20 @@ const userTrackSlice = createSlice({
         state.error = payload;
       })
       .addCase(getLastSubmissionByExerciseId.pending, (state) => {
-        state.submissionLoading = true;
+        state.loading = true;
       })
       .addCase(
         getLastSubmissionByExerciseId.fulfilled,
         (state, { payload }) => {
-          state.submissionLoading = false;
+          state.loading = false;
           state.submission = payload;
           state.submissionsByExerciseId[payload.exercise] = payload;
         },
-      );
+      )
+      .addCase(getLastSubmissionByExerciseId.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      });
   },
 });
 
