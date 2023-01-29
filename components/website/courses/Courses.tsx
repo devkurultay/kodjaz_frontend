@@ -1,7 +1,6 @@
 /* External dependencies */
 import { Trans } from 'next-i18next';
 import Image from 'next/image';
-import router from 'next/router';
 import React from 'react';
 
 /* Local dependencies */
@@ -48,10 +47,6 @@ export default function Courses() {
     },
   ];
 
-  const handleClickCourseItem = () => {
-    router.push('/course-details/1');
-  };
-
   return (
     <section className="py-[80px] bg-grayColorF3 mt-14 min-h-[80vh]">
       <div className="container mx-auto">
@@ -62,7 +57,6 @@ export default function Courses() {
           {coursesArray.map((item: any, index: number) => (
             <div
               key={index}
-              onClick={handleClickCourseItem}
               className="flex basis-full cursor-pointer md:justify-between bg-whiteColor rounded-[30px] p-10 flex-col-reverse md:flex-row"
             >
               <div className="flex flex-col basis-1/3">
