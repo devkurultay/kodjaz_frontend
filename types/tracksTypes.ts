@@ -66,3 +66,11 @@ export type Subscription = {
   track: number;
   user: number;
 };
+
+export type Submission = {
+  id: number;
+  submitted_code: string;
+  exercise: number;
+  console_output: string;
+  error_message: string;
+};

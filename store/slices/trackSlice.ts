@@ -10,11 +10,18 @@ import {
   Unit,
   Lesson,
   Exercise,
+  Submission,
 } from '../../types/tracksTypes';
 
-type TokenAndTrackId = {
+type TokenAndId = {
   token: string;
-  trackId: number;
+  [key: string]: number | string;
+};
+
+type SubmitCodePayload = {
+  token: string;
+  userCode: string;
+  exercise: number;
 };
 
 export const getTracks: any = createAsyncThunk(
@@ -37,7 +44,7 @@ export const getTracks: any = createAsyncThunk(
 
 export const getTrackById: any = createAsyncThunk(
   'get-track-by-id',
-  async ({ token, trackId }: TokenAndTrackId, { rejectWithValue }) => {
+  async ({ token, trackId }: TokenAndId, { rejectWithValue }) => {
     try {
       const response = await getRequest(token, `/v1/user/tracks/${trackId}/`);
 
@@ -50,7 +57,7 @@ export const getTrackById: any = createAsyncThunk(
 
 export const signUpToTrack: any = createAsyncThunk(
   'sign-up-to-track',
-  async ({ token, trackId }: TokenAndTrackId, { rejectWithValue }) => {
+  async ({ token, trackId }: TokenAndId, { rejectWithValue }) => {
     try {
       const response = await postRequest(token, 'v1/user/subscriptions/', {
         track: trackId,
@@ -63,24 +70,72 @@ export const signUpToTrack: any = createAsyncThunk(
   },
 );
 
+export const submitCode: any = createAsyncThunk(
+  'submit-code',
+  async (
+    { token, userCode, exercise }: SubmitCodePayload,
+    { rejectWithValue },
+  ) => {
+    try {
+      const response = await postRequest(token, 'v1/user/submissions/', {
+        submitted_code: userCode,
+        exercise,
+      });
+
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
+// TODO(murat): create an endpoint on the backend
+export const getLastSubmissionByExerciseId: any = createAsyncThunk(
+  'get-last-submission-by-exercise-id',
+  async ({ token, exerciseId }: TokenAndId, { rejectWithValue }) => {
+    try {
+      const response = await getRequest(token, `v1/user/submissions/`);
+      const submissions = response.filter(
+        (sub: Submission) => sub.exercise === exerciseId,
+      );
+
+      const latest = submissions.reduce(
+        (max: Submission, current: Submission) =>
+          current.id > max.id ? current : max,
+        { id: -Infinity },
+      );
+
+      return latest;
+    } catch (error: any) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
 interface userTrackState {
   error?: Error;
   loading: boolean;
+  submissionLoading: boolean;
   track?: '';
   tracksByName: EntityByName<Track>;
   tracksById: EntityById<Track>;
   unitsById: EntityById<Unit>;
   lessonsById: EntityById<Lesson>;
   exercisesById: EntityById<Exercise>;
+  submission: Submission | null;
+  submissionsByExerciseId: EntityById<Submission>;
 }
 
 const initialState: userTrackState = {
   loading: false,
+  submissionLoading: false,
   tracksByName: {},
   tracksById: {},
   unitsById: {},
   lessonsById: {},
   exercisesById: {},
+  submission: null,
+  submissionsByExerciseId: {},
 };
 
 const userTrackSlice = createSlice({
@@ -112,7 +167,6 @@ const userTrackSlice = createSlice({
         const exercisesById: EntityById<Exercise> = {};
 
         payload.forEach((track: Track) => {
-
           tracksById[track.id] = track;
           tracksByName[track.name] = track;
 
@@ -147,6 +201,33 @@ const userTrackSlice = createSlice({
         state.loading = false;
       })
       .addCase(signUpToTrack.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      })
+      .addCase(submitCode.pending, (state) => {
+        state.submissionLoading = true;
+      })
+      .addCase(submitCode.fulfilled, (state, { payload }) => {
+        state.submissionLoading = false;
+        state.submission = payload;
+        state.submissionsByExerciseId[payload.exercise] = payload;
+      })
+      .addCase(submitCode.rejected, (state, { payload }) => {
+        state.submissionLoading = false;
+        state.error = payload;
+      })
+      .addCase(getLastSubmissionByExerciseId.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(
+        getLastSubmissionByExerciseId.fulfilled,
+        (state, { payload }) => {
+          state.loading = false;
+          state.submission = payload;
+          state.submissionsByExerciseId[payload.exercise] = payload;
+        },
+      )
+      .addCase(getLastSubmissionByExerciseId.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
       });
