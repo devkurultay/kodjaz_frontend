@@ -89,6 +89,20 @@ export const submitCode: any = createAsyncThunk(
   },
 );
 
+export const getSubmissions: any = createAsyncThunk(
+  'get-submissions',
+  async (token: string, { rejectWithValue }) => {
+    try {
+      console.log('called here');
+      const response = await getRequest(token, `v1/user/submissions/`);
+
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
 // TODO(murat): create an endpoint on the backend
 export const getLastSubmissionByExerciseId: any = createAsyncThunk(
   'get-last-submission-by-exercise-id',
@@ -209,25 +223,44 @@ const userTrackSlice = createSlice({
       })
       .addCase(submitCode.fulfilled, (state, { payload }) => {
         state.submissionLoading = false;
-        state.submission = payload;
         state.submissionsByExerciseId[payload.exercise] = payload;
       })
       .addCase(submitCode.rejected, (state, { payload }) => {
         state.submissionLoading = false;
         state.error = payload;
       })
-      .addCase(getLastSubmissionByExerciseId.pending, (state) => {
+      .addCase(getSubmissions.pending, (state) => {
         state.loading = true;
       })
-      .addCase(
-        getLastSubmissionByExerciseId.fulfilled,
-        (state, { payload }) => {
-          state.loading = false;
-          state.submission = payload;
-          state.submissionsByExerciseId[payload.exercise] = payload;
-        },
-      )
-      .addCase(getLastSubmissionByExerciseId.rejected, (state, { payload }) => {
+      .addCase(getSubmissions.fulfilled, (state, { payload }) => {
+        state.loading = false;
+
+        const submissionsOfExercises: any = {};
+
+        const submissions = payload;
+        submissions.forEach((submission: Submission) => {
+          if (submission.exercise in submissionsOfExercises) {
+            submissionsOfExercises[submission.exercise].push(submission);
+          } else {
+            submissionsOfExercises[submission.exercise] = [];
+          }
+        });
+        // @ts-ignore
+        Object.keys(submissionsOfExercises).forEach((id: number) => {
+          const exerciseSubs: Array<Submission> = submissionsOfExercises[id];
+          const latest = exerciseSubs.reduce(
+            (max: Submission, current: Submission) =>
+              current.id > max.id ? current : max,
+            // @ts-ignore
+            { id: -Infinity },
+          );
+
+          console.log('latest', latest);
+
+          state.submissionsByExerciseId[id] = latest;
+        });
+      })
+      .addCase(getSubmissions.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
       });

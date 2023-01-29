@@ -13,7 +13,7 @@ import TabChatIcon from '../../public/assets/svg/TabChatIcon';
 import styles from '../../styles/scss/ide.module.scss';
 import { useAppSelector } from '../../store/hooks';
 import {
-  getLastSubmissionByExerciseId,
+  getSubmissions,
   getTracks,
   submitCode,
   trackState,
@@ -42,8 +42,13 @@ type TabContents = {
 
 export default function IDE() {
   const dispatch = useDispatch();
-  const { loading, submissionLoading, exercisesById, tracksById, submission } =
-    useAppSelector(trackState);
+  const {
+    loading,
+    submissionLoading,
+    exercisesById,
+    tracksById,
+    submissionsByExerciseId,
+  } = useAppSelector(trackState);
   const [isOpenMenu, setIsOpenMenu] = useState<Boolean>(false);
   const [exercise, setExercise] = useState<Exercise>();
   const [track, setTrack] = useState<Track>();
@@ -56,14 +61,19 @@ export default function IDE() {
   const { id } = router.query;
   const { data: sessionData, status } = useSession();
 
-  useEffect(() => {
-    if (submission) {
-      setUserCode(submission?.submitted_code ?? '');
-      setConsoleOutput(submission.console_output);
-      setConsoleError(submission.error_message);
-      setIsConsoleShow(true);
-    }
-  }, [submission]);
+  //   useEffect(() => {
+  //     console.log('id changed', submissionsByExerciseId);
+  //     if (submissionsByExerciseId && exercise) {
+  //       const submission = submissionsByExerciseId[exercise.id];
+  //       if (submission) {
+  //         console.log('setting subm data');
+  //         setUserCode(submission?.submitted_code ?? '');
+  //         setConsoleOutput(submission.console_output);
+  //         setConsoleError(submission.error_message);
+  //         setIsConsoleShow(true);
+  //       }
+  //     }
+  //   }, [id, submissionsByExerciseId, exercise]);
 
   useEffect(() => {
     if (id) {
@@ -77,22 +87,34 @@ export default function IDE() {
       } else if (status !== 'loading') {
         // TODO(murat): Don't call getTracks if we already have them
         const tk = (sessionData as ExtendedSession)?.access ?? '';
+        console.log('getSubmissions is called');
+        dispatch(getSubmissions(tk));
         dispatch(getTracks(tk));
+      }
+    }
+    console.log('@!!! id', id, submissionsByExerciseId, exercise);
+    if (submissionsByExerciseId && exercise) {
+      console.log(submissionsByExerciseId && exercise);
+      const submission = submissionsByExerciseId[exercise.id];
+      if (submission) {
+        console.log('setting subm data');
+        setUserCode(submission?.submitted_code ?? exercise.default_code ?? '');
+        setConsoleOutput(submission.console_output ?? '');
+        setConsoleError(submission.error_message ?? '');
+        setIsConsoleShow(
+          !!submission.console_output && !!submission.error_message,
+        );
       }
     }
   }, [id, exercisesById]);
 
-  useEffect(() => {
-    if (id) {
-      const exId = Number(id);
-      const tk = (sessionData as ExtendedSession)?.access ?? '';
-      if (status !== 'loading' && !submission) {
-        dispatch(
-          getLastSubmissionByExerciseId({ token: tk, exerciseId: exId }),
-        );
-      }
-    }
-  }, [status, submission]);
+  //   useEffect(() => {
+  //     const tk = (sessionData as ExtendedSession)?.access ?? '';
+  //     if (status !== 'loading' && !submissionsByExerciseId) {
+  //       console.log('getSubmissions is called');
+  //       dispatch(getSubmissions(tk));
+  //     }
+  //   }, [id, status, submissionsByExerciseId]);
 
   useEffect(() => {
     if (exercise) {
