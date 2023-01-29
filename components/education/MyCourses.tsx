@@ -168,7 +168,7 @@ export default function MyCourses() {
                     </button>
                     <Link
                       href={`/classroom/course-details/${item.id}`}
-                      className="inline-flex items-center justify-center whitespace-nowrap w-fit mt-4 px-12 py-1.5 md:py-2.5 underline text-primaryColorLight"
+                      className="inline-flex items-center justify-center whitespace-nowrap w-fit mt-4 px-4 py-1.5 md:py-2.5 underline text-primaryColorLight"
                     >
                       <Trans>courseInfo</Trans>
                     </Link>
