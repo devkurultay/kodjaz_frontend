@@ -30,6 +30,7 @@ import FooterClassroom from '../footer-classroom/FooterClassroom';
 import AccordionComponent from './accordion/AccordionComponent';
 
 const Editor = dynamic(() => import('./editor/Editor'), { ssr: false });
+import Instruction from './instruction/Instruction';
 
 type TabContents = {
   content: JSX.Element;
@@ -94,12 +95,9 @@ export default function IDE() {
             <div className="h-full pt-2.5 relative flex flex-col">
               <Description>{exercise?.lecture ?? ''}</Description>
               <div>
+                <Instruction>{exercise?.instruction ?? ''}</Instruction>
                 <AccordionComponent
                   items={[
-                    {
-                      children: exercise?.instruction ?? '',
-                      heading: 'instructions',
-                    },
                     {
                       children: exercise?.hint ?? '',
                       heading: 'hints',
