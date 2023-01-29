@@ -91,7 +91,7 @@ export default function Footer() {
         <div className="container mx-auto">
           <div className="flex flex-col sm:flex-row justify-between py-3.5">
             <div className="flex sm:flex-none md:basis-1/2 justify-start">
-              © 2022 Kodjaz
+              © 2023 Kodjaz
             </div>
             <div className="flex sm:grow md:basis-1/3 sm:justify-end">
               <span className="flex sm:justify-end mr-5">

@@ -3,6 +3,7 @@ import { Trans } from 'next-i18next';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { signIn, getProviders } from 'next-auth/react';
+import Link from 'next/link';
 
 /* Local dependencies */
 import CloseIcon from '../../public/assets/svg/CloseIcon';
@@ -109,7 +110,7 @@ export default function LoginUser() {
                 placeholder="Password"
                 {...register('password')}
               />
-              <button className="text-sm text-primaryColorLight">
+              <button className="hidden text-sm text-primaryColorLight">
                 <Trans>forgotPassword</Trans>
               </button>
               {error && (
@@ -173,7 +174,9 @@ export default function LoginUser() {
           <Trans
             i18nKey="noAccountSignUp"
             components={{
-              textPrimary: <a href="#" className="text-primaryColorLight"></a>,
+              textPrimary: (
+                <Link href="/signup" className="text-primaryColorLight" />
+              ),
             }}
           />
         </p>

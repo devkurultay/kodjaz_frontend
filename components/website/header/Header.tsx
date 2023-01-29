@@ -17,6 +17,7 @@ import ProfileMenu from '../../profile/ProfileMenu';
 export default function Header() {
   const router = useRouter();
   const ref = useRef<HTMLButtonElement>(null);
+  const refProfile = useRef<HTMLDivElement>(null);
   const { data: session } = useSession();
   const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
 
@@ -34,21 +35,30 @@ export default function Header() {
     setIsOpenProfileMenu(!isOpenProfileMenu);
   };
 
-  function checkIfClickedOutside(e: any) {
-    if (ref.current && !ref.current.contains(e.target)) {
-      setIsOpenProfileMenu(false);
-    }
-  }
-
   useEffect(() => {
-    document.addEventListener('mousedown', checkIfClickedOutside);
-    console.log('open');
+    function handleClickOutside(event: any) {
+      const isNotProfileClick =
+        refProfile &&
+        refProfile.current &&
+        !refProfile.current.contains(event.target);
+      const isNotSignOutClick =
+        ref.current && !ref.current.contains(event.target);
+
+      if (
+        event.target instanceof Node &&
+        isNotSignOutClick &&
+        isNotProfileClick
+      ) {
+        setIsOpenProfileMenu(!isOpenProfileMenu);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
 
     return () => {
-      document.removeEventListener('mousedown', checkIfClickedOutside);
-      console.log('close');
+      document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [ref, refProfile, isOpenProfileMenu]);
 
   return (
     <Popover className="relative border-b border-grayColorDb">
@@ -110,6 +120,7 @@ export default function Header() {
           <div className="hidden items-center justify-end lg:flex lg:flex-1 lg:w-0">
             {session ? (
               <div
+                ref={refProfile}
                 className="flex justify-between items-center font-semibold relative cursor-pointer"
                 onClick={handleClickProfileMenu}
               >
@@ -227,7 +238,7 @@ export default function Header() {
                   </div>
                 </>
               ) : (
-                <>
+                <div className="flex flex-col gap-y-[20px]">
                   <Link href="/courses">
                     <Trans>courses</Trans>
                   </Link>
@@ -237,19 +248,22 @@ export default function Header() {
                   <Link href="/resources">
                     <Trans>resources</Trans>
                   </Link>
-                </>
+                </div>
               )}
             </div>
             <div className="space-y-6 py-8 px-5">
               {session ? (
-                <div className="mb-3 flex w-full font-semibold items-center justify-center whitespace-nowrap rounded-lg border-2 px-5 py-1.5 font-medium text-primaryColorLight hover:bg-primaryColorLight hover:text-whiteColor">
+                <button
+                  className="mb-3 flex w-full font-semibold items-center justify-center whitespace-nowrap rounded-lg border-2 border-primaryColorLight px-5 py-1.5 font-medium text-primaryColorLight hover:bg-primaryColorLight hover:text-whiteColor"
+                  onClick={() => signOut()}
+                >
                   <Trans>logOut</Trans>
-                </div>
+                </button>
               ) : (
                 <>
                   <button
                     onClick={goToLoginPage}
-                    className="mb-3 flex w-full items-center justify-center whitespace-nowrap rounded-lg border-2 px-5 py-1.5 font-medium text-primaryColorLight hover:bg-primaryColorLight hover:text-whiteColor"
+                    className="mb-3 flex w-full items-center justify-center whitespace-nowrap rounded-lg border-2 border-primaryColorLight px-5 py-1.5 font-medium text-primaryColorLight hover:bg-primaryColorLight hover:text-whiteColor"
                   >
                     <Trans>logIn</Trans>
                   </button>

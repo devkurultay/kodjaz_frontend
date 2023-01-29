@@ -57,7 +57,7 @@ export default function Courses() {
           {coursesArray.map((item: any, index: number) => (
             <div
               key={index}
-              className="flex basis-full md:justify-between bg-whiteColor rounded-[30px] p-10 flex-col-reverse md:flex-row"
+              className="flex basis-full cursor-pointer md:justify-between bg-whiteColor rounded-[30px] p-10 flex-col-reverse md:flex-row"
             >
               <div className="flex flex-col basis-1/3">
                 <div className="mb-5">
@@ -77,13 +77,22 @@ export default function Courses() {
                 )}
                 {item.level && item.lessonAmount && (
                   <div className="flex basis-1/2 items-center">
-                    <div className="flex basis-auto items-center mr-10">{item.lessonAmount}</div>
-                    <div className="flex basis-auto items-center">{item.level}</div>
+                    <div className="flex basis-auto items-center mr-10">
+                      {item.lessonAmount}
+                    </div>
+                    <div className="flex basis-auto items-center">
+                      {item.level}
+                    </div>
                   </div>
                 )}
               </div>
               <div className="flex justify-start pb-6 md:justify-end md:pb-0 md:basis-1/4">
-                <Image src={item.icon} alt={item.alt} width={160} height={160} />
+                <Image
+                  src={item.icon}
+                  alt={item.alt}
+                  width={160}
+                  height={160}
+                />
               </div>
             </div>
           ))}
