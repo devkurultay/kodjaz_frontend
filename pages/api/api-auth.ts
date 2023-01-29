@@ -29,13 +29,10 @@ export async function login(data: Login) {
   return response;
 }
 
-const logout = () => {};
-
 const authService = {
   register,
   confirmEmail,
   login,
-  logout,
 };
 
 export default authService;
