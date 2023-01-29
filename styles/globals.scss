@@ -102,6 +102,14 @@ body {
   color: $black-color;
 }
 
-.ace-tm .ace_print-margin {
-  display: none;
+.ace {
+  &_editor {
+    background: $black-color-middle;
+    color: #fff;
+    flex-grow: 1;
+  }
+
+  &-tm .ace_print-margin {
+    display: none;
+  }
 }
