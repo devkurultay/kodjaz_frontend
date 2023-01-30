@@ -108,14 +108,6 @@ export default function IDE() {
     }
   }, [id, exercisesById]);
 
-  //   useEffect(() => {
-  //     const tk = (sessionData as ExtendedSession)?.access ?? '';
-  //     if (status !== 'loading' && !submissionsByExerciseId) {
-  //       console.log('getSubmissions is called');
-  //       dispatch(getSubmissions(tk));
-  //     }
-  //   }, [id, status, submissionsByExerciseId]);
-
   useEffect(() => {
     if (exercise) {
       const contents = [
