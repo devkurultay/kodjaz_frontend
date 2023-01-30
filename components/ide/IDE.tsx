@@ -79,11 +79,9 @@ export default function IDE() {
     if (status !== 'loading') {
       const tk = (sessionData as ExtendedSession)?.access ?? '';
       if (!loading && isEmpty(tracksById)) {
-        console.log('get tracks');
         dispatch(getTracks(tk));
       }
       if (!loading && isEmpty(submissionsByExerciseId)) {
-        console.log('get subm');
         dispatch(getSubmissions(tk));
       }
     }
@@ -95,17 +93,22 @@ export default function IDE() {
       const exId = Number(id);
       if (!loading && exId in exercisesById) {
         const ex = exercisesById[exId];
-        console.log('ex setting');
         setExercise(ex);
+        setUserCode(ex.default_code ?? '');
         const tr = tracksById?.[ex.track_id];
         tr && setTrack(tr);
-        console.log('tr setting');
       }
-      console.log('submissionsByExerciseId', submissionsByExerciseId);
       if (!loading && !submissionLoading && exId in submissionsByExerciseId) {
         const sub = submissionsByExerciseId[exId];
-        console.log('subm setting', sub);
         setSubmission(sub);
+        setConsoleOutput(sub.console_output ?? '');
+        setConsoleError(sub.error_message ?? '');
+        setIsConsoleShow(!!sub.console_output || !!sub.error_message);
+        const success = sub.passed && !sub.error_message;
+        setCanGoForward(success);
+        sub.submitted_code ?? setUserCode(sub.submitted_code ?? '');
+      } else {
+        resetConsoleAndForward();
       }
     }
   }, [
@@ -117,68 +120,6 @@ export default function IDE() {
     exercisesById,
     submissionsByExerciseId,
   ]);
-
-  //   useEffect(() => {
-  //     if (id) {
-  //       const exId = Number(id);
-  //       if (exId in exercisesById && !exercise) {
-  //         const ex = exercisesById[exId];
-  //         setExercise(ex);
-  //       } else if (status !== 'loading') {
-  //         // TODO(murat): Don't call getTracks if we already have them
-  //         const tk = (sessionData as ExtendedSession)?.access ?? '';
-  //         console.log('getting submissions and tracks');
-  //         dispatch(getSubmissions(tk));
-  //         dispatch(getTracks(tk));
-  //       }
-
-  //       if (exId in submissionsByExerciseId && !submission) {
-  //         const submission = submissionsByExerciseId[exId];
-  //         if (submission) {
-  //           console.log('setting submission', submission.exercise);
-  //           submission?.submitted_code && setUserCode(submission?.submitted_code);
-  //           setConsoleOutput(submission.console_output ?? '');
-  //           setConsoleError(submission.error_message ?? '');
-  //           setIsConsoleShow(
-  //             !!submission.console_output || !!submission.error_message,
-  //           );
-  //           const success = submission.passed && !submission.error_message;
-  //           setCanGoForward(success);
-  //         } else {
-  //           console.log('resetConsoleAndForward since no submission');
-  //           resetConsoleAndForward();
-  //         }
-  //       }
-  //     }
-
-  // if (submissionsByExerciseId) {
-  //   const exId = Number(id);
-  //   const ex = exercisesById[exId];
-  //   const submission = submissionsByExerciseId[exId];
-  //   if (submission) {
-  //     console.log(
-  //       'under submissionsByExerciseId && exercise',
-  //       submission.exercise,
-  //     );
-  //     setUserCode(submission?.submitted_code ?? ex.default_code ?? '');
-  //     setConsoleOutput(submission.console_output ?? '');
-  //     setConsoleError(submission.error_message ?? '');
-  //     setIsConsoleShow(
-  //       !!submission.console_output || !!submission.error_message,
-  //     );
-  //     const success = submission.passed && !submission.error_message;
-  //     setCanGoForward(success);
-  //   } else if (exId in exercisesById) {
-  //     const ex = exercisesById[exId];
-  //     console.log(
-  //       'setting exercise default_code since no submission \n--under submissionsByExerciseId && exercise',
-  //       ex.id,
-  //     );
-  //     setUserCode(ex.default_code ?? '');
-  //     resetConsoleAndForward();
-  //   }
-  // }
-  //   }, [id, exercisesById, submissionsByExerciseId]);
 
   useEffect(() => {
     if (exercise) {
@@ -231,29 +172,6 @@ export default function IDE() {
       setTabsContent(contents);
     }
   }, [exercise]);
-
-  //   useEffect(() => {
-  //     if (submissionsByExerciseId) {
-  //       const exId = Number(id);
-  //       const submission = submissionsByExerciseId[exId];
-  //       if (submission) {
-  //         submission?.submitted_code && setUserCode(submission?.submitted_code);
-  //         setConsoleOutput(submission.console_output ?? '');
-  //         setConsoleError(submission.error_message ?? '');
-  //         setIsConsoleShow(
-  //           !!submission.console_output || !!submission.error_message,
-  //         );
-  //         const success = submission.passed && !submission.error_message;
-  //         setCanGoForward(success);
-  //       } else {
-  //         console.log(
-  //           'resetting console \n--under submissionsByExerciseId && exercise useEffect',
-  //         );
-  //         // setUserCode(exercise.default_code ?? '');
-  //         resetConsoleAndForward();
-  //       }
-  //     }
-  //   }, [id, submissionsByExerciseId]);
 
   function submitUserCode() {
     const tk = (sessionData as ExtendedSession)?.access ?? '';
