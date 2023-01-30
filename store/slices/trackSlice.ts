@@ -241,23 +241,24 @@ const userTrackSlice = createSlice({
           if (submission.exercise in submissionsOfExercises) {
             submissionsOfExercises[submission.exercise].push(submission);
           } else {
-            submissionsOfExercises[submission.exercise] = [];
+            submissionsOfExercises[submission.exercise] = [submission];
           }
         });
         // @ts-ignore
-        Object.keys(submissionsOfExercises).forEach((id: number) => {
-          const exerciseSubs: Array<Submission> = submissionsOfExercises[id];
-          const latest = exerciseSubs.reduce(
-            (max: Submission, current: Submission) =>
-              current.id > max.id ? current : max,
-            // @ts-ignore
-            { id: -Infinity },
-          );
+        Object.values(submissionsOfExercises).forEach(
+          (exerciseSubs: unknown) => {
+            const latest = (exerciseSubs as Array<Submission>).reduce(
+              (max: Submission, current: Submission) =>
+                current.id > max.id ? current : max,
+              // @ts-ignore
+              { id: -Infinity },
+            );
 
-          if (latest) {
-            state.submissionsByExerciseId[id] = latest;
-          }
-        });
+            if (latest && latest.id !== -Infinity) {
+              state.submissionsByExerciseId[latest.exercise] = latest;
+            }
+          },
+        );
       })
       .addCase(getSubmissions.rejected, (state, { payload }) => {
         state.loading = false;
