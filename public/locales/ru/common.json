@@ -75,5 +75,8 @@
   "unitsCount": "Глав: {{numUnits}}",
   "lessonsCount": "Уроков: {{numLessons}}",
   "beginner": "Начальный",
-  "signInWith": "Вход через {{name}}"
+  "signInWith": "Вход через {{name}}",
+  "youFinishedThisExercise": "Отлично! Вы можете перейти к следующему упражнению!",
+  "Description": "Упражнение",
+  "Discussion": "Обсуждение"
 }

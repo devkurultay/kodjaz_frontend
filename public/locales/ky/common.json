@@ -79,5 +79,8 @@
   "unitsCount": "{{numUnits}} бап",
   "lessonsCount": "{{numLessons}} сабак",
   "beginner": "Оңой",
-  "signInWith": "{{name}} менен кирүү"
+  "signInWith": "{{name}} менен кирүү",
+  "youFinishedThisExercise": "Жарайсыз! Эми кийинкиге өтүңүз!",
+  "Description": "Көнүгүү",
+  "Discussion": "Талкуу"
 }
