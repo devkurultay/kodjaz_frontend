@@ -61,20 +61,6 @@ export default function IDE() {
   const { id } = router.query;
   const { data: sessionData, status } = useSession();
 
-  //   useEffect(() => {
-  //     console.log('id changed', submissionsByExerciseId);
-  //     if (submissionsByExerciseId && exercise) {
-  //       const submission = submissionsByExerciseId[exercise.id];
-  //       if (submission) {
-  //         console.log('setting subm data');
-  //         setUserCode(submission?.submitted_code ?? '');
-  //         setConsoleOutput(submission.console_output);
-  //         setConsoleError(submission.error_message);
-  //         setIsConsoleShow(true);
-  //       }
-  //     }
-  //   }, [id, submissionsByExerciseId, exercise]);
-
   useEffect(() => {
     if (id) {
       const exId = Number(id);
@@ -87,17 +73,15 @@ export default function IDE() {
       } else if (status !== 'loading') {
         // TODO(murat): Don't call getTracks if we already have them
         const tk = (sessionData as ExtendedSession)?.access ?? '';
-        console.log('getSubmissions is called');
         dispatch(getSubmissions(tk));
         dispatch(getTracks(tk));
       }
     }
-    console.log('@!!! id', id, submissionsByExerciseId, exercise);
+
     if (submissionsByExerciseId && exercise) {
       console.log(submissionsByExerciseId && exercise);
       const submission = submissionsByExerciseId[exercise.id];
       if (submission) {
-        console.log('setting subm data');
         setUserCode(submission?.submitted_code ?? exercise.default_code ?? '');
         setConsoleOutput(submission.console_output ?? '');
         setConsoleError(submission.error_message ?? '');
@@ -114,6 +98,7 @@ export default function IDE() {
         {
           content: (
             <div className="h-full pt-2.5 relative flex flex-col">
+              <div className="px-5 font-bold">{exercise?.name}</div>
               <Description>{exercise?.lecture ?? ''}</Description>
               <div>
                 <Instruction>{exercise?.instruction ?? ''}</Instruction>
