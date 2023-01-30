@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import ReactMarkdown from 'react-markdown';
 
 /* Local dependencies */
 import RunCodeIcon from '../../public/assets/svg/RunCodeIcon';
@@ -109,13 +110,19 @@ export default function IDE() {
           content: (
             <div className="h-full pt-2.5 relative flex flex-col">
               <div className="px-5 font-bold">{exercise?.name}</div>
-              <Description>{exercise?.lecture ?? ''}</Description>
+              <Description>
+                <ReactMarkdown>{exercise?.lecture ?? ''}</ReactMarkdown>
+              </Description>
               <div>
-                <Instruction>{exercise?.instruction ?? ''}</Instruction>
+                <Instruction>
+                  <ReactMarkdown>{exercise?.instruction ?? ''}</ReactMarkdown>
+                </Instruction>
                 <AccordionComponent
                   items={[
                     {
-                      children: exercise?.hint ?? '',
+                      children: (
+                        <ReactMarkdown>{exercise?.hint ?? ''}</ReactMarkdown>
+                      ),
                       heading: 'hints',
                     },
                   ]}
