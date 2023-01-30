@@ -74,5 +74,6 @@
   "unitsCount": "{{numUnits}} units",
   "lessonsCount": "{{numLessons}} lessons",
   "beginner": "Beginner",
-  "signInWith": "Sign in with {{name}}"
+  "signInWith": "Sign in with {{name}}",
+  "youFinishedThisExercise": "You did great! Go to the next one!"
 }

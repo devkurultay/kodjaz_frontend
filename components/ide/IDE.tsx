@@ -234,10 +234,16 @@ export default function IDE() {
                       />
                     )}
                     {consoleOutput && (
-                      <pre
-                        className="whitespace-pre-wrap"
-                        dangerouslySetInnerHTML={{ __html: consoleOutput }}
-                      />
+                      <>
+                        <pre
+                          className="whitespace-pre-wrap"
+                          dangerouslySetInnerHTML={{ __html: consoleOutput }}
+                        />
+
+                        <div className="pt-5">
+                          <Trans>youFinishedThisExercise</Trans>
+                        </div>
+                      </>
                     )}
                   </div>
                 </div>
@@ -248,7 +254,10 @@ export default function IDE() {
           </div>
         </div>
       </div>
-      <FooterClassroom exercise={exercise} isSuccess={true} />
+      <FooterClassroom
+        exercise={exercise}
+        isSuccess={consoleError.length === 0}
+      />
     </div>
   );
 }
