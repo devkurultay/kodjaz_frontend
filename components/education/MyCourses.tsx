@@ -5,6 +5,7 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import {
+  getSubmissions,
   getTracks,
   signUpToTrack,
   trackState,
@@ -36,6 +37,7 @@ export default function MyCourses() {
     const tk = (sessionData as ExtendedSession)?.access ?? '';
     // TODO(murat): Don't call getTracks if we already have them
     if (tk) {
+      dispatch(getSubmissions(tk));
       dispatch(getTracks(tk));
     }
   }, [sessionData, getTracks, dispatch]);

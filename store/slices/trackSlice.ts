@@ -93,7 +93,6 @@ export const getSubmissions: any = createAsyncThunk(
   'get-submissions',
   async (token: string, { rejectWithValue }) => {
     try {
-      console.log('called here');
       const response = await getRequest(token, `v1/user/submissions/`);
 
       return response;
@@ -255,9 +254,9 @@ const userTrackSlice = createSlice({
             { id: -Infinity },
           );
 
-          console.log('latest', latest);
-
-          state.submissionsByExerciseId[id] = latest;
+          if (latest) {
+            state.submissionsByExerciseId[id] = latest;
+          }
         });
       })
       .addCase(getSubmissions.rejected, (state, { payload }) => {

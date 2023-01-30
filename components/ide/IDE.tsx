@@ -67,8 +67,15 @@ export default function IDE() {
       if (exId in exercisesById) {
         const ex = exercisesById[exId];
         setExercise(ex);
-        if (!userCode) {
-          setUserCode(ex.default_code ?? '');
+        const submission = submissionsByExerciseId[exId];
+        if (submission) {
+          !userCode &&
+            setUserCode(submission?.submitted_code ?? ex.default_code ?? '');
+          setConsoleOutput(submission.console_output ?? '');
+          setConsoleError(submission.error_message ?? '');
+          setIsConsoleShow(
+            !!submission.console_output || !!submission.error_message,
+          );
         }
       } else if (status !== 'loading') {
         // TODO(murat): Don't call getTracks if we already have them
@@ -79,8 +86,8 @@ export default function IDE() {
     }
 
     if (submissionsByExerciseId && exercise) {
-      console.log(submissionsByExerciseId && exercise);
-      const submission = submissionsByExerciseId[exercise.id];
+      const exId = Number(id);
+      const submission = submissionsByExerciseId[exId];
       if (submission) {
         setUserCode(submission?.submitted_code ?? exercise.default_code ?? '');
         setConsoleOutput(submission.console_output ?? '');
@@ -88,6 +95,8 @@ export default function IDE() {
         setIsConsoleShow(
           !!submission.console_output || !!submission.error_message,
         );
+      } else {
+        setUserCode(exercise.default_code ?? '');
       }
     }
   }, [id, exercisesById]);
@@ -139,6 +148,20 @@ export default function IDE() {
       tr && setTrack(tr);
     }
   }, [exercise]);
+
+  useEffect(() => {
+    if (submissionsByExerciseId && exercise) {
+      const submission = submissionsByExerciseId[exercise.id];
+      if (submission) {
+        setUserCode(submission?.submitted_code ?? exercise.default_code ?? '');
+        setConsoleOutput(submission.console_output ?? '');
+        setConsoleError(submission.error_message ?? '');
+        setIsConsoleShow(
+          !!submission.console_output || !!submission.error_message,
+        );
+      }
+    }
+  }, [submissionsByExerciseId]);
 
   function submitUserCode() {
     const tk = (sessionData as ExtendedSession)?.access ?? '';
