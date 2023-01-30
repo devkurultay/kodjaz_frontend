@@ -14,8 +14,8 @@ export default function HeaderClassroom() {
 
   return (
     <div className="bg-blackColor text-whiteColor md:h-[80px]">
-      <div className="flex m-auto p-5 items-center justify-between md:h-full">
-        <div className="flex items-center">
+      <div className="flex flex-col mobile:flex-row m-auto p-5 mobile:items-center mobile:justify-between md:h-full">
+        <div className="flex items-center pb-3 mobile:pb-0 mr-7">
           <Link href="/">
             <LogoWithoutText />
           </Link>
@@ -26,8 +26,8 @@ export default function HeaderClassroom() {
           </span>
         </div>
         <div className="flex items-center">
-          <span className="mr-2">{session?.user?.email}</span>
-          <div className="rounded-full w-[32px] h-[32px] bg-whiteColor flex justify-center items-center">
+          <span className="mr-2 break-all">{session?.user?.email}</span>
+          <div className="rounded-full w-[32px] h-[32px] bg-whiteColor flex justify-center items-center flex-none">
             {session?.user?.image && (
               <Image
                 src={session?.user?.image}

@@ -4,8 +4,8 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
+import { useDispatch } from 'react-redux';
 
 /* Local dependencies */
 import RunCodeIcon from '../../public/assets/svg/RunCodeIcon';
@@ -28,6 +28,7 @@ import AccordionComponent from './accordion/AccordionComponent';
 import Description from './description/Description';
 import Instruction from './instruction/Instruction';
 import MenuIDE from './menu-ide/MenuIDE';
+import PopupIDE from './popup-ide/PopupIDE';
 import TabsIDE from './tabs-ide/TabsIDE';
 
 const Editor = dynamic(() => import('./editor/Editor'), { ssr: false });
@@ -179,93 +180,96 @@ export default function IDE() {
   }
 
   return (
-    <div className="lg:h-100vh lg:fixed w-full">
-      <HeaderClassroom />
-      <div className="flex flex-col lg:flex-row">
-        <div className="lg:h-[inherit] relative lg:w-[480px] flex-none">
-          {loading && !exercise ? (
-            <LoadingSpinner height={23} />
-          ) : (
-            <TabsIDE
-              burgerClassName={isOpenMenu ? styles.ide_burger_active : ''}
-              items={tabsContent}
-              onClickedBurger={() => {
-                setIsOpenMenu(!isOpenMenu);
-              }}
-            />
-          )}
-          {exercise && (
-            <MenuIDE
-              activeClass={isOpenMenu ? 'block' : 'hidden'}
-              track={track}
-              exercise={exercise}
-              setIsOpenMenu={setIsOpenMenu}
-            />
-          )}
-        </div>
-        <div className="h-[60vh] lg:grow lg:h-auto relative flex-col flex">
-          <div className="h-[48px] flex-none bg-blackColorLight"></div>
-          <Editor userCode={userCode} setUserCode={setUserCode} />
-          <div>
-            <div className="editor-footer pr-5 pl-[60px] py-3 bg-[#3A3B42] w-full h-[60px] flex items-center">
-              <button
-                onClick={submitUserCode}
-                className="flex items-center bg-primaryColorLight text-whiteColor font-medium text-sm px-3.5 py-2 rounded-md hover:bg-primaryColorMiddle"
-              >
-                <RunCodeIcon />
-                <span className="ml-3">
-                  {submissionLoading ? (
-                    <LoadingSpinner height={23} />
-                  ) : (
-                    <Trans>runCode</Trans>
-                  )}
-                </span>
-              </button>
-            </div>
-            <div className="bg-blackColorDark">
-              <button
-                className={styles.console_btn}
-                aria-expanded={isConsoleShow ? true : false}
-                onClick={() => setIsConsoleShow(!isConsoleShow)}
-              ></button>
-              {isConsoleShow ? (
-                <div
-                  className={`px-7 text-whiteColor overflow-y-scroll max-h-[40vh] lg:max-h-[50vh] w-inherit ${
-                    consoleError ? 'text-dangerColorConsole' : ''
-                  }`}
+    <>
+      <div className="lg:h-100vh lg:fixed w-full">
+        <HeaderClassroom />
+        <div className="flex flex-col lg:flex-row">
+          <div className="lg:h-[inherit] relative lg:w-[480px] flex-none">
+            {loading && !exercise ? (
+              <LoadingSpinner height={23} />
+            ) : (
+              <TabsIDE
+                burgerClassName={isOpenMenu ? styles.ide_burger_active : ''}
+                items={tabsContent}
+                onClickedBurger={() => {
+                  setIsOpenMenu(!isOpenMenu);
+                }}
+              />
+            )}
+            {exercise && (
+              <MenuIDE
+                activeClass={isOpenMenu ? 'block' : 'hidden'}
+                track={track}
+                exercise={exercise}
+                setIsOpenMenu={setIsOpenMenu}
+              />
+            )}
+          </div>
+          <div className="h-[60vh] lg:grow lg:h-auto relative flex-col flex">
+            <div className="h-[48px] flex-none bg-blackColorLight"></div>
+            <Editor userCode={userCode} setUserCode={setUserCode} />
+            <div>
+              <div className="editor-footer pr-5 pl-[60px] py-3 bg-[#3A3B42] w-full h-[60px] flex items-center">
+                <button
+                  onClick={submitUserCode}
+                  className="flex items-center bg-primaryColorLight text-whiteColor font-medium text-sm px-3.5 py-2 rounded-md hover:bg-primaryColorMiddle"
                 >
-                  <div>
-                    {consoleError && (
-                      <pre
-                        className="whitespace-pre-wrap"
-                        dangerouslySetInnerHTML={{ __html: consoleError }}
-                      />
+                  <RunCodeIcon />
+                  <span className="ml-3">
+                    {submissionLoading ? (
+                      <LoadingSpinner height={23} />
+                    ) : (
+                      <Trans>runCode</Trans>
                     )}
-                    {consoleOutput && (
-                      <>
+                  </span>
+                </button>
+              </div>
+              <div className="bg-blackColorDark">
+                <button
+                  className={styles.console_btn}
+                  aria-expanded={isConsoleShow ? true : false}
+                  onClick={() => setIsConsoleShow(!isConsoleShow)}
+                ></button>
+                {isConsoleShow ? (
+                  <div
+                    className={`px-7 text-whiteColor overflow-y-scroll max-h-[40vh] lg:max-h-[50vh] w-inherit ${
+                      consoleError ? 'text-dangerColorConsole' : ''
+                    }`}
+                  >
+                    <div>
+                      {consoleError && (
                         <pre
                           className="whitespace-pre-wrap"
-                          dangerouslySetInnerHTML={{ __html: consoleOutput }}
+                          dangerouslySetInnerHTML={{ __html: consoleError }}
                         />
+                      )}
+                      {consoleOutput && (
+                        <>
+                          <pre
+                            className="whitespace-pre-wrap"
+                            dangerouslySetInnerHTML={{ __html: consoleOutput }}
+                          />
 
-                        <div className="pt-5">
-                          <Trans>youFinishedThisExercise</Trans>
-                        </div>
-                      </>
-                    )}
+                          <div className="pt-5">
+                            <Trans>youFinishedThisExercise</Trans>
+                          </div>
+                        </>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ) : (
-                ''
-              )}
+                ) : (
+                  ''
+                )}
+              </div>
             </div>
           </div>
         </div>
+        <FooterClassroom
+          exercise={exercise}
+          isSuccess={consoleError.length === 0}
+        />
       </div>
-      <FooterClassroom
-        exercise={exercise}
-        isSuccess={consoleError.length === 0}
-      />
-    </div>
+      <PopupIDE loading={false} />
+    </>
   );
 }
