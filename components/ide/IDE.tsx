@@ -4,8 +4,8 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
+import { useDispatch } from 'react-redux';
 
 /* Local dependencies */
 import RunCodeIcon from '../../public/assets/svg/RunCodeIcon';
@@ -232,8 +232,31 @@ export default function IDE() {
                 ></button>
                 {isConsoleShow ? (
                   <div
-                    className={`px-7 text-whiteColor overflow-y-scroll max-h-[40vh] lg:max-h-[50vh] w-inherit`}
-                  ></div>
+                    className={`px-7 text-whiteColor overflow-y-scroll max-h-[40vh] lg:max-h-[50vh] w-inherit ${
+                      consoleError ? 'text-dangerColorConsole' : ''
+                    }`}
+                  >
+                    <div>
+                      {consoleError && (
+                        <pre
+                          className="whitespace-pre-wrap"
+                          dangerouslySetInnerHTML={{ __html: consoleError }}
+                        />
+                      )}
+                      {consoleOutput && (
+                        <>
+                          <pre
+                            className="whitespace-pre-wrap"
+                            dangerouslySetInnerHTML={{ __html: consoleOutput }}
+                          />
+
+                          <div className="pt-5">
+                            <Trans>youFinishedThisExercise</Trans>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
                 ) : (
                   ''
                 )}
@@ -241,7 +264,10 @@ export default function IDE() {
             </div>
           </div>
         </div>
-        <FooterClassroom exercise={exercise} isSuccess={true} />
+        <FooterClassroom
+          exercise={exercise}
+          isSuccess={consoleError.length === 0}
+        />
       </div>
       <PopupIDE loading={false} />
     </>
