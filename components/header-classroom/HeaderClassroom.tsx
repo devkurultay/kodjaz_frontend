@@ -20,7 +20,7 @@ export default function HeaderClassroom() {
             <LogoWithoutText />
           </Link>
           <span className="font-medium ml-10">
-            <Link href="/classroom/courses">
+            <Link href="/classroom">
               <Trans>mainPage</Trans>
             </Link>
           </span>
