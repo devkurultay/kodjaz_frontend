@@ -19,7 +19,7 @@ import {
   submitCode,
   trackState,
 } from '../../store/slices/trackSlice';
-import { Exercise, Track } from '../../types/tracksTypes';
+import { Exercise, Submission, Track } from '../../types/tracksTypes';
 import { ExtendedSession } from '../../types/userTypes';
 import LoadingSpinner from '../ui/Spinner';
 import HeaderClassroom from '../header-classroom/HeaderClassroom';
@@ -52,56 +52,74 @@ export default function IDE() {
   } = useAppSelector(trackState);
   const [isOpenMenu, setIsOpenMenu] = useState<Boolean>(false);
   const [exercise, setExercise] = useState<Exercise>();
+  const [submission, setSubmission] = useState<Submission>();
   const [track, setTrack] = useState<Track>();
   const [tabsContent, setTabsContent] = useState<TabContents>([]);
   const [userCode, setUserCode] = useState<string>('');
   const [isConsoleShow, setIsConsoleShow] = useState(false);
   const [consoleOutput, setConsoleOutput] = useState('');
   const [consoleError, setConsoleError] = useState('');
+  const [canGoForward, setCanGoForward] = useState(false);
   const router = useRouter();
   const { id } = router.query;
   const { data: sessionData, status } = useSession();
   const { t } = useTranslation('common');
 
+  const resetConsoleAndForward = () => {
+    setConsoleOutput('');
+    setConsoleError('');
+    setCanGoForward(false);
+    setIsConsoleShow(false);
+  };
+
+  const isEmpty = (obj: {}) => Object.values(obj).length === 0;
+
   useEffect(() => {
-    if (id) {
-      const exId = Number(id);
-      if (exId in exercisesById) {
-        const ex = exercisesById[exId];
-        setExercise(ex);
-        const submission = submissionsByExerciseId[exId];
-        if (submission) {
-          !userCode &&
-            setUserCode(submission?.submitted_code ?? ex.default_code ?? '');
-          setConsoleOutput(submission.console_output ?? '');
-          setConsoleError(submission.error_message ?? '');
-          setIsConsoleShow(
-            !!submission.console_output || !!submission.error_message,
-          );
-        }
-      } else if (status !== 'loading') {
-        // TODO(murat): Don't call getTracks if we already have them
-        const tk = (sessionData as ExtendedSession)?.access ?? '';
-        dispatch(getSubmissions(tk));
+    // First load
+    if (status !== 'loading') {
+      const tk = (sessionData as ExtendedSession)?.access ?? '';
+      if (!loading && isEmpty(tracksById)) {
         dispatch(getTracks(tk));
       }
-    }
-
-    if (submissionsByExerciseId && exercise) {
-      const exId = Number(id);
-      const submission = submissionsByExerciseId[exId];
-      if (submission) {
-        setUserCode(submission?.submitted_code ?? exercise.default_code ?? '');
-        setConsoleOutput(submission.console_output ?? '');
-        setConsoleError(submission.error_message ?? '');
-        setIsConsoleShow(
-          !!submission.console_output || !!submission.error_message,
-        );
-      } else {
-        setUserCode(exercise.default_code ?? '');
+      if (!loading && isEmpty(submissionsByExerciseId)) {
+        dispatch(getSubmissions(tk));
       }
     }
-  }, [id, exercisesById]);
+  }, [status, getSubmissions, getTracks, sessionData]);
+
+  useEffect(() => {
+    // When navigating
+    if (id) {
+      const exId = Number(id);
+      if (!loading && exId in exercisesById) {
+        const ex = exercisesById[exId];
+        setExercise(ex);
+        setUserCode(ex.default_code ?? '');
+        const tr = tracksById?.[ex.track_id];
+        tr && setTrack(tr);
+      }
+      if (!loading && !submissionLoading && exId in submissionsByExerciseId) {
+        const sub = submissionsByExerciseId[exId];
+        setSubmission(sub);
+        setConsoleOutput(sub.console_output ?? '');
+        setConsoleError(sub.error_message ?? '');
+        setIsConsoleShow(!!sub.console_output || !!sub.error_message);
+        const success = sub.passed && !sub.error_message;
+        setCanGoForward(success);
+        sub.submitted_code ?? setUserCode(sub.submitted_code ?? '');
+      } else {
+        resetConsoleAndForward();
+      }
+    }
+  }, [
+    id,
+    loading,
+    submissionLoading,
+    setExercise,
+    setSubmission,
+    exercisesById,
+    submissionsByExerciseId,
+  ]);
 
   useEffect(() => {
     if (exercise) {
@@ -152,24 +170,8 @@ export default function IDE() {
         },
       ];
       setTabsContent(contents);
-      const tr = tracksById?.[exercise.track_id];
-      tr && setTrack(tr);
     }
   }, [exercise]);
-
-  useEffect(() => {
-    if (submissionsByExerciseId && exercise) {
-      const submission = submissionsByExerciseId[exercise.id];
-      if (submission) {
-        setUserCode(submission?.submitted_code ?? exercise.default_code ?? '');
-        setConsoleOutput(submission.console_output ?? '');
-        setConsoleError(submission.error_message ?? '');
-        setIsConsoleShow(
-          !!submission.console_output || !!submission.error_message,
-        );
-      }
-    }
-  }, [submissionsByExerciseId]);
 
   function submitUserCode() {
     const tk = (sessionData as ExtendedSession)?.access ?? '';
@@ -248,9 +250,11 @@ export default function IDE() {
                           dangerouslySetInnerHTML={{ __html: consoleOutput }}
                         />
 
-                        <div className="pt-5">
-                          <Trans>youFinishedThisExercise</Trans>
-                        </div>
+                        {!consoleError && (
+                          <div className="pt-5">
+                            <Trans>youFinishedThisExercise</Trans>
+                          </div>
+                        )}
                       </>
                     )}
                   </div>
@@ -262,10 +266,7 @@ export default function IDE() {
           </div>
         </div>
       </div>
-      <FooterClassroom
-        exercise={exercise}
-        isSuccess={consoleError.length === 0}
-      />
+      <FooterClassroom exercise={exercise} isSuccess={canGoForward} />
     </div>
   );
 }

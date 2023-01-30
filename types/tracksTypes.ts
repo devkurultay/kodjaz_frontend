@@ -73,4 +73,5 @@ export type Submission = {
   exercise: number;
   console_output: string;
   error_message: string;
+  passed: boolean;
 };
