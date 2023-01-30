@@ -76,5 +76,7 @@
   "lessonsCount": "Уроков: {{numLessons}}",
   "beginner": "Начальный",
   "signInWith": "Вход через {{name}}",
-  "youFinishedThisExercise": "Отлично! Вы можете перейти к следующему упражнению!"
+  "youFinishedThisExercise": "Отлично! Вы можете перейти к следующему упражнению!",
+  "Description": "Упражнение",
+  "Discussion": "Обсуждение"
 }

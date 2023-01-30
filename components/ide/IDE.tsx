@@ -1,5 +1,5 @@
 /* External dependencies */
-import { Trans } from 'next-i18next';
+import { Trans, useTranslation } from 'next-i18next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
@@ -60,6 +60,7 @@ export default function IDE() {
   const router = useRouter();
   const { id } = router.query;
   const { data: sessionData, status } = useSession();
+  const { t } = useTranslation('common');
 
   useEffect(() => {
     if (id) {
@@ -123,7 +124,7 @@ export default function IDE() {
             </div>
           ),
           icon: <TabBurgerIcon />,
-          text: 'Description',
+          text: t('Description'),
           width: 20,
           height: 17,
           viewbox: '0 0 14 18',
@@ -137,7 +138,7 @@ export default function IDE() {
             </div>
           ),
           icon: <TabChatIcon />,
-          text: 'Discussion',
+          text: t('Discussion'),
           width: 18,
           height: 17,
           viewbox: '0 0 18 17',
