@@ -86,7 +86,7 @@ export default function IDE() {
         setConsoleOutput(submission.console_output ?? '');
         setConsoleError(submission.error_message ?? '');
         setIsConsoleShow(
-          !!submission.console_output && !!submission.error_message,
+          !!submission.console_output || !!submission.error_message,
         );
       }
     }
