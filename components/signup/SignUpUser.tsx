@@ -181,10 +181,10 @@ export default function SignUpUser() {
               />
             </p>
           </div>
-          <p className="text-center mb-5">
+          <p className="text-center mb-5 hidden">
             <Trans>withSocialMedias</Trans>
           </p>
-          <div className="flex gap-x-4 justify-center mb-[30px]">
+          <div className="flex gap-x-4 justify-center mb-[30px] hidden">
             {Object.values(providers).map((provider: any) => (
               <React.Fragment key={provider.id}>
                 {provider.name !== 'Email and Password' && (
