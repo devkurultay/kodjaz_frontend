@@ -157,8 +157,11 @@ export default function SignUpUser() {
           </div>
           {error &&
             error?.non_field_errors?.map((msg, idx) => (
-              <div className="relative block text-xs text-dangerColor pl-1 pb-3">
-                <p key={idx} role="alert">
+              <div
+                key={idx}
+                className="relative block text-xs text-dangerColor pl-1 pb-3"
+              >
+                <p role="alert">
                   <Trans>{msg}</Trans>
                 </p>
               </div>
