@@ -82,5 +82,10 @@
   "signInWith": "{{name}} менен кирүү",
   "youFinishedThisExercise": "Жарайсыз! Эми кийинкиге өтүңүз!",
   "Description": "Көнүгүү",
-  "Discussion": "Талкуу"
+  "Discussion": "Талкуу",
+  "This password is too short. It must contain at least 8 characters.": "Бул сырсөз өтө кыска. Жок дегенде 8 тамгадан турушу керек.",
+  "This password is too common.": "Бул сырсөз өтө көп кездешет.",
+  "This password is entirely numeric.": "Бул сырсөз жалаң сандардан турат экен. Жарабайт.",
+  "The password is too similar to the username.": "Бул сырсөз колдонуучу атыңызга өтө окшош экен.",
+  "A user is already registered with this e-mail address.": "Бул эмейл менен колдонуучу буга чейин катталган экен."
 }

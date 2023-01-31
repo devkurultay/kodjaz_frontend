@@ -77,5 +77,10 @@
   "signInWith": "Sign in with {{name}}",
   "youFinishedThisExercise": "You did great! Go to the next one!",
   "Description": "Description",
-  "Discussion": "Discussion"
+  "Discussion": "Discussion",
+  "This password is too short. It must contain at least 8 characters.": "This password is too short. It must contain at least 8 characters.",
+  "This password is too common.": "This password is too common.",
+  "This password is entirely numeric.": "This password is entirely numeric.",
+  "The password is too similar to the username.": "The password is too similar to the username.",
+  "A user is already registered with this e-mail address.": "A user is already registered with this e-mail address."
 }
