@@ -60,15 +60,15 @@ export default function SignUpUser() {
       email,
       password1,
       password2,
-    }).then((res: any) => {
-      if (res?.detail) {
+    })
+      .then(() => {
         setLoading(false);
         router.push(`/?email=${email}`);
-      } else {
-        setError(res);
+      })
+      .catch((e: BackendError) => {
         setLoading(false);
-      }
-    });
+        setError(e);
+      });
   }
 
   async function googleHandler(providerId: string) {
@@ -113,7 +113,7 @@ export default function SignUpUser() {
                 {error &&
                   error?.email?.map((msg, idx) => (
                     <p key={idx} role="alert">
-                      {msg}
+                      <Trans>{msg}</Trans>
                     </p>
                   ))}
               </div>
@@ -135,7 +135,7 @@ export default function SignUpUser() {
                 {error &&
                   error?.password1?.map((msg, idx) => (
                     <p key={idx} role="alert">
-                      {msg}
+                      <Trans>{msg}</Trans>
                     </p>
                   ))}
               </div>
@@ -153,16 +153,19 @@ export default function SignUpUser() {
                 aria-invalid={error?.password2 ? 'true' : 'false'}
                 {...register('password2')}
               />
-              <div className={INPUT_ERRORS_CONTAINER_CLASSES}>
-                {error &&
-                  error?.password2?.map((msg, idx) => (
-                    <p key={idx} role="alert">
-                      {msg}
-                    </p>
-                  ))}
-              </div>
             </div>
           </div>
+          {error &&
+            error?.non_field_errors?.map((msg, idx) => (
+              <div
+                key={idx}
+                className="relative block text-xs text-dangerColor pl-1 pb-3"
+              >
+                <p role="alert">
+                  <Trans>{msg}</Trans>
+                </p>
+              </div>
+            ))}
           <div className="mb-[20px]">
             <button
               type="submit"

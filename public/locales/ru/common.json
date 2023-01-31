@@ -78,5 +78,10 @@
   "signInWith": "Вход через {{name}}",
   "youFinishedThisExercise": "Отлично! Вы можете перейти к следующему упражнению!",
   "Description": "Упражнение",
-  "Discussion": "Обсуждение"
+  "Discussion": "Обсуждение",
+  "This password is too short. It must contain at least 8 characters.": "Пароль слишком короткий. Он должен состоять минимум из 8 символов.",
+  "This password is too common.": "Этот пароль слишком распространен.",
+  "This password is entirely numeric.": "Этот пароль состоит только из чисел.",
+  "The password is too similar to the username.": "Этот пароль слишком похож на имя пользователя.",
+  "A user is already registered with this e-mail address.": "Пользователь с тамим e-mail уже существует."
 }
