@@ -155,14 +155,14 @@ export default function SignUpUser() {
               />
             </div>
           </div>
-          <div className="relative block text-xs text-dangerColor pl-1 pb-5">
-            {error &&
-              error?.non_field_errors?.map((msg, idx) => (
+          {error &&
+            error?.non_field_errors?.map((msg, idx) => (
+              <div className="relative block text-xs text-dangerColor pl-1 pb-3">
                 <p key={idx} role="alert">
                   <Trans>{msg}</Trans>
                 </p>
-              ))}
-          </div>
+              </div>
+            ))}
           <div className="mb-[20px]">
             <button
               type="submit"
